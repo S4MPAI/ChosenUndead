@@ -1,2 +1,2 @@
-﻿using var game = new DarkProject.ChosenUndead();
+﻿using var game = new ChosenUndead.ChosenUndeadGame();
 game.Run();

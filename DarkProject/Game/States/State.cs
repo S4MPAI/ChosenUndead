@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DarkProject.Game.States
+namespace ChosenUndead.Game.States
 {
     public abstract class State
     {
@@ -17,13 +17,13 @@ namespace DarkProject.Game.States
 
         protected GraphicsDevice _graphicsDevice;
 
-        protected ChosenUndead _game;
+        protected ChosenUndeadGame _game;
 
         #endregion
 
         #region Methods
 
-        public State(ChosenUndead game, GraphicsDevice graphicsDevice, ContentManager contentManager)
+        public State(ChosenUndeadGame game, GraphicsDevice graphicsDevice, ContentManager contentManager)
         {
             _game = game;
             _graphicsDevice = graphicsDevice;

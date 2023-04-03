@@ -1,10 +1,10 @@
-﻿using DarkProject.Game.States;
+﻿using ChosenUndead.Game.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace DarkProject
+namespace ChosenUndead
 {
-    public class ChosenUndead : Microsoft.Xna.Framework.Game
+    public class ChosenUndeadGame : Microsoft.Xna.Framework.Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -13,17 +13,14 @@ namespace DarkProject
 
         private State _nextState; 
 
-        public ChosenUndead()
+        public ChosenUndeadGame()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
 
-        public void ChangeState(State state)
-        {
-            _nextState = state;
-        }
+        public void ChangeState(State state) => _nextState = state;
 
         protected override void Initialize()
         {

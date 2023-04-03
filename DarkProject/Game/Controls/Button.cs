@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 
-namespace DarkProject.Game.Controls
+namespace ChosenUndead.Game.Controls
 {
     public class Button : Component
     {
@@ -49,7 +49,7 @@ namespace DarkProject.Game.Controls
         {
             _texture = texture;
             _font = spriteFont;
-            PenColour = Color.Aqua;
+            PenColour = Color.Silver;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -57,7 +57,7 @@ namespace DarkProject.Game.Controls
             var colour = Color.White;
 
             if (_isHovering)
-                colour = Color.Gray;
+                colour = PenColour;
 
             spriteBatch.Draw(_texture, Rectangle, Color.White);
 
@@ -74,11 +74,11 @@ namespace DarkProject.Game.Controls
             _previousMouse = _currentMouse;
             _currentMouse = Mouse.GetState();
 
-            var mouseRectangle = new Rectangle(_currentMouse.X, _currentMouse.Y, 1, 1);
+            var currentMouseRectangle = new Rectangle(_currentMouse.X, _currentMouse.Y, 1, 1);
 
             _isHovering = false;
 
-            if (mouseRectangle.Intersects(Rectangle))
+            if (currentMouseRectangle.Intersects(Rectangle))
             {
                 _isHovering = true;
 

@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DarkProject.Game.States
+namespace ChosenUndead.Game.States
 {
-    public class GameState : State
+    public class TestState : State
     {
-        public GameState(ChosenUndead game, GraphicsDevice graphicsDevice, ContentManager contentManager) : base(game, graphicsDevice, contentManager)
+        public TestState(ChosenUndeadGame game, GraphicsDevice graphicsDevice, ContentManager contentManager) : base(game, graphicsDevice, contentManager)
         {
         }
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace DarkProject.Game.Controls
+namespace ChosenUndead.Game.Controls
 {
     public abstract class Component
     {

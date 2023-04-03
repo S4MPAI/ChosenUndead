@@ -1,11 +1,11 @@
-﻿using DarkProject.Game.Controls;
+﻿using ChosenUndead.Game.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
-namespace DarkProject.Game.States
+namespace ChosenUndead.Game.States
 {
     internal class StartMenu : State
     {
@@ -13,7 +13,7 @@ namespace DarkProject.Game.States
 
         private Texture2D _background;
 
-        public StartMenu(ChosenUndead game, GraphicsDevice graphicsDevice, ContentManager content) : base(game, graphicsDevice, content)
+        public StartMenu(ChosenUndeadGame game, GraphicsDevice graphicsDevice, ContentManager content) : base(game, graphicsDevice, content)
         {
             _background = content.Load<Texture2D>("Backgrounds/menuBackground");
             var buttonTexture = _content.Load<Texture2D>("Controls/menuButton");
@@ -21,15 +21,15 @@ namespace DarkProject.Game.States
 
             var newGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2((game.Window.ClientBounds.Width - buttonTexture.Width) / 2, 300),
+                Position = new Vector2((game.Window.ClientBounds.Width - buttonTexture.Width) / 2, 400),
                 Text = "Новая игра"
             };
 
-            newGameButton.Click += (sender, e) => game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+            //newGameButton.Click += (sender, e) => game.ChangeState(new TestState(_game, _graphicsDevice, _content));
 
             var optionGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2((game.Window.ClientBounds.Width - buttonTexture.Width) / 2, 400),
+                Position = new Vector2((game.Window.ClientBounds.Width - buttonTexture.Width) / 2, 500),
                 Text = "Настройки"
             };
 
@@ -37,17 +37,26 @@ namespace DarkProject.Game.States
 
             var exitGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2((game.Window.ClientBounds.Width - buttonTexture.Width) / 2, 500),
+                Position = new Vector2((game.Window.ClientBounds.Width - buttonTexture.Width) / 2, 600),
                 Text = "Выйти"
             };
 
             exitGameButton.Click += (sender, e) => game.Exit();
 
+            var testGameButton = new Button(buttonTexture, buttonFont)
+            {
+                Position = new Vector2((game.Window.ClientBounds.Width - buttonTexture.Width) / 2, 700),
+                Text = "Тесты"
+            };
+
+            testGameButton.Click += (sender, e) => game.ChangeState(new TestState(_game, _graphicsDevice, _content));
+
             _components = new List<Component>()
             {
                 newGameButton,
                 optionGameButton,
-                exitGameButton
+                exitGameButton,
+                testGameButton
             };
         }
 
