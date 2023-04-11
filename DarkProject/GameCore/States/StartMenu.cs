@@ -1,21 +1,20 @@
-﻿using ChosenUndead.Game.Controls;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
-namespace ChosenUndead.Game.States
+namespace ChosenUndead
 {
     internal class StartMenu : State
     {
-        private List<Component> _components;
+        private List<Component> _sprites;
 
         private Texture2D _background;
 
-        public StartMenu(ChosenUndeadGame game, GraphicsDevice graphicsDevice, ContentManager content) : base(game, graphicsDevice, content)
+        public StartMenu(ChosenUndeadGame game, ContentManager content) : base(game, content)
         {
-            _background = content.Load<Texture2D>("Backgrounds/menuBackground");
+            _background = _content.Load<Texture2D>("Backgrounds/menuBackground");
             var buttonTexture = _content.Load<Texture2D>("Controls/menuButton");
             var buttonFont = _content.Load<SpriteFont>("Fonts/Font");
 
@@ -49,9 +48,9 @@ namespace ChosenUndead.Game.States
                 Text = "Тесты"
             };
 
-            testGameButton.Click += (sender, e) => game.ChangeState(new TestState(_game, _graphicsDevice, _content));
+            testGameButton.Click += (sender, e) => game.ChangeState(new TestState(_game, content));
 
-            _components = new List<Component>()
+            _sprites = new List<Component>()
             {
                 newGameButton,
                 optionGameButton,
@@ -66,7 +65,7 @@ namespace ChosenUndead.Game.States
 
             spriteBatch.Draw(_background, new Vector2(0, 0), Color.White);
 
-            foreach (var component in _components)
+            foreach (var component in _sprites)
                 component.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
@@ -79,7 +78,7 @@ namespace ChosenUndead.Game.States
 
         public override void Update(GameTime gameTime)
         {
-            foreach (var component in _components)
+            foreach (var component in _sprites)
                 component.Update(gameTime);
         }
     }

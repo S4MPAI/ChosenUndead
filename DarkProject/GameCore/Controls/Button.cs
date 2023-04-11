@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 
-namespace ChosenUndead.Game.Controls
+namespace ChosenUndead
 {
     public class Button : Component
     {
@@ -17,8 +17,6 @@ namespace ChosenUndead.Game.Controls
 
         private MouseState _previousMouse;
 
-        private Texture2D _texture;
-
         #endregion
 
         #region Properties
@@ -28,8 +26,6 @@ namespace ChosenUndead.Game.Controls
         public bool Clicked { get; private set; }
 
         public Color PenColour { get; set; }
-
-        public Vector2 Position { get; set; }
 
         public Rectangle Rectangle
         {

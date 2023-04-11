@@ -1,10 +1,9 @@
-﻿using ChosenUndead.Game.States;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ChosenUndead
 {
-    public class ChosenUndeadGame : Microsoft.Xna.Framework.Game
+    public class ChosenUndeadGame : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -25,7 +24,7 @@ namespace ChosenUndead
         protected override void Initialize()
         {
             IsMouseVisible = true;
-
+            EntityManager.Initialize(Content);
             _graphics.IsFullScreen = false;
             _graphics.PreferredBackBufferWidth = 1600;
             _graphics.PreferredBackBufferHeight = 900;
@@ -37,15 +36,14 @@ namespace ChosenUndead
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            _currentState = new StartMenu(this, GraphicsDevice, Content);
-            // TODO: use this.Content to load your game content here
+            _currentState = new StartMenu(this, Content);
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (_nextState != null)
                 (_currentState, _nextState) = (_nextState, null);
+
 
             _currentState.Update(gameTime);
 

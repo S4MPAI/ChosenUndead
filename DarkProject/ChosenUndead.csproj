@@ -18,6 +18,7 @@
   <ItemGroup>
     <Folder Include="Content\Controls\" />
     <Folder Include="Content\Fonts\" />
+    <Folder Include="Saves\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />

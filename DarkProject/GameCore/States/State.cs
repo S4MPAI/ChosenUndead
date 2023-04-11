@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChosenUndead.Game.States
+namespace ChosenUndead
 {
     public abstract class State
     {
@@ -15,19 +15,16 @@ namespace ChosenUndead.Game.States
 
         protected ContentManager _content;
 
-        protected GraphicsDevice _graphicsDevice;
-
-        protected ChosenUndeadGame _game;
+        protected readonly ChosenUndeadGame _game;
 
         #endregion
 
         #region Methods
 
-        public State(ChosenUndeadGame game, GraphicsDevice graphicsDevice, ContentManager contentManager)
+        public State(ChosenUndeadGame game, ContentManager content)
         {
             _game = game;
-            _graphicsDevice = graphicsDevice;
-            _content = contentManager;
+            _content = content;
         }
 
         public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
