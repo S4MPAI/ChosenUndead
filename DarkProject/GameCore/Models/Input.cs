@@ -7,12 +7,16 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead
 {
-    public class Input
+    public struct Input
     {
         public Keys LeftKey = Keys.A;
 
         public Keys RightKey = Keys.D;
 
-        public Keys Jump = Keys.Space;
+        public Keys JumpKey = Keys.Space;
+
+        public Input()
+        {
+        }
     }
 }

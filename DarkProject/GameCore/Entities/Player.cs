@@ -13,43 +13,62 @@ namespace ChosenUndead
         private static Player _instance;
 
         private InputManager _inputManager;
+        
+        private string _animationKey;
 
-        private Player(AnimationManager animationManager, float hitBoxRadius, float attackRadius, InputManager inputManager = null) : 
-            base(animationManager, hitBoxRadius, attackRadius)
+        private Player(Map map, AnimationManager animationManager, int hitBoxRadius, int attackRadius, InputManager inputManager = null) : 
+            base(map, animationManager, hitBoxRadius, attackRadius)
         {
-            _inputManager = inputManager == null ? new() : inputManager;
+            _inputManager = inputManager ?? new();
         }
 
-        public static Player GetInstance(AnimationManager animationManager, float hitBoxRadius, float attackRadius, InputManager inputManager = null)
+        public static Player GetInstance(Map map, AnimationManager animationManager, int hitBoxRadius, int attackRadius, InputManager inputManager = null)
         {
-            if (_instance == null)
-                _instance = new Player(animationManager, hitBoxRadius, attackRadius, inputManager);
-            return _instance;
+            return _instance ??= new Player(map, animationManager, hitBoxRadius, attackRadius, inputManager);
         }
 
         public override void Update(GameTime gameTime)
         {
             _inputManager.Update(gameTime);
 
+            Move();
+            Collision();
+
+            _animationManager.SetAnimation(_animationKey);
+            _animationManager.Update(gameTime);
+
+            Position += Velocity;
+            _orientation = Velocity.X != 0 ? (Velocity.X > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally) : _orientation;
+            Velocity.X = 0;
+            
+        }
+
+        private void Move()
+        {
+            if (Velocity.Y < 10)
+                Velocity.Y += 0.4f;
+
             if (_inputManager.LeftPressed)
                 Velocity.X = -Speed;
             if (_inputManager.RightPressed)
                 Velocity.X = Speed;
 
-            if (Velocity.X != 0) _animationManager.SetAnimation("Run");
-            else _animationManager.SetAnimation("Idle");
+            if (_inputManager.JumpPressed && !_hasJumped)
+            {
+                Position.Y -= 3f;
+                Velocity.Y = -4f;
+                _hasJumped = true;
+                _animationManager.SetAnimation("Jump");
+            }
 
-            _animationManager.Update(gameTime);
-
-            Position += Velocity;
-            orientation = Velocity.X != 0 ? (Velocity.X > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally) : orientation;
-
-            Velocity = Vector2.Zero;
+            if (Velocity.X != 0) _animationKey = "Run";
+            else _animationKey = "Idle";
         }
+
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            _animationManager.Draw(Position, spriteBatch, orientation);
+            _animationManager.Draw(Position, spriteBatch, _orientation);
         }
     }
 }

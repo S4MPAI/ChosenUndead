@@ -18,9 +18,9 @@ namespace ChosenUndead
 
         public bool JumpPressed { get; private set; }
 
-        public InputManager(Input input = null) 
+        public InputManager(Input? input = null) 
         {
-            Input = input == null ? new() : input;
+            Input = input == null ? new() : input.Value;
         }
 
         public void Update(GameTime gameTime)
@@ -29,7 +29,7 @@ namespace ChosenUndead
 
             LeftPressed = keyboardState.IsKeyDown(Input.LeftKey);
             RightPressed = keyboardState.IsKeyDown(Input.RightKey);
-            JumpPressed = keyboardState.IsKeyDown(Input.Jump);
+            JumpPressed = keyboardState.IsKeyDown(Input.JumpKey);
         }
     }
 }

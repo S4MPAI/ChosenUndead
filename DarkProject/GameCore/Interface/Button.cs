@@ -11,7 +11,7 @@ namespace ChosenUndead
 
         private MouseState _currentMouse;
 
-        private SpriteFont _font;
+        private readonly SpriteFont _font;
 
         private bool _isHovering;
 

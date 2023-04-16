@@ -8,10 +8,16 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead
 {
-    public static class EntityManager
+    public class EntityManager
     {
         private static readonly AnimationManager _playerAnimations = new ();
         private static readonly string _playerPath = "Entities/Player/";
+        private Map _map { get; }
+
+        public EntityManager(Map map)
+        {
+            _map = map;
+        }
 
         public static void Initialize(ContentManager content)
         {
@@ -19,6 +25,6 @@ namespace ChosenUndead
             _playerAnimations.AddAnimation("Idle", new Animation(content.Load<Texture2D>($"{_playerPath}Idle"), 128, 64, 8, 0.125f));
         }
 
-        public static Player GetPlayer() => Player.GetInstance(_playerAnimations, 32, 64);
+        public Player GetPlayer() => Player.GetInstance(_map,_playerAnimations, 32, 64);
     }
 }

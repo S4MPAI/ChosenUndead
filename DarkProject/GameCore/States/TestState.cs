@@ -13,11 +13,31 @@ namespace ChosenUndead
     {
         private readonly Player _player;
 
+        private readonly Map _map = new();
+
+        private EntityManager _entityManager { get; }
+
         public TestState(ChosenUndeadGame game, ContentManager content) : base(game, content)
         {
-            
-            _player = EntityManager.GetPlayer();
-            _player.Position = new Vector2(game.Window.ClientBounds.Width / 2, 400);
+            _entityManager = new EntityManager(_map);
+            _player = _entityManager.GetPlayer();
+            _player.Position = new Vector2(16, 16);
+
+            Tiles.Content = _content;
+            _map.Generate(new[,]
+            {
+                //{0, 0, 0, 0, 0, 0 },
+                //{0, 0, 0, 0, 0, 0 },
+                //{0, 0, 0, 0, 0, 0 },
+                {0, 0, 0, 0, 0, 0, 0, 1 },
+                {0, 0, 0, 0, 0, 0, 0, 1 },
+                {0, 0, 0, 0, 0, 0, 0, 1 },
+                {0, 0, 0, 0, 0, 0, 0, 1 },
+                {0, 0, 0, 0, 0, 0, 0, 1 },
+                {0, 0, 0, 0, 0, 0, 0, 1},
+                { 0, 0, 0, 0, 0, 0, 1, 1},
+                {0, 0, 1, 1, 1, 1, 1, 1 }
+            }, 24);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -25,6 +45,7 @@ namespace ChosenUndead
             spriteBatch.Begin();
 
             _player.Draw(gameTime, spriteBatch);
+            _map.Draw(spriteBatch);
 
             spriteBatch.End();
         }

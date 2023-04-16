@@ -7,7 +7,7 @@ namespace ChosenUndead
     {
         protected Texture2D _texture;
 
-        public Vector2 Position { get; set; }
+        public Vector2 Position;
 
         public abstract void Update(GameTime gameTime);
 

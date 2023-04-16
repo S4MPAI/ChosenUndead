@@ -22,7 +22,7 @@ namespace ChosenUndead
 
         public void SetAnimation(string key)
         {
-            if (_anims.TryGetValue(key, out Animation value))
+            if (_anims.TryGetValue(key, out var value))
             {
                 CurrentAnimation = value;
                 //CurrentAnimation.Start();

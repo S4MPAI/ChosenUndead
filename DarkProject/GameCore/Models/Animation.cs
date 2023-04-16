@@ -12,7 +12,7 @@ namespace ChosenUndead
 {
     public class Animation
     {
-        public readonly Texture2D Texture;
+        private readonly Texture2D Texture;
 
         public readonly int FrameWidth;
 
@@ -73,11 +73,10 @@ namespace ChosenUndead
 
             _frameTimeLeft -= gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (_frameTimeLeft <= 0)
-            {
-                _frameTimeLeft += _frameTime;
-                _currentFrame = (_currentFrame + 1) % _framesCount;
-            }
+            if (!(_frameTimeLeft <= 0)) return;
+            
+            _frameTimeLeft += _frameTime;
+            _currentFrame = (_currentFrame + 1) % _framesCount;
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 pos, SpriteEffects spriteEffect = SpriteEffects.None)

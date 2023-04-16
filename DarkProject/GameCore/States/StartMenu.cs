@@ -17,10 +17,11 @@ namespace ChosenUndead
             _background = _content.Load<Texture2D>("Backgrounds/menuBackground");
             var buttonTexture = _content.Load<Texture2D>("Controls/menuButton");
             var buttonFont = _content.Load<SpriteFont>("Fonts/Font");
+            var centerX = (game.Window.ClientBounds.Width - buttonTexture.Width) / 2;
 
             var newGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2((game.Window.ClientBounds.Width - buttonTexture.Width) / 2, 400),
+                Position = new Vector2(centerX, 400),
                 Text = "Новая игра"
             };
 
@@ -28,7 +29,7 @@ namespace ChosenUndead
 
             var optionGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2((game.Window.ClientBounds.Width - buttonTexture.Width) / 2, 500),
+                Position = new Vector2(centerX, 500),
                 Text = "Настройки"
             };
 
@@ -36,7 +37,7 @@ namespace ChosenUndead
 
             var exitGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2((game.Window.ClientBounds.Width - buttonTexture.Width) / 2, 600),
+                Position = new Vector2(centerX, 600),
                 Text = "Выйти"
             };
 
@@ -44,7 +45,7 @@ namespace ChosenUndead
 
             var testGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2((game.Window.ClientBounds.Width - buttonTexture.Width) / 2, 700),
+                Position = new Vector2(centerX, 700),
                 Text = "Тесты"
             };
 
