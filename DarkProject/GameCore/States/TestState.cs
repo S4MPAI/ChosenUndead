@@ -15,37 +15,35 @@ namespace ChosenUndead
 
         private readonly Map _map = new();
 
-        private EntityManager _entityManager { get; }
+        private EntityManager EntityManager { get; }
 
         public TestState(ChosenUndeadGame game, ContentManager content) : base(game, content)
         {
-            _entityManager = new EntityManager(_map);
-            _player = _entityManager.GetPlayer();
+            EntityManager = new EntityManager(_map);
+            _player = EntityManager.GetPlayer();
             _player.Position = new Vector2(16, 16);
 
-            Tiles.Content = _content;
+            MapEntity.Content = _content;
             _map.Generate(new[,]
             {
-                //{0, 0, 0, 0, 0, 0 },
-                //{0, 0, 0, 0, 0, 0 },
-                //{0, 0, 0, 0, 0, 0 },
-                {0, 0, 0, 0, 0, 0, 0, 1 },
-                {0, 0, 0, 0, 0, 0, 0, 1 },
-                {0, 0, 0, 0, 0, 0, 0, 1 },
-                {0, 0, 0, 0, 0, 0, 0, 1 },
-                {0, 0, 0, 0, 0, 0, 0, 1 },
-                {0, 0, 0, 0, 0, 0, 0, 1},
-                { 0, 0, 0, 0, 0, 0, 1, 1},
-                {0, 0, 1, 1, 1, 1, 1, 1 }
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
+                {0, 0, 0, 0, 0, 0, 1, 1, 1, 1},
+                {0, 0, 1, 1, 1, 1, 1, 1, 1, 1 }
             }, 24);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(sortMode: SpriteSortMode.Immediate, transformMatrix: _game.camera.Transform);
 
+            _map.Draw(gameTime, spriteBatch);
             _player.Draw(gameTime, spriteBatch);
-            _map.Draw(spriteBatch);
+            
 
             spriteBatch.End();
         }
@@ -58,6 +56,7 @@ namespace ChosenUndead
         public override void Update(GameTime gameTime)
         {
             _player.Update(gameTime);
+            _game.camera.Follow(_player);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.VisualBasic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SharpDX.Direct3D9;
 using System;
@@ -13,24 +14,30 @@ namespace ChosenUndead
 {
     public abstract class Entity : Component
     {
-        public float Speed = 1f;
+        protected abstract float walkSpeed { get; init; }
+
+        protected abstract float gravitySpeed { get; init; }
+
+        protected abstract float jumpSpeed { get; init; }
+
+        protected float _elapsedTime;
 
         public Vector2 Velocity;
 
-        public Rectangle HitBox 
-        { 
+        public Rectangle HitBox
+        {
             get => new Rectangle(
             (int)(Position.X + _center.X - _hitBoxWidth / 2),
-            (int)Position.Y, 
+            (int)Position.Y,
             _hitBoxWidth,
-            (int)(_center.Y * 2)); 
+            (int)(_center.Y * 2));
         }
 
         public Rectangle AttackBox
         {
             get => new Rectangle(
             (int)(Position.X + _center.X - _attackWidth / 2),
-            (int)Position.Y, 
+            (int)Position.Y,
             _attackWidth,
             (int)(_center.Y * 2));
         }
@@ -41,13 +48,7 @@ namespace ChosenUndead
 
         protected Map _map;
 
-        protected float _previousBottom;
-
-        protected bool isOnGround;
-        
         protected readonly Vector2 _center;
-
-        protected readonly int _height;
 
         protected bool _hasJumped = true;
 
@@ -75,7 +76,7 @@ namespace ChosenUndead
             _attackWidth = attackWidth;
         }
 
-        protected virtual void Collision()
+        protected virtual void CollisionWithMap()
         {
             var leftTile = (int)Math.Floor((float)HitBox.Left / _map.TileSize);
             var rightTile = (int)Math.Ceiling((float)HitBox.Right / _map.TileSize) - 1;
@@ -90,57 +91,51 @@ namespace ChosenUndead
                     {
                         var bounds = _map.GetBounds(x, y);
 
-                        var intersection = Rectangle.Intersect(HitBox, bounds);
-
-                        if (intersection.IsEmpty) continue;
-
-                        if (HitBox.Left == intersection.Left && HitBox.Bottom > bounds.Top + bounds.Height / 5 && Velocity.X < 0)
+                        if ((IsTouchingLeft(bounds) && Velocity.X > 0) || (IsTouchingRight(bounds) && Velocity.X < 0))
                             Velocity.X = 0;
 
-                        if (HitBox.Right == intersection.Right && HitBox.Bottom > bounds.Top + bounds.Height / 5 && Velocity.X > 0)
-                            Velocity.X = 0;
-                        
-                        if (HitBox.Bottom == intersection.Bottom && Velocity.Y > 0)
+                        if (IsTouchingTop(bounds) && Velocity.Y > 0)
                         {
+                            if (HitBox.Bottom > bounds.Top + bounds.Height / 5)
+                                Position.Y -= Velocity.Y;
+
                             Velocity.Y = 0;
                             _hasJumped = false;
                         }
 
-                        if (HitBox.Top == intersection.Top && Velocity.Y < 0)
+                        if (IsTouchingBottom(bounds) && Velocity.Y < 0)
                         {
                             Velocity.Y = 0;
                             _hasJumped = true;
                         }
-                            
+
                     }
                 }
             }
-
-            _previousBottom = HitBox.Bottom;
         }
 
-        //protected bool IsTouchingLeft(Rectangle r)
-        //{
-        //    var intersection = Rectangle.Intersect(HitBox, r);
-        //    if (intersection.IsEmpty) return false;
-        //    return HitBox.Left == intersection.Left;
-        //}
+        protected bool IsTouchingLeft(Rectangle bounds) => 
+            HitBox.Right + Velocity.X > bounds.Left && 
+            HitBox.Left < bounds.Left && 
+            HitBox.Bottom > bounds.Top + bounds.Height / 5 && 
+            HitBox.Top < bounds.Bottom - bounds.Height / 5;
 
-        //protected bool IsTouchingRight(Rectangle r)
-        //{
+        protected bool IsTouchingRight(Rectangle bounds) => 
+            HitBox.Left + Velocity.X < bounds.Right &&
+            HitBox.Right > bounds.Right &&
+            HitBox.Bottom > bounds.Top + bounds.Height / 5 &&
+            HitBox.Top < bounds.Bottom - bounds.Height / 5;
 
-        //}
+        protected bool IsTouchingBottom(Rectangle bounds) => 
+            HitBox.Top + Velocity.Y < bounds.Bottom &&
+            HitBox.Bottom > bounds.Bottom &&
+            HitBox.Right > bounds.Left + bounds.Width / 5 &&
+            HitBox.Left < bounds.Right - bounds.Width / 5;
 
-        //protected bool IsTouchingTop(Rectangle r) =>
-        //    HitBox.Bottom >= r.Top - 1 &&
-        //    HitBox.Bottom <= r.Top + (r.Height / 2) &&
-        //    HitBox.Right >= r.Left + r.Width / 5 &&
-        //    HitBox.Left <= r.Right - r.Width / 5;
-
-        //protected bool IsTouchingBottom(Rectangle r) =>
-        //    HitBox.Top <= r.Bottom + (r.Height / 5) &&
-        //    HitBox.Top >= r.Bottom - 1 &&
-        //    HitBox.Right >= r.Left + r.Width / 5 &&
-        //    HitBox.Left <= r.Right - r.Width / 5;
+        protected bool IsTouchingTop(Rectangle bounds) =>
+            HitBox.Bottom + Velocity.Y > bounds.Top &&
+            HitBox.Top < bounds.Top &&
+            HitBox.Right > bounds.Left + bounds.Width / 5 &&
+            HitBox.Left < bounds.Right - bounds.Width / 5;
     }
 }

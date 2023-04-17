@@ -21,8 +21,9 @@ namespace ChosenUndead
 
         public static void Initialize(ContentManager content)
         {
-            _playerAnimations.AddAnimation("Run", new Animation(content.Load<Texture2D>($"{_playerPath}Run"), 128, 64, 8, 0.125f));
             _playerAnimations.AddAnimation("Idle", new Animation(content.Load<Texture2D>($"{_playerPath}Idle"), 128, 64, 8, 0.125f));
+            _playerAnimations.AddAnimation("Run", new Animation(content.Load<Texture2D>($"{_playerPath}Run"), 128, 64, 8, 0.125f));
+            _playerAnimations.AddAnimation("Jump", new Animation(content.Load<Texture2D>($"{_playerPath}Jump"), 128, 64, 8, 0.125f));
         }
 
         public Player GetPlayer() => Player.GetInstance(_map,_playerAnimations, 32, 64);

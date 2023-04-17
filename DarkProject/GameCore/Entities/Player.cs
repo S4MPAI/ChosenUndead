@@ -11,28 +11,37 @@ namespace ChosenUndead
     public class Player : Entity
     {
         private static Player _instance;
-
-        private InputManager _inputManager;
         
+
         private string _animationKey;
 
-        private Player(Map map, AnimationManager animationManager, int hitBoxRadius, int attackRadius, InputManager inputManager = null) : 
-            base(map, animationManager, hitBoxRadius, attackRadius)
+        protected override float walkSpeed { get; init; } = 110f;
+
+        protected override float gravitySpeed { get; init; } = 25f;
+
+        protected override float jumpSpeed { get; init; } = -300f;
+
+        private Player(Map map, AnimationManager animationManager, int hitBoxWidth, int attackWidth) : 
+            base(map, animationManager, hitBoxWidth, attackWidth)
         {
-            _inputManager = inputManager ?? new();
         }
 
-        public static Player GetInstance(Map map, AnimationManager animationManager, int hitBoxRadius, int attackRadius, InputManager inputManager = null)
+        public static Player GetInstance(Map map, AnimationManager animationManager, int hitBoxWidth, int attackWidth)
         {
-            return _instance ??= new Player(map, animationManager, hitBoxRadius, attackRadius, inputManager);
+            return _instance ??= new Player(map, animationManager, hitBoxWidth, attackWidth);
         }
 
         public override void Update(GameTime gameTime)
         {
-            _inputManager.Update(gameTime);
+            _elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            InputManager.Update(gameTime);
 
             Move();
-            Collision();
+            CollisionWithMap();
+
+            if (Velocity.Y != 0)_animationKey = "Jump";
+            else if (Velocity.X != 0) _animationKey = "Run";
+            else _animationKey = "Idle";
 
             _animationManager.SetAnimation(_animationKey);
             _animationManager.Update(gameTime);
@@ -46,26 +55,22 @@ namespace ChosenUndead
         private void Move()
         {
             if (Velocity.Y < 10)
-                Velocity.Y += 0.4f;
+                Velocity.Y += gravitySpeed * _elapsedTime;
 
-            if (_inputManager.LeftPressed)
-                Velocity.X = -Speed;
-            if (_inputManager.RightPressed)
-                Velocity.X = Speed;
+            if (InputManager.LeftPressed)
+                Velocity.X = -walkSpeed * _elapsedTime;
+            if (InputManager.RightPressed)
+                Velocity.X = walkSpeed * _elapsedTime;
 
-            if (_inputManager.JumpPressed && !_hasJumped)
+            if (InputManager.JumpPressed && !_hasJumped)
             {
-                Position.Y -= 3f;
-                Velocity.Y = -4f;
+                Velocity.Y = jumpSpeed * _elapsedTime;
                 _hasJumped = true;
-                _animationManager.SetAnimation("Jump");
             }
 
-            if (Velocity.X != 0) _animationKey = "Run";
-            else _animationKey = "Idle";
+            
         }
-
-
+        
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             _animationManager.Draw(Position, spriteBatch, _orientation);

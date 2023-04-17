@@ -8,22 +8,17 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead
 {
-    public class InputManager
+    public static class InputManager
     {
-        public Input Input { get; }
+        public static Input Input { get; set; } = new();
 
-        public bool LeftPressed { get; private set; }
+        public static bool LeftPressed { get; private set; }
 
-        public bool RightPressed { get; private set; }
+        public static bool RightPressed { get; private set; }
 
-        public bool JumpPressed { get; private set; }
+        public static bool JumpPressed { get; private set; }
 
-        public InputManager(Input? input = null) 
-        {
-            Input = input == null ? new() : input.Value;
-        }
-
-        public void Update(GameTime gameTime)
+        public static void Update(GameTime gameTime)
         {
             var keyboardState = Keyboard.GetState();
 

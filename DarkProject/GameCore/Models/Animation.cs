@@ -12,7 +12,7 @@ namespace ChosenUndead
 {
     public class Animation
     {
-        private readonly Texture2D Texture;
+        private readonly Texture2D _texture;
 
         public readonly int FrameWidth;
 
@@ -32,14 +32,14 @@ namespace ChosenUndead
 
         public Animation(Texture2D texture, int frameWidth, int frameHeight, int framesCount, float frameTime)
         {
-            Texture = texture;
+            _texture = texture;
             FrameWidth = frameWidth;
             FrameHeight = frameHeight;
             _frameTime = frameTime;
             _frameTimeLeft = _frameTime;
             _framesCount = framesCount;
-            var framesCountX = Texture.Width / frameWidth;
-            var framesCountY = Texture.Height / frameHeight;
+            var framesCountX = _texture.Width / frameWidth;
+            var framesCountY = _texture.Height / frameHeight;
             var currentFrameCount = 0;
 
             for (int i = 0; i < framesCountY; i++)
@@ -81,7 +81,7 @@ namespace ChosenUndead
 
         public void Draw(SpriteBatch spriteBatch, Vector2 pos, SpriteEffects spriteEffect = SpriteEffects.None)
         {
-            spriteBatch.Draw(Texture, pos, _frames[_currentFrame], Color.White, 0, Vector2.Zero, Vector2.One, spriteEffect, 1);
+            spriteBatch.Draw(_texture, pos, _frames[_currentFrame], Color.White, 0, Vector2.Zero, Vector2.One, spriteEffect, 1);
         }
     }
 }

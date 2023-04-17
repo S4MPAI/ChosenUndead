@@ -13,7 +13,7 @@ namespace ChosenUndead
     {
         #region Fields
 
-        protected ContentManager _content;
+        protected readonly ContentManager _content;
 
         protected readonly ChosenUndeadGame _game;
 

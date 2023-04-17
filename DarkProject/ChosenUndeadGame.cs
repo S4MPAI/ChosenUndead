@@ -1,16 +1,25 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using System.Runtime.CompilerServices;
 
 namespace ChosenUndead
 {
     public class ChosenUndeadGame : Game
     {
         private GraphicsDeviceManager _graphics;
+
         private SpriteBatch _spriteBatch;
 
-        private State _currentState;
+        public static int ScreenWidth;
 
-        private State _nextState; 
+        public static int ScreenHeight;
+
+        public State _currentState;
+
+        private State _nextState;
+
+        public Camera camera { get; private set; }
 
         public ChosenUndeadGame()
         {
@@ -26,8 +35,12 @@ namespace ChosenUndead
             IsMouseVisible = true;
             EntityManager.Initialize(Content);
             _graphics.IsFullScreen = false;
-            _graphics.PreferredBackBufferWidth = 1600;
-            _graphics.PreferredBackBufferHeight = 900;
+            ScreenWidth = 1600;
+            ScreenHeight = 900;
+
+            _graphics.PreferredBackBufferWidth = ScreenWidth;
+            _graphics.PreferredBackBufferHeight = ScreenHeight;
+
             _graphics.ApplyChanges();
 
             base.Initialize();
@@ -37,6 +50,7 @@ namespace ChosenUndead
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _currentState = new StartMenu(this, Content);
+            camera = new Camera();
         }
 
         protected override void Update(GameTime gameTime)
@@ -49,8 +63,8 @@ namespace ChosenUndead
 
             _currentState.PostUpdate(gameTime);
 
-            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            //    Exit();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
 
             // TODO: Add your update logic here
 
