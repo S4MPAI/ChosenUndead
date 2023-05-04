@@ -18,6 +18,8 @@ namespace ChosenUndead
 
         public static bool JumpPressed { get; private set; }
 
+        public static bool InteractionPressed { get; private set; }
+
         public static void Update(GameTime gameTime)
         {
             var keyboardState = Keyboard.GetState();

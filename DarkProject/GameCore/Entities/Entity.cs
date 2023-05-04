@@ -27,19 +27,19 @@ namespace ChosenUndead
         public Rectangle HitBox
         {
             get => new Rectangle(
-            (int)(Position.X + _center.X - _hitBoxWidth / 2),
+            (int)(Position.X + Center.X - _hitBoxWidth / 2),
             (int)Position.Y,
             _hitBoxWidth,
-            (int)(_center.Y * 2));
+            (int)(Center.Y * 2));
         }
 
         public Rectangle AttackBox
         {
             get => new Rectangle(
-            (int)(Position.X + _center.X - _attackWidth / 2),
+            (int)(Position.X + Center.X - _attackWidth / 2),
             (int)Position.Y,
             _attackWidth,
-            (int)(_center.Y * 2));
+            (int)(Center.Y * 2));
         }
 
         protected AnimationManager _animationManager;
@@ -48,7 +48,7 @@ namespace ChosenUndead
 
         protected Map _map;
 
-        protected readonly Vector2 _center;
+        public Vector2 Center { get; }
 
         protected bool _hasJumped = true;
 
@@ -60,14 +60,14 @@ namespace ChosenUndead
         {
             _map = map;
             _texture = texture;
-            _center = new Vector2(texture.Width / 2, texture.Height / 2);
+            Center = new Vector2(texture.Width / 2, texture.Height / 2);
         }
 
         public Entity(Map map, AnimationManager animationManager, int hitBoxWidth, int attackWidth = 0) : this(hitBoxWidth, attackWidth)
         {
             _map = map;
             _animationManager = animationManager;
-            _center = new Vector2(_animationManager.CurrentAnimation.FrameWidth / 2, _animationManager.CurrentAnimation.FrameHeight / 2);
+            Center = new Vector2(_animationManager.CurrentAnimation.FrameWidth / 2, _animationManager.CurrentAnimation.FrameHeight / 2);
         }
 
         private Entity(int hitBoxWidth, int attackWidth)
