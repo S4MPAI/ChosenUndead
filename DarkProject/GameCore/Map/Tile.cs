@@ -31,9 +31,9 @@ namespace ChosenUndead
         public Tile(int i, Rectangle rectangle, Collision Collision) 
         {
             if (i == 0) 
-                _texture = null;
+                texture = null;
             else 
-                _texture = Content.Load<Texture2D>("Tiles/tile" + i);
+                texture = Content.Load<Texture2D>("Tiles/tile" + i);
 
             this.Collision = Collision;
             Rectangle = rectangle;
@@ -45,8 +45,8 @@ namespace ChosenUndead
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            if (_texture != null)
-                spriteBatch.Draw(_texture, Rectangle, Color.White);
+            if (texture != null)
+                spriteBatch.Draw(texture, Rectangle, Color.White);
         }
     }
 
@@ -54,51 +54,51 @@ namespace ChosenUndead
     {
         public event EventHandler EntityEnter;
 
-        private Animation _animation { get; }
+        private Animation animation { get; }
 
-        private Rectangle _rectangle { get; }
+        private Rectangle rectangle { get; }
 
-        private Entity _followedEntity { get; }
+        private Entity followedEntity { get; }
 
         public Decoration(Animation animation, Rectangle tilePosition, Entity entity = null)
         {
-            _animation = animation;
+            this.animation = animation;
 
-            _rectangle = new Rectangle(
+            rectangle = new Rectangle(
                 tilePosition.X + tilePosition.Width / 2 - animation.FrameWidth / 2,
                 tilePosition.Y + tilePosition.Height - animation.FrameHeight,
                 animation.FrameWidth, 
                 animation.FrameHeight);
-            Position = new Vector2(_rectangle.X, _rectangle.Y);
+            Position = new Vector2(rectangle.X, rectangle.Y);
 
-            _followedEntity = entity;
+            followedEntity = entity;
         }
 
         public Decoration(Texture2D texture, Rectangle tilePosition, Entity entity = null)
         {
-           _texture = texture;
+           base.texture = texture;
 
-            _rectangle = new Rectangle(
+            rectangle = new Rectangle(
                 tilePosition.X + tilePosition.Width / 2 - texture.Width / 2,
                 tilePosition.Y + tilePosition.Height - texture.Height,
                 texture.Width,
                 texture.Height);
 
-            _followedEntity = entity;
+            followedEntity = entity;
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (_animation != null)
-                _animation.Update(gameTime);
+            if (animation != null)
+                animation.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            if (_texture != null)
-                spriteBatch.Draw(_texture, Rectangle, Color.White);
-            else if (_animation != null)
-                _animation.Draw(spriteBatch, Position);
+            if (texture != null)
+                spriteBatch.Draw(texture, Rectangle, Color.White);
+            else if (animation != null)
+                animation.Draw(spriteBatch, Position);
         }
     }
 }

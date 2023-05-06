@@ -15,6 +15,8 @@ namespace ChosenUndead
 
         public Keys JumpKey = Keys.Space;
 
+        public Keys InteractionKey = Keys.E;
+
         public Input()
         {
         }

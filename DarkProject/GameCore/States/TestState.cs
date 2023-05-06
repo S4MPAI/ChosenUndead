@@ -11,26 +11,26 @@ namespace ChosenUndead
 {
     public class TestState : State
     {
-        private readonly Player _player;
+        private readonly Player player;
 
-        private readonly Map _map = new();
+        private readonly Map map = new();
 
         public TestState(ChosenUndeadGame game, ContentManager content) : base(game, content)
         {
-            MapEntity.Content = _content;
+            MapEntity.Content = base.content;
 
             var mapPath = "Content/Maps/1.txt";
             using var fileStream = TitleContainer.OpenStream(mapPath);
-                _map.Generate(fileStream, 24);
+                map.Generate(fileStream, 24);
 
-            _player = _map.Player;
+            player = map.Player;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin(sortMode: SpriteSortMode.Immediate, transformMatrix: _game.camera.Transform);
+            spriteBatch.Begin(sortMode: SpriteSortMode.Immediate, transformMatrix: game.camera.Transform);
 
-            _map.Draw(gameTime, spriteBatch);
+            map.Draw(gameTime, spriteBatch);
             
 
             spriteBatch.End();
@@ -43,8 +43,8 @@ namespace ChosenUndead
 
         public override void Update(GameTime gameTime)
         {
-            _map.Update(gameTime);
-            _game.camera.Follow(_player);
+            map.Update(gameTime);
+            game.camera.Follow(player);
         }
     }
 }

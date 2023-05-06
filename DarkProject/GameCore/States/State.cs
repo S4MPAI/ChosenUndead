@@ -13,9 +13,9 @@ namespace ChosenUndead
     {
         #region Fields
 
-        protected readonly ContentManager _content;
+        protected readonly ContentManager content;
 
-        protected readonly ChosenUndeadGame _game;
+        protected readonly ChosenUndeadGame game;
 
         #endregion
 
@@ -23,8 +23,8 @@ namespace ChosenUndead
 
         public State(ChosenUndeadGame game, ContentManager content)
         {
-            _game = game;
-            _content = content;
+            this.game = game;
+            this.content = content;
         }
 
         public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);

@@ -8,22 +8,23 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead
 {
-    public class AnimationManager
+    public class AnimationManager<TAnimationKey>
     {
         public Animation CurrentAnimation { get; private set; }
 
-        private readonly Dictionary<string, Animation> _anims = new();
+        private readonly Dictionary<TAnimationKey, Animation> anims = new();
 
-        public void AddAnimation(string animationName, Animation animation)
+        public void AddAnimation(TAnimationKey animationName, Animation animation)
         {
-            _anims.Add(animationName, animation);
+            anims.Add(animationName, animation);
             CurrentAnimation ??= animation;
         }
 
-        public void SetAnimation(string key)
+        public void SetAnimation(TAnimationKey key)
         {
-            if (_anims.TryGetValue(key, out var value))
+            if (anims.TryGetValue(key, out var value))
             {
+                if (value != CurrentAnimation) value.Reset();
                 CurrentAnimation = value;
                 //CurrentAnimation.Start();
             }
@@ -31,6 +32,14 @@ namespace ChosenUndead
             {
                 //CurrentAnimation.Stop();
                 CurrentAnimation.Reset();
+            }
+        }
+
+        public void ChangeFrameTime(TAnimationKey key, float animationTime)
+        {
+            if(anims.TryGetValue(key,out var value))
+            {
+                value.ChangeFrameTime(animationTime / value.FramesCount);
             }
         }
 

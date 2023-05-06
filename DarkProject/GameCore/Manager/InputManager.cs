@@ -20,13 +20,18 @@ namespace ChosenUndead
 
         public static bool InteractionPressed { get; private set; }
 
+        public static bool AttackPressed { get; private set; }
+
         public static void Update(GameTime gameTime)
         {
             var keyboardState = Keyboard.GetState();
+            var mouseState = Mouse.GetState();
 
             LeftPressed = keyboardState.IsKeyDown(Input.LeftKey);
             RightPressed = keyboardState.IsKeyDown(Input.RightKey);
             JumpPressed = keyboardState.IsKeyDown(Input.JumpKey);
+            InteractionPressed = keyboardState.IsKeyDown(Input.InteractionKey);
+            AttackPressed = mouseState.LeftButton == ButtonState.Pressed;
         }
     }
 }

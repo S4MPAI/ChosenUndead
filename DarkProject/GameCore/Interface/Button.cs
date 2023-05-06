@@ -9,13 +9,13 @@ namespace ChosenUndead
     {
         #region Fields
 
-        private MouseState _currentMouse;
+        private MouseState currentMouse;
 
-        private readonly SpriteFont _font;
+        private readonly SpriteFont font;
 
-        private bool _isHovering;
+        private bool isHovering;
 
-        private MouseState _previousMouse;
+        private MouseState previousMouse;
 
         #endregion
 
@@ -31,7 +31,7 @@ namespace ChosenUndead
         {
             get
             {
-                return new Rectangle((int)Position.X, (int)Position.Y, _texture.Width, _texture.Height);
+                return new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height);
             }
         }
 
@@ -43,8 +43,8 @@ namespace ChosenUndead
 
         public Button(Texture2D texture, SpriteFont spriteFont)
         {
-            _texture = texture;
-            _font = spriteFont;
+            base.texture = texture;
+            font = spriteFont;
             PenColour = Color.Silver;
         }
 
@@ -52,33 +52,33 @@ namespace ChosenUndead
         {
             var colour = Color.White;
 
-            if (_isHovering)
+            if (isHovering)
                 colour = PenColour;
 
-            spriteBatch.Draw(_texture, Rectangle, Color.White);
+            spriteBatch.Draw(texture, Rectangle, Color.White);
 
             if (!string.IsNullOrEmpty(Text))
             {
-                var x = Rectangle.X + Rectangle.Width / 2 - _font.MeasureString(Text).X / 2;
-                var y = Rectangle.Y + Rectangle.Height / 2 - _font.MeasureString(Text).Y / 2;
-                spriteBatch.DrawString(_font, Text, new Vector2(x, y), colour);
+                var x = Rectangle.X + Rectangle.Width / 2 - font.MeasureString(Text).X / 2;
+                var y = Rectangle.Y + Rectangle.Height / 2 - font.MeasureString(Text).Y / 2;
+                spriteBatch.DrawString(font, Text, new Vector2(x, y), colour);
             }
         }
 
         public override void Update(GameTime gameTime)
         {
-            _previousMouse = _currentMouse;
-            _currentMouse = Mouse.GetState();
+            previousMouse = currentMouse;
+            currentMouse = Mouse.GetState();
 
-            var currentMouseRectangle = new Rectangle(_currentMouse.X, _currentMouse.Y, 1, 1);
+            var currentMouseRectangle = new Rectangle(currentMouse.X, currentMouse.Y, 1, 1);
 
-            _isHovering = false;
+            isHovering = false;
 
             if (currentMouseRectangle.Intersects(Rectangle))
             {
-                _isHovering = true;
+                isHovering = true;
 
-                if (_currentMouse.LeftButton == ButtonState.Released && _previousMouse.LeftButton == ButtonState.Pressed)
+                if (currentMouse.LeftButton == ButtonState.Released && previousMouse.LeftButton == ButtonState.Pressed)
                     Click?.Invoke(this, new EventArgs());
             }
         }

@@ -12,42 +12,42 @@ namespace ChosenUndead
 {
     public class Animation
     {
-        private readonly Texture2D _texture;
+        private readonly Texture2D texture;
 
         public readonly int FrameWidth;
 
         public readonly int FrameHeight;
 
-        private readonly List<Rectangle> _frames = new();
+        private readonly List<Rectangle> frames = new();
 
-        private readonly int _framesCount;
+        public readonly int FramesCount;
 
-        private int _currentFrame;
+        private int currentFrame;
 
-        private readonly double _frameTime;
+        private float frameTime;
 
-        private double _frameTimeLeft;
+        private double frameTimeLeft;
 
         //private bool _active = true;
 
         public Animation(Texture2D texture, int frameWidth, int frameHeight, int framesCount, float frameTime)
         {
-            _texture = texture;
+            this.texture = texture;
             FrameWidth = frameWidth;
             FrameHeight = frameHeight;
-            _frameTime = frameTime;
-            _frameTimeLeft = _frameTime;
-            _framesCount = framesCount;
-            var framesCountX = _texture.Width / frameWidth;
-            var framesCountY = _texture.Height / frameHeight;
+            this.frameTime = frameTime;
+            frameTimeLeft = this.frameTime;
+            this.FramesCount = framesCount;
+            var framesCountX = this.texture.Width / frameWidth;
+            var framesCountY = this.texture.Height / frameHeight;
             var currentFrameCount = 0;
 
             for (int i = 0; i < framesCountY; i++)
                 for (int j = 0; j < framesCountX; j++)
                 {
-                    if (++currentFrameCount > _framesCount) break;
+                    if (++currentFrameCount > this.FramesCount) break;
 
-                    _frames.Add(new Rectangle(j * frameWidth, i * frameHeight, frameWidth, frameHeight));
+                    frames.Add(new Rectangle(j * frameWidth, i * frameHeight, frameWidth, frameHeight));
                 }
         }
 
@@ -63,25 +63,31 @@ namespace ChosenUndead
 
         public void Reset()
         {
-            _currentFrame = 0;
-            _frameTimeLeft = _frameTime;
+            currentFrame = 0;
+            frameTimeLeft = frameTime;
+        }
+
+        public void ChangeFrameTime(float frameTime)
+        {
+            Reset();
+            this.frameTime = frameTime;
         }
 
         public void Update(GameTime gameTime)
         {
             //if (!_active) return;
 
-            _frameTimeLeft -= gameTime.ElapsedGameTime.TotalSeconds;
+            frameTimeLeft -= gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (!(_frameTimeLeft <= 0)) return;
+            if (!(frameTimeLeft <= 0)) return;
             
-            _frameTimeLeft += _frameTime;
-            _currentFrame = (_currentFrame + 1) % _framesCount;
+            frameTimeLeft += frameTime;
+            currentFrame = (currentFrame + 1) % FramesCount;
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 pos, SpriteEffects spriteEffect = SpriteEffects.None)
         {
-            spriteBatch.Draw(_texture, pos, _frames[_currentFrame], Color.White, 0, Vector2.Zero, Vector2.One, spriteEffect, 1);
+            spriteBatch.Draw(texture, pos, frames[currentFrame], Color.White, 0, Vector2.Zero, Vector2.One, spriteEffect, 1);
         }
     }
 }

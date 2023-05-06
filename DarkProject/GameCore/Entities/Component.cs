@@ -5,7 +5,7 @@ namespace ChosenUndead
 {
     public abstract class Component
     {
-        protected Texture2D _texture;
+        protected Texture2D texture;
 
         public Vector2 Position;
 

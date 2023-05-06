@@ -12,84 +12,98 @@ using System.Windows.Forms;
 
 namespace ChosenUndead
 {
+    public enum EntityAction
+    {
+        Idle,
+        Run,
+        Jump
+    }
+
     public abstract class Entity : Component
     {
-        protected abstract float walkSpeed { get; init; }
-
-        protected abstract float gravitySpeed { get; init; }
-
-        protected abstract float jumpSpeed { get; init; }
-
-        protected float _elapsedTime;
+        public Vector2 Center { get; }
 
         public Vector2 Velocity;
 
         public Rectangle HitBox
         {
             get => new Rectangle(
-            (int)(Position.X + Center.X - _hitBoxWidth / 2),
+            (int)(Position.X + Center.X - hitBoxWidth / 2),
             (int)Position.Y,
-            _hitBoxWidth,
+            hitBoxWidth,
             (int)(Center.Y * 2));
         }
 
         public Rectangle AttackBox
         {
             get => new Rectangle(
-            (int)(Position.X + Center.X - _attackWidth / 2),
+            (int)(Position.X + Center.X - (int)orientation * attackWidth),
             (int)Position.Y,
-            _attackWidth,
+            attackWidth,
             (int)(Center.Y * 2));
         }
 
-        protected AnimationManager _animationManager;
+        protected Weapon weapon { get; set; }
 
-        protected SpriteEffects _orientation;
+        protected AnimationManager<object> animationManager;
 
-        protected Map _map;
+        protected SpriteEffects orientation;
 
-        public Vector2 Center { get; }
+        protected Map map;
 
-        protected bool _hasJumped = true;
+        protected abstract float walkSpeed { get; init; }
 
-        protected int _hitBoxWidth { get; }
+        protected abstract float gravitySpeed { get; init; }
 
-        protected int _attackWidth { get; }
+        protected abstract float jumpSpeed { get; init; }
 
-        public Entity(Map map, Texture2D texture, int hitBoxWidth, int attackWidth = 0) : this(hitBoxWidth, attackWidth)
+        protected float elapsedTime;
+
+        protected bool hasJumped = true;
+
+        protected int hitBoxWidth { get; }
+
+        protected int attackWidth { get; }
+
+        public Entity(Map map, Weapon weapon, Texture2D texture, int hitBoxWidth, int attackWidth = 0) : this(hitBoxWidth, attackWidth)
         {
-            _map = map;
-            _texture = texture;
+            this.map = map;
+            base.texture = texture;
             Center = new Vector2(texture.Width / 2, texture.Height / 2);
+            this.weapon = weapon;
         }
 
-        public Entity(Map map, AnimationManager animationManager, int hitBoxWidth, int attackWidth = 0) : this(hitBoxWidth, attackWidth)
+        public Entity(Map map, Weapon weapon, AnimationManager<object> animationManager, int hitBoxWidth, int attackWidth = 0) : this(hitBoxWidth, attackWidth)
         {
-            _map = map;
-            _animationManager = animationManager;
-            Center = new Vector2(_animationManager.CurrentAnimation.FrameWidth / 2, _animationManager.CurrentAnimation.FrameHeight / 2);
+            this.map = map;
+            this.weapon = weapon;
+            this.animationManager = animationManager;
+            Center = new Vector2(this.animationManager.CurrentAnimation.FrameWidth / 2, this.animationManager.CurrentAnimation.FrameHeight / 2);
+
+            foreach (var attack in weapon.WeaponAttacks)
+                animationManager.ChangeFrameTime(attack, weapon.attackCooldown);
         }
 
         private Entity(int hitBoxWidth, int attackWidth)
         {
-            _hitBoxWidth = hitBoxWidth;
-            _attackWidth = attackWidth;
+            this.hitBoxWidth = hitBoxWidth;
+            this.attackWidth = attackWidth;
         }
 
         protected virtual void CollisionWithMap()
         {
-            var leftTile = (int)Math.Floor((float)HitBox.Left / _map.TileSize);
-            var rightTile = (int)Math.Ceiling((float)HitBox.Right / _map.TileSize) - 1;
-            var topTile = (int)Math.Floor((float)HitBox.Top / _map.TileSize);
-            var bottomTile = (int)Math.Ceiling((float)HitBox.Bottom / _map.TileSize) - 1;
+            var leftTile = (int)Math.Floor((float)HitBox.Left / map.TileSize);
+            var rightTile = (int)Math.Ceiling((float)HitBox.Right / map.TileSize) - 1;
+            var topTile = (int)Math.Floor((float)HitBox.Top / map.TileSize);
+            var bottomTile = (int)Math.Ceiling((float)HitBox.Bottom / map.TileSize) - 1;
 
             for (int y = topTile; y <= bottomTile; y++)
             {
                 for (int x = leftTile; x <= rightTile; x++)
                 {
-                    if (_map.IsHaveCollision(x, y))
+                    if (map.IsHaveCollision(x, y))
                     {
-                        var bounds = _map.GetBounds(x, y);
+                        var bounds = map.GetBounds(x, y);
 
                         if ((IsTouchingLeft(bounds) && Velocity.X > 0) || (IsTouchingRight(bounds) && Velocity.X < 0))
                             Velocity.X = 0;
@@ -100,13 +114,13 @@ namespace ChosenUndead
                                 Position.Y -= Velocity.Y;
 
                             Velocity.Y = 0;
-                            _hasJumped = false;
+                            hasJumped = false;
                         }
 
                         if (IsTouchingBottom(bounds) && Velocity.Y < 0)
                         {
                             Velocity.Y = 0;
-                            _hasJumped = true;
+                            hasJumped = true;
                         }
 
                     }
