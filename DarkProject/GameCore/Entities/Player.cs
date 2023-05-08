@@ -11,25 +11,27 @@ namespace ChosenUndead
     public class Player : Entity
     {
         private static Player instance;
-        
-        private EntityAction animationEntityKey;
 
         protected float time;
 
-        protected override float walkSpeed { get; init; } = 150f;
+        protected override float walkSpeed { get; } = 150f;
 
-        protected override float gravitySpeed { get; init; } = 15f;
+        protected override float jumpSpeed { get; } = -250f;
 
-        protected override float jumpSpeed { get; init; } = -250f;
+        protected override float MaxHp => 50;
 
-        private Player(Map map, AnimationManager<object> animationManager, int hitBoxWidth, int attackWidth) : 
+        private Player(Level map, AnimationManager<object> animationManager, int hitBoxWidth, int attackWidth) : 
             base(map, new Sword(),animationManager, hitBoxWidth, attackWidth)
         {
         }
 
-        public static Player GetInstance(Map map, AnimationManager<object> animationManager, int hitBoxWidth, int attackWidth)
+        public static Player GetInstance(Level map, AnimationManager<object> animationManager, int hitBoxWidth, int attackWidth)
         {
-            return instance ??= new Player(map, animationManager, hitBoxWidth, attackWidth);
+            if (instance == null) 
+                return instance = new Player(map, animationManager, hitBoxWidth, attackWidth);
+                
+            instance.map = map;
+            return instance;
         }
 
         public override void Update(GameTime gameTime)
@@ -38,7 +40,7 @@ namespace ChosenUndead
             InputManager.Update(gameTime);
             
             Move();
-            CollisionWithMap();
+            base.Update(gameTime);
 
             weapon.Update(gameTime, hasJumped ? false : InputManager.AttackPressed);
 
@@ -46,11 +48,11 @@ namespace ChosenUndead
                 animationManager.SetAnimation(weapon.CurrentAttack);
             else
             {
-                if (Velocity.Y != 0) animationEntityKey = EntityAction.Jump;
-                else if (Velocity.X != 0) animationEntityKey = EntityAction.Run;
-                else animationEntityKey = EntityAction.Idle;
+                if (Velocity.Y != 0) state = EntityAction.Jump;
+                else if (Velocity.X != 0) state = EntityAction.Run;
+                else state = EntityAction.Idle;
 
-                animationManager.SetAnimation(animationEntityKey);
+                animationManager.SetAnimation(state);
             }
 
             animationManager.Update(gameTime);
@@ -81,10 +83,12 @@ namespace ChosenUndead
 
             
         }
-        
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+
+        public override bool IsDead() => state == EntityAction.Death && animationManager.IsCurrentAnimationEnded();
+
+        public override void GiveDamage(float damage)
         {
-            animationManager.Draw(Position, spriteBatch, orientation);
+            throw new NotImplementedException();
         }
     }
 }

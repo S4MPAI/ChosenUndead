@@ -11,17 +11,17 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead
 {
-    public class Map
+    public class Level
     {
         private Tile[,] tiles;
 
         private List<Component> mapEntities;
 
-        private List<Entity> entities;
-
         private List<Decoration> decorations;
 
-        public Player Player { get; private set; }
+        private EntityManager entityManager;
+
+        public Player Player { get => entityManager.Player; }
 
         public int TileSize { get; private set; }
 
@@ -33,7 +33,7 @@ namespace ChosenUndead
         {
             mapEntities = new();
             TileSize = size;
-            EntityManager.SetMap(this);
+            entityManager = new();
             
             using(var reader = new StreamReader(fileStream))
             {
@@ -55,7 +55,6 @@ namespace ChosenUndead
             Height = map[0].Length;
             Width = map[0][0].Length;
             tiles = new Tile[Height, Width];
-            entities = new();
             decorations = new();
 
 
@@ -101,53 +100,57 @@ namespace ChosenUndead
 
         private void ConvertEntities(string symbol, int x, int y, int size)
         {
+            Entity currentEntity;
+
             switch (symbol)
             {
                 case "P":
-                    Player = EntityManager.GetPlayer();
-                    entities.Add(Player);
+                    currentEntity = entityManager.AddPlayer(this);
+                    break;
+                case "S":
+                    currentEntity = entityManager.AddSceleton(this);
                     break;
                 default:
                     return;
                     break;
             }
 
-            SetEntityPosition(entities[^1], x, y);
-            mapEntities.Add(entities[^1]);
+            SetEntityPosition(currentEntity, x, y);
         }
 
         private void ConvertDecorations(string symbol, int x, int y, int size)
         {
-            var number = int.Parse(symbol);
+            //var number = int.Parse(symbol);
 
-            switch (number)
-            {
-                case <= 0:
-                    tiles[y, x] = new Tile(number, new Rectangle(x * size, y * size, size, size), Collision.Passable);
-                    break;
-                case > 0:
-                    tiles[y, x] = new Tile(number, new Rectangle(x * size, y * size, size, size), Collision.Impassable);
-                    break;
-            }
+            //switch (number)
+            //{
+            //    case <= 0:
+            //        tiles[y, x] = new Tile(number, new Rectangle(x * size, y * size, size, size), Collision.Passable);
+            //        break;
+            //    case > 0:
+            //        tiles[y, x] = new Tile(number, new Rectangle(x * size, y * size, size, size), Collision.Impassable);
+            //        break;
+            //}
 
-            mapEntities.Add(tiles[y, x]);
+            //mapEntities.Add(tiles[y, x]);
         }
 
         #endregion
 
         public void Update(GameTime gameTime)
         {
-            foreach (var entity in entities)
-                entity.Update(gameTime);
-
             foreach (var decoration in decorations)
                 decoration.Update(gameTime);
+
+            entityManager.Update(gameTime);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             foreach (var component in mapEntities)
                 component.Draw(gameTime, spriteBatch);
+
+            entityManager.Draw(gameTime, spriteBatch);
         }
 
         private void SetEntityPosition(Entity entity, int x, int y)

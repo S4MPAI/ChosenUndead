@@ -43,6 +43,8 @@ namespace ChosenUndead
             }
         }
 
+        public bool IsCurrentAnimationEnded() => CurrentAnimation.IsEnded();
+ 
         public void Update(GameTime gameTime)
         {
             CurrentAnimation.Update(gameTime);

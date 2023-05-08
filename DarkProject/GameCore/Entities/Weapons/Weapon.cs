@@ -27,7 +27,7 @@ namespace ChosenUndead
 
         protected float stunCooldownLeft { get; set; }
 
-        protected float damage { get; set; }
+        public float Damage { get; private set; }
 
         public WeaponAttack[] WeaponAttacks { get; private set; }
 
@@ -45,7 +45,7 @@ namespace ChosenUndead
             this.attackCooldown = attackCooldown;
             attackCooldownLeft = attackCooldown;
             this.stunCooldown = stunCooldown;
-            this.damage = damage;
+            this.Damage = damage;
             this.WeaponAttacks = weaponAttacks;
         }
 
@@ -61,7 +61,10 @@ namespace ChosenUndead
             if (attackCooldownLeft <= 0 || (CurrentAttack == WeaponAttack.None && isFire))
             {
                 if (CurrentAttack != WeaponAttacks[^1] && isFire)
+                {
                     CurrentAttack = CurrentAttack + 1;
+                    isDamaged = false;
+                }
                 else
                 {
                     CurrentAttack = WeaponAttack.Stun;
@@ -75,7 +78,7 @@ namespace ChosenUndead
                 CurrentAttack = WeaponAttack.None;
         }
 
-        public virtual bool IsDamaged()
+        public virtual bool IsAttacking()
         {
             if (attackCooldownLeft < attackCooldown / 2 && !isDamaged)
             {

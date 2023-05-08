@@ -16,7 +16,8 @@ namespace ChosenUndead
     {
         Idle,
         Run,
-        Jump
+        Jump,
+        Death
     }
 
     public abstract class Entity : Component
@@ -43,19 +44,29 @@ namespace ChosenUndead
             (int)(Center.Y * 2));
         }
 
+        public bool IsAttacking { get => weapon.IsAttacking(); }
+
         protected Weapon weapon { get; set; }
+
+        public float Damage { get => weapon.Damage; }
 
         protected AnimationManager<object> animationManager;
 
         protected SpriteEffects orientation;
 
-        protected Map map;
+        protected EntityAction state;
 
-        protected abstract float walkSpeed { get; init; }
+        protected Level map;
 
-        protected abstract float gravitySpeed { get; init; }
+        protected abstract float MaxHp { get; }
 
-        protected abstract float jumpSpeed { get; init; }
+        protected float Hp { get; set; }
+
+        protected abstract float walkSpeed { get;}
+
+        protected float gravitySpeed { get; } = 15f;
+
+        protected abstract float jumpSpeed { get; }
 
         protected float elapsedTime;
 
@@ -65,19 +76,12 @@ namespace ChosenUndead
 
         protected int attackWidth { get; }
 
-        public Entity(Map map, Weapon weapon, Texture2D texture, int hitBoxWidth, int attackWidth = 0) : this(hitBoxWidth, attackWidth)
-        {
-            this.map = map;
-            base.texture = texture;
-            Center = new Vector2(texture.Width / 2, texture.Height / 2);
-            this.weapon = weapon;
-        }
-
-        public Entity(Map map, Weapon weapon, AnimationManager<object> animationManager, int hitBoxWidth, int attackWidth = 0) : this(hitBoxWidth, attackWidth)
+        public Entity(Level map, Weapon weapon, AnimationManager<object> animationManager, int hitBoxWidth, int attackWidth = 0) : this(hitBoxWidth, attackWidth)
         {
             this.map = map;
             this.weapon = weapon;
             this.animationManager = animationManager;
+            Hp = MaxHp;
             Center = new Vector2(this.animationManager.CurrentAnimation.FrameWidth / 2, this.animationManager.CurrentAnimation.FrameHeight / 2);
 
             foreach (var attack in weapon.WeaponAttacks)
@@ -89,6 +93,22 @@ namespace ChosenUndead
             this.hitBoxWidth = hitBoxWidth;
             this.attackWidth = attackWidth;
         }
+
+        public override void Update(GameTime gameTime)
+        {
+            CollisionWithMap();
+        }
+
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            animationManager.Draw(Position, spriteBatch, orientation);
+        }
+
+        public abstract void GiveDamage(float damage);
+
+        public abstract bool IsDead();
+
+        #region Collision
 
         protected virtual void CollisionWithMap()
         {
@@ -128,6 +148,8 @@ namespace ChosenUndead
             }
         }
 
+        
+
         protected bool IsTouchingLeft(Rectangle bounds) => 
             HitBox.Right + Velocity.X > bounds.Left && 
             HitBox.Left < bounds.Left && 
@@ -151,5 +173,7 @@ namespace ChosenUndead
             HitBox.Top < bounds.Top &&
             HitBox.Right > bounds.Left + bounds.Width / 5 &&
             HitBox.Left < bounds.Right - bounds.Width / 5;
+
+        #endregion
     }
 }

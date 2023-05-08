@@ -85,6 +85,8 @@ namespace ChosenUndead
             currentFrame = (currentFrame + 1) % FramesCount;
         }
 
+        public bool IsEnded() => FramesCount == currentFrame + 1;
+
         public void Draw(SpriteBatch spriteBatch, Vector2 pos, SpriteEffects spriteEffect = SpriteEffects.None)
         {
             spriteBatch.Draw(texture, pos, frames[currentFrame], Color.White, 0, Vector2.Zero, Vector2.One, spriteEffect, 1);

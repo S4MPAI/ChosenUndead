@@ -20,10 +20,6 @@ namespace ChosenUndead
         public Rectangle Rectangle { get; protected set; }
 
         public Collision Collision { get; protected set; }
-
-        public static ContentManager Content { protected get; set; }
-
-        
     }
 
     public class Tile : MapEntity

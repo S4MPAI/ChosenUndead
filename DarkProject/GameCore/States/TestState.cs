@@ -13,7 +13,7 @@ namespace ChosenUndead
     {
         private readonly Player player;
 
-        private readonly Map map = new();
+        private readonly Level map = new();
 
         public TestState(ChosenUndeadGame game, ContentManager content) : base(game, content)
         {

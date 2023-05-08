@@ -24,7 +24,7 @@ namespace ChosenUndead
                                 ScreenHeight / 2,
                                 0);
 
-            var scale = Matrix.CreateScale(1.6f, 1.6f, 0);
+            var scale = Matrix.CreateScale(1.8f, 1.8f, 0);
 
             Transform = position * scale * offset;
         }
