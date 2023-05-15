@@ -16,10 +16,10 @@ namespace ChosenUndead
 
         private SoundEffectInstance deathSound;
 
-        public Sceleton(Level map, AnimationManager<object> anims, int hitBoxWidth, int attackWidth = 30) : base(
+        public Sceleton(Map map, int hitBoxWidth, int attackWidth = 30) : base(
             map,
             new Weapon(1, 1, 20, new[] { WeaponAttack.FirstAttack, WeaponAttack.SecondAttack }),
-            anims,
+            Art.GetSceletonAnimations(),
             hitBoxWidth,
             attackWidth)
         {
@@ -28,8 +28,6 @@ namespace ChosenUndead
         }
 
         protected override float walkSpeed { get; } = 100f;
-
-        protected override float jumpSpeed { get; } = 10f;
 
         protected override float MaxHp => 30;
 

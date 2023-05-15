@@ -29,7 +29,7 @@ namespace ChosenUndead
             if (i == 0) 
                 texture = null;
             else 
-                texture = Content.Load<Texture2D>("Tiles/tile" + i);
+                texture = Art.GetTileTexture(i);
 
             this.Collision = Collision;
             Rectangle = rectangle;
@@ -46,55 +46,5 @@ namespace ChosenUndead
         }
     }
 
-    public class Decoration : MapEntity
-    {
-        public event EventHandler EntityEnter;
 
-        private Animation animation { get; }
-
-        private Rectangle rectangle { get; }
-
-        private Entity followedEntity { get; }
-
-        public Decoration(Animation animation, Rectangle tilePosition, Entity entity = null)
-        {
-            this.animation = animation;
-
-            rectangle = new Rectangle(
-                tilePosition.X + tilePosition.Width / 2 - animation.FrameWidth / 2,
-                tilePosition.Y + tilePosition.Height - animation.FrameHeight,
-                animation.FrameWidth, 
-                animation.FrameHeight);
-            Position = new Vector2(rectangle.X, rectangle.Y);
-
-            followedEntity = entity;
-        }
-
-        public Decoration(Texture2D texture, Rectangle tilePosition, Entity entity = null)
-        {
-           base.texture = texture;
-
-            rectangle = new Rectangle(
-                tilePosition.X + tilePosition.Width / 2 - texture.Width / 2,
-                tilePosition.Y + tilePosition.Height - texture.Height,
-                texture.Width,
-                texture.Height);
-
-            followedEntity = entity;
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            if (animation != null)
-                animation.Update(gameTime);
-        }
-
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-            if (texture != null)
-                spriteBatch.Draw(texture, Rectangle, Color.White);
-            else if (animation != null)
-                animation.Draw(spriteBatch, Position);
-        }
-    }
 }

@@ -21,11 +21,23 @@ namespace ChosenUndead
 
             var newGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(centerX, 400),
+                Position = new Vector2(centerX, 300),
                 Text = "Новая игра"
             };
 
-            //newGameButton.Click += (sender, e) => game.ChangeState(new TestState(_game, _graphicsDevice, _content));
+            newGameButton.Click += (sender, e) =>
+            {
+                game.DeleteSave();
+                game.LoadSave();
+            };
+
+            var continueButton = new Button(buttonTexture, buttonFont)
+            {
+                Position = new Vector2(centerX, 400),
+                Text = "Продолжить"
+            };
+
+            continueButton.Click += (sender, e) => game.LoadSave();
 
             var optionGameButton = new Button(buttonTexture, buttonFont)
             {
@@ -43,20 +55,12 @@ namespace ChosenUndead
 
             exitGameButton.Click += (sender, e) => game.Exit();
 
-            var testGameButton = new Button(buttonTexture, buttonFont)
-            {
-                Position = new Vector2(centerX, 700),
-                Text = "Тесты"
-            };
-
-            testGameButton.Click += (sender, e) => game.ChangeState(new TestState(base.game, content));
-
             sprites = new List<Component>()
             {
                 newGameButton,
+                continueButton,
                 optionGameButton,
                 exitGameButton,
-                testGameButton
             };
         }
 

@@ -20,13 +20,15 @@
     <Folder Include="Content\Controls\" />
     <Folder Include="Content\Fonts\" />
     <Folder Include="Content\Maps\" />
-    <Folder Include="Saves\" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Content\Maps\1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Content\Tiles\tile1.png">
+    <None Update="Content\Maps\2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Maps\3.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

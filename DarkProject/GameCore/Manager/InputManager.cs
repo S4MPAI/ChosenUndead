@@ -32,6 +32,10 @@ namespace ChosenUndead
             JumpPressed = keyboardState.IsKeyDown(Input.JumpKey);
             InteractionPressed = keyboardState.IsKeyDown(Input.InteractionKey);
             AttackPressed = mouseState.LeftButton == ButtonState.Pressed;
+            if (AttackPressed == true)
+            {
+
+            }
         }
     }
 }

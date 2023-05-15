@@ -4,6 +4,7 @@ using SharpDX.Direct2D1.Effects;
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead
 {
-    public class Level
+    public class Map
     {
         private Tile[,] tiles;
 
@@ -21,27 +22,44 @@ namespace ChosenUndead
 
         private EntityManager entityManager;
 
-        public Player Player { get => entityManager.Player; }
+        private int spawnpointNumber;
+
+        public Player Player { get => Player.GetInstance(this); }
 
         public int TileSize { get; private set; }
+
+        public Point MapSize;
 
         public int Width { get; private set; }
 
         public int Height { get; private set; }
 
-        public void Generate(Stream fileStream, int size)
+        public void Generate(Stream fileStream, int size, int spawnpointNumber)
         {
             mapEntities = new();
             TileSize = size;
+            this.spawnpointNumber = spawnpointNumber;
+            
             entityManager = new();
             
             using(var reader = new StreamReader(fileStream))
             {
                 var mapInfo = ReadMap(reader);
+                MapSize = new(mapInfo.tiles[0].Length, mapInfo.tiles.Length);
                 ConvertSymbolsToObjects(reader, mapInfo.tiles, ConvertTiles, TileSize);
                 ConvertSymbolsToObjects(reader, mapInfo.entities, ConvertEntities, TileSize);
-                //ConvertSymbolsToObjects(reader, mapInfo.decorations, ConvertDecorations, TileSize);
+                ConvertSymbolsToObjects(reader, mapInfo.decorations, ConvertDecorations, TileSize);
             }
+        }
+
+        public static void SetLevelChanged(Action<LevelTransition> levelChanged)
+        {
+            LevelTransition.LevelChanged += levelChanged;
+        }
+
+        public static void SetSaveCompleted(Action<BonfireSave> saveMaked)
+        {
+            BonfireSave.PlayerSaved += saveMaked;
         }
 
         #region Loading
@@ -85,14 +103,15 @@ namespace ChosenUndead
         private void ConvertTiles(string symbol, int x, int y, int size)
         {
             var number = int.Parse(symbol);
+            var rectangle = new Rectangle(x * size, y * size, size, size);
 
             switch (number)
             {
                 case <= 0:
-                    tiles[y, x] = new Tile(number, new Rectangle(x * size, y * size, size, size), Collision.Passable);
+                    tiles[y, x] = new Tile(number, rectangle, Collision.Passable);
                     break;
                 case > 0:
-                    tiles[y, x] = new Tile(number, new Rectangle(x * size, y * size, size, size), Collision.Impassable);
+                    tiles[y, x] = new Tile(number, rectangle, Collision.Impassable);
                     break;
             }
             mapEntities.Add(tiles[y, x]);
@@ -104,9 +123,6 @@ namespace ChosenUndead
 
             switch (symbol)
             {
-                case "P":
-                    currentEntity = entityManager.AddPlayer(this);
-                    break;
                 case "S":
                     currentEntity = entityManager.AddSceleton(this);
                     break;
@@ -120,29 +136,40 @@ namespace ChosenUndead
 
         private void ConvertDecorations(string symbol, int x, int y, int size)
         {
-            //var number = int.Parse(symbol);
+            Decoration decoration = null;
+            var rectangle = new Rectangle(x * size, y * size, size, size);
 
-            //switch (number)
-            //{
-            //    case <= 0:
-            //        tiles[y, x] = new Tile(number, new Rectangle(x * size, y * size, size, size), Collision.Passable);
-            //        break;
-            //    case > 0:
-            //        tiles[y, x] = new Tile(number, new Rectangle(x * size, y * size, size, size), Collision.Impassable);
-            //        break;
-            //}
+            if (int.TryParse(symbol, out var numberTransition) && numberTransition != 0)
+            {
+                decoration = new LevelTransition(rectangle, numberTransition);
 
-            //mapEntities.Add(tiles[y, x]);
+                if (spawnpointNumber == numberTransition)
+                    SetEntityPosition(Player, x, y);
+            }
+            else
+            {
+                switch (symbol)
+                {
+                    case "S":
+                        decoration = new BonfireSave(Art.GetBonfireSaveAnimation(), rectangle);
+                        break;
+                    default:
+                        return;
+                        break;
+                }
+            }
+            decorations.Add(decoration);
+            mapEntities.Add(decoration);
         }
 
         #endregion
 
         public void Update(GameTime gameTime)
         {
+            entityManager.Update(gameTime);
+
             foreach (var decoration in decorations)
                 decoration.Update(gameTime);
-
-            entityManager.Update(gameTime);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -155,7 +182,7 @@ namespace ChosenUndead
 
         private void SetEntityPosition(Entity entity, int x, int y)
         {
-            entity.Position = new Vector2(x * TileSize + TileSize / 2 - entity.Center.X, (y + 1) * TileSize - entity.Center.Y * 2);
+            entity.Position = new Vector2(x * TileSize + TileSize / 2 - entity.TextureCenter.X, (y + 1) * TileSize - entity.TextureCenter.Y * 2);
         }
 
         public bool IsHaveCollision(int x, int y) 
