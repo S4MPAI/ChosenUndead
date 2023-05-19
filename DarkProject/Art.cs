@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ChosenUndead
 {
@@ -25,6 +24,8 @@ namespace ChosenUndead
 
         private const string boardsPath = "Interface/Boards/";
 
+        private const string forestBackgroundsPath = "Backgrounds/forest/bg_forest_";
+
         public static void Initialize(ContentManager content)
         {
             Art.content = content;
@@ -34,13 +35,13 @@ namespace ChosenUndead
         {
             var playerAnimations = new AnimationManager<object>();
 
-            playerAnimations.AddAnimation(EntityAction.Idle, new Animation(content.Load<Texture2D>($"{playerPath}Idle"), 128, 64, 8, 0.125f));
-            playerAnimations.AddAnimation(EntityAction.Run, new Animation(content.Load<Texture2D>($"{playerPath}Run"), 128, 64, 8, 0.125f));
-            playerAnimations.AddAnimation(EntityAction.Jump, new Animation(content.Load<Texture2D>($"{playerPath}Jump"), 128, 64, 8, 0.125f));
-            playerAnimations.AddAnimation(WeaponAttack.FirstAttack, new Animation(content.Load<Texture2D>($"{playerPath}FirstAttack"), 128, 64, 7, 0.125f));
-            playerAnimations.AddAnimation(WeaponAttack.SecondAttack, new Animation(content.Load<Texture2D>($"{playerPath}SecondAttack"), 128, 64, 3, 0.125f));
-            playerAnimations.AddAnimation(WeaponAttack.ThirdAttack, new Animation(content.Load<Texture2D>($"{playerPath}ThirdAttack"), 128, 64, 4, 0.125f));
-            playerAnimations.AddAnimation(WeaponAttack.FourthAttack, new Animation(content.Load<Texture2D>($"{playerPath}FourthAttack"), 128, 64, 6, 0.125f));
+            playerAnimations.AddAnimation(EntityAction.Idle, new Animation(content.Load<Texture2D>($"{playerPath}Idle"), 8, 0.125f));
+            playerAnimations.AddAnimation(EntityAction.Run, new Animation(content.Load<Texture2D>($"{playerPath}Run"), 8, 0.125f));
+            playerAnimations.AddAnimation(EntityAction.Jump, new Animation(content.Load<Texture2D>($"{playerPath}Jump"), 8, 0.125f));
+            playerAnimations.AddAnimation(WeaponAttack.FirstAttack, new Animation(content.Load<Texture2D>($"{playerPath}FirstAttack"), 7, 0.125f));
+            playerAnimations.AddAnimation(WeaponAttack.SecondAttack, new Animation(content.Load<Texture2D>($"{playerPath}SecondAttack"), 3, 0.125f));
+            playerAnimations.AddAnimation(WeaponAttack.ThirdAttack, new Animation(content.Load<Texture2D>($"{playerPath}ThirdAttack"), 4, 0.125f));
+            playerAnimations.AddAnimation(WeaponAttack.FourthAttack, new Animation(content.Load<Texture2D>($"{playerPath}FourthAttack"), 6, 0.125f));
 
             return playerAnimations;
         }
@@ -49,8 +50,8 @@ namespace ChosenUndead
         {
             var sceletonAnimations = new AnimationManager<object>();
 
-            sceletonAnimations.AddAnimation(EntityAction.Idle, new Animation(content.Load<Texture2D>($"{sceletonPath}Idle"), 150, 64, 4, 0.2f));
-            sceletonAnimations.AddAnimation(EntityAction.Death, new Animation(content.Load<Texture2D>($"{sceletonPath}Death"), 150, 64, 4, 0.8f));
+            sceletonAnimations.AddAnimation(EntityAction.Idle, new Animation(content.Load<Texture2D>($"{sceletonPath}Idle"), 4, 0.2f));
+            sceletonAnimations.AddAnimation(EntityAction.Death, new Animation(content.Load<Texture2D>($"{sceletonPath}Death"), 4, 0.8f));
             //playerAnimations.AddAnimation(EntityAction.Run, new Animation(content.Load<Texture2D>($"{playerPath}Run"), 128, 64, 8, 0.125f));
             //playerAnimations.AddAnimation(EntityAction.Jump, new Animation(content.Load<Texture2D>($"{playerPath}Jump"), 128, 64, 8, 0.125f));
             //playerAnimations.AddAnimation(WeaponAttack.FirstAttack, new Animation(content.Load<Texture2D>($"{playerPath}FirstAttack"), 128, 64, 7, 0.125f));
@@ -61,9 +62,17 @@ namespace ChosenUndead
             return sceletonAnimations;
         }
 
-        public static Animation GetBonfireSaveAnimation() => new Animation(content.Load<Texture2D>(bonfirePath), 24, 32, 8, 0.1f);
+        public static List<ScrollingBackground> GetForestBackgrounds(Point windowSize) => 
+            new()
+            {
+                new(content.Load<Texture2D>(forestBackgroundsPath + 1), 0.02f, windowSize),
+                new(content.Load<Texture2D>(forestBackgroundsPath + 2), 0.05f, windowSize),
+                new(content.Load<Texture2D>(forestBackgroundsPath + 3), 0.10f, windowSize)
+            };
 
-        public static Texture2D GetTileTexture(int tileNumber) => content.Load<Texture2D>(tilesPath + tileNumber);
+        public static Animation GetBonfireSaveAnimation() => new Animation(content.Load<Texture2D>(bonfirePath), 8, 0.1f);
+
+        public static Texture2D GetTileTexture(int tileNumber) => tileNumber != 0 ? content.Load<Texture2D>(tilesPath + tileNumber) : null;
 
         public static Board GetBoardForLevelTransition() =>
             new Board(content.Load<Texture2D>(boardsPath + "LevelTransition"),  Color.White, Color.Black, "Покинуть локацию");
@@ -72,7 +81,7 @@ namespace ChosenUndead
             new Board(content.Load<Texture2D>(boardsPath +"Bonfire"), Color.White, Color.Black, "Cохраниться?");
     }
 
-    public class Board : Component
+    public class Board : Sprite
     {
         public string Text { get; private set; }
 
@@ -82,17 +91,8 @@ namespace ChosenUndead
 
         private Color textColor;
 
-        public Rectangle Rectangle
+        public Board(Texture2D texture, Color boardColor, Color textColor, string text = "",  SpriteFont spriteFont = null) : base(texture)
         {
-            get
-            {
-                return new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height);
-            }
-        }
-
-        public Board(Texture2D texture, Color boardColor, Color textColor, string text = "",  SpriteFont spriteFont = null)
-        {
-            this.texture = texture;
             Text = text;
             font = spriteFont ?? Content.Load<SpriteFont>("Fonts/BoardFont");
             this.boardColor = boardColor;

@@ -11,18 +11,30 @@ namespace ChosenUndead
     {
         private Point windowSize;
 
-        public Camera(Point windowSize)
-        {
-            this.windowSize = windowSize;
-        }
+        public Point VisionWindowSize { get => new Point((int)(windowSize.X / Scale), (int)(windowSize.Y / Scale)); }
+
+        public Vector2 WindowPos { get; private set; }
+
+        public readonly float Scale;
 
         public Matrix Transform { get; private set; }
 
+        public Camera(Point windowSize, float scale)
+        {
+            this.windowSize = windowSize;
+            Scale = scale;
+        }
+
         public void Follow(Entity target, Map map)
         {
+            var dx = MathHelper.Clamp(target.Center.X, VisionWindowSize.X / 2, map.MapSize.X - VisionWindowSize.X / 2);
+            var dy = target.Center.Y;
+
+            WindowPos = new(dx - VisionWindowSize.X / 2, dy - VisionWindowSize.Y / 2);
+
             var position = Matrix.CreateTranslation(
-                -target.Position.X - target.HitBox.Width ,
-                -target.Position.Y - target.HitBox.Height,
+                -dx,
+                -dy,
                 0);
 
             var offset = Matrix.CreateTranslation(
@@ -30,7 +42,7 @@ namespace ChosenUndead
                                 windowSize.Y / 2,
                                 0);
 
-            var scale = Matrix.CreateScale(3f, 3f, 0);
+            var scale = Matrix.CreateScale(Scale, Scale, 0);
 
             Transform = position * scale * offset;
         }

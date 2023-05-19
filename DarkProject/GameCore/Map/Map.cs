@@ -45,7 +45,7 @@ namespace ChosenUndead
             using(var reader = new StreamReader(fileStream))
             {
                 var mapInfo = ReadMap(reader);
-                MapSize = new(mapInfo.tiles[0].Length, mapInfo.tiles.Length);
+                MapSize = new(mapInfo.tiles[0].Length * size, mapInfo.tiles.Length * size);
                 ConvertSymbolsToObjects(reader, mapInfo.tiles, ConvertTiles, TileSize);
                 ConvertSymbolsToObjects(reader, mapInfo.entities, ConvertEntities, TileSize);
                 ConvertSymbolsToObjects(reader, mapInfo.decorations, ConvertDecorations, TileSize);
@@ -182,7 +182,7 @@ namespace ChosenUndead
 
         private void SetEntityPosition(Entity entity, int x, int y)
         {
-            entity.Position = new Vector2(x * TileSize + TileSize / 2 - entity.TextureCenter.X, (y + 1) * TileSize - entity.TextureCenter.Y * 2);
+            entity.Position = new Vector2(x * TileSize + TileSize / 2 - entity.TextureSize.X / 2, (y + 1) * TileSize - entity.TextureSize.Y);
         }
 
         public bool IsHaveCollision(int x, int y) 

@@ -10,7 +10,7 @@ namespace ChosenUndead
 {
     public static class InputManager
     {
-        public static Input Input { get; set; } = new();
+        public static Input KeyboardInput { get; set; } = new();
 
         public static bool LeftPressed { get; private set; }
 
@@ -27,10 +27,10 @@ namespace ChosenUndead
             var keyboardState = Keyboard.GetState();
             var mouseState = Mouse.GetState();
 
-            LeftPressed = keyboardState.IsKeyDown(Input.LeftKey);
-            RightPressed = keyboardState.IsKeyDown(Input.RightKey);
-            JumpPressed = keyboardState.IsKeyDown(Input.JumpKey);
-            InteractionPressed = keyboardState.IsKeyDown(Input.InteractionKey);
+            LeftPressed = keyboardState.IsKeyDown(KeyboardInput.LeftKey);
+            RightPressed = keyboardState.IsKeyDown(KeyboardInput.RightKey);
+            JumpPressed = keyboardState.IsKeyDown(KeyboardInput.JumpKey);
+            InteractionPressed = keyboardState.IsKeyDown(KeyboardInput.InteractionKey);
             AttackPressed = mouseState.LeftButton == ButtonState.Pressed;
             if (AttackPressed == true)
             {

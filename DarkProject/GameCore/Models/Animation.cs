@@ -30,25 +30,19 @@ namespace ChosenUndead
 
         //private bool _active = true;
 
-        public Animation(Texture2D texture, int frameWidth, int frameHeight, int framesCount, float frameTime)
+        public Animation(Texture2D texture, int framesX, float frameTime)
         {
             this.texture = texture;
-            FrameWidth = frameWidth;
-            FrameHeight = frameHeight;
             this.frameTime = frameTime;
             frameTimeLeft = this.frameTime;
-            this.FramesCount = framesCount;
-            var framesCountX = this.texture.Width / frameWidth;
-            var framesCountY = this.texture.Height / frameHeight;
-            var currentFrameCount = 0;
+            FramesCount = framesX;
+            FrameWidth = this.texture.Width / framesX;
+            FrameHeight = this.texture.Height;
 
-            for (int i = 0; i < framesCountY; i++)
-                for (int j = 0; j < framesCountX; j++)
-                {
-                    if (++currentFrameCount > this.FramesCount) break;
-
-                    frames.Add(new Rectangle(j * frameWidth, i * frameHeight, frameWidth, frameHeight));
-                }
+            for (int i = 0; i < FramesCount; i++)
+            {
+                frames.Add(new(FrameWidth * i, 0, FrameWidth, FrameHeight));
+            }
         }
 
         //public void Stop()

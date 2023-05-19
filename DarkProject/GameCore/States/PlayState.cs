@@ -30,7 +30,6 @@ namespace ChosenUndead.GameCore.States
 
             map.Draw(gameTime, spriteBatch);
 
-
             spriteBatch.End();
         }
 
@@ -45,9 +44,9 @@ namespace ChosenUndead.GameCore.States
             game.camera.Follow(player, map);
         }
 
-        public override void Initialise()
+        public override void Initialize()
         {
-            base.Initialise();
+            base.Initialize();
             var mapPath = $"Content/Maps/{mapNumber}.txt";
             using var fileStream = TitleContainer.OpenStream(mapPath);
             map.Generate(fileStream, 24, spawnpointNumber);

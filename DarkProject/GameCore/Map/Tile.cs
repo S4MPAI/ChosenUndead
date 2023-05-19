@@ -15,22 +15,21 @@ namespace ChosenUndead
         Impassable,
     }
 
-    public abstract class MapEntity : Component
+    public abstract class MapEntity : Sprite
     {
-        public Rectangle Rectangle { get; protected set; }
+        protected MapEntity(Texture2D texture) : base(texture)
+        {
+        }
+
+        public new Rectangle Rectangle { get; protected set; }
 
         public Collision Collision { get; protected set; }
     }
 
     public class Tile : MapEntity
     {
-        public Tile(int i, Rectangle rectangle, Collision Collision) 
+        public Tile(int i, Rectangle rectangle, Collision Collision) : base(Art.GetTileTexture(i))
         {
-            if (i == 0) 
-                texture = null;
-            else 
-                texture = Art.GetTileTexture(i);
-
             this.Collision = Collision;
             Rectangle = rectangle;
         }

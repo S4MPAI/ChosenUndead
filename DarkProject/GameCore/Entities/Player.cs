@@ -51,6 +51,7 @@ namespace ChosenUndead
 
         public override void Update(GameTime gameTime)
         {
+            Velocity.X = 0;
             elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             IsInteract = InputManager.InteractionPressed;
@@ -63,24 +64,22 @@ namespace ChosenUndead
             SetAnimation();
 
             animationManager.Update(gameTime);
-            velocity = weapon.IsAttack() ? Vector2.Zero : velocity;
+            Velocity = weapon.IsAttack() ? Vector2.Zero : Velocity;
 
             //Position += weapon.CurrentAttack != WeaponAttack.None ? Vector2.Zero : Velocity;
-            Position += velocity * elapsedTime;
-            orientation = velocity.X != 0 ? (velocity.X > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally) : orientation;
-            velocity.X = 0;
-
+            Position += Velocity * elapsedTime;
+            orientation = Velocity.X != 0 ? (Velocity.X > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally) : orientation;
         }
 
         private void Move()
         {
-            velocity.Y = MathHelper.Clamp(velocity.Y + GravityAcceleration * elapsedTime, -MaxFallSpeed, MaxFallSpeed);
-            velocity.Y = DoJump(velocity.Y);
+            Velocity.Y = MathHelper.Clamp(Velocity.Y + GravityAcceleration * elapsedTime, -MaxFallSpeed, MaxFallSpeed);
+            Velocity.Y = DoJump(Velocity.Y);
 
             if (InputManager.LeftPressed)
-                velocity.X = -walkSpeed;
+                Velocity.X = -walkSpeed;
             if (InputManager.RightPressed)
-                velocity.X = walkSpeed;
+                Velocity.X = walkSpeed;
         }
 
         private float DoJump(float velocityY)
@@ -117,7 +116,7 @@ namespace ChosenUndead
             else
             {
                 if (!isOnGround) state = EntityAction.Jump;
-                else if (velocity.X != 0 && isOnGround) state = EntityAction.Run;
+                else if (Velocity.X != 0 && isOnGround) state = EntityAction.Run;
                 else state = EntityAction.Idle;
 
                 animationManager.SetAnimation(state);

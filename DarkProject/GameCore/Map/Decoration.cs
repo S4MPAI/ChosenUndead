@@ -12,7 +12,7 @@ namespace ChosenUndead
     {
         private Animation animation { get; }
 
-        public Decoration(Animation animation, Rectangle tilePosition)
+        public Decoration(Animation animation, Rectangle tilePosition) : base(null)
         {
             this.animation = animation;
 
@@ -24,10 +24,8 @@ namespace ChosenUndead
             Position = new Vector2(Rectangle.X, Rectangle.Y);
         }
 
-        public Decoration(Texture2D texture, Rectangle tilePosition)
+        public Decoration(Texture2D texture, Rectangle tilePosition) : base(texture)
         {
-            base.texture = texture;
-
             if (texture == null) 
                 Rectangle = tilePosition;
             else

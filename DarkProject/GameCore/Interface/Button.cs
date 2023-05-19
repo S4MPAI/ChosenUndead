@@ -5,7 +5,7 @@ using System;
 
 namespace ChosenUndead
 {
-    public class Button : Component
+    public class Button : Sprite
     {
         #region Fields
 
@@ -27,23 +27,14 @@ namespace ChosenUndead
 
         public Color PenColour { get; set; }
 
-        public Rectangle Rectangle
-        {
-            get
-            {
-                return new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height);
-            }
-        }
-
         public string Text { get; set; }
 
         #endregion
 
         #region Methods
 
-        public Button(Texture2D texture, SpriteFont spriteFont)
+        public Button(Texture2D texture, SpriteFont spriteFont) : base(texture)
         {
-            base.texture = texture;
             font = spriteFont;
             PenColour = Color.Silver;
         }

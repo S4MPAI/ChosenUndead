@@ -19,7 +19,7 @@ namespace ChosenUndead
 
         private SpriteBatch spriteBatch;
 
-        public static Point WindowSize;
+        public static Point WindowSize = new(1600, 900);
 
         public State currentState;
 
@@ -43,7 +43,7 @@ namespace ChosenUndead
         public void ChangeState(State state)
         {
             nextState = state;
-            nextState.Initialise();
+            nextState.Initialize();
             ChangeStateCooldownLeft = ChangeStateCooldown;
         }
 
@@ -65,12 +65,10 @@ namespace ChosenUndead
             IsMouseVisible = true;
             Art.Initialize(Content);
             Component.Content = Content;
+            camera = new Camera(WindowSize, 8);
             Map.SetLevelChanged(ChangeLevel);
             Map.SetSaveCompleted(SaveCompleted);
-            Levels = LoadLevels();
             graphics.IsFullScreen = false;
-            WindowSize = new(1600, 900);
-
             graphics.PreferredBackBufferWidth = WindowSize.X;
             graphics.PreferredBackBufferHeight = WindowSize.Y;
 
@@ -93,7 +91,8 @@ namespace ChosenUndead
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             currentState = new StartMenu(this, Content);
-            camera = new Camera(WindowSize);
+            
+            Levels = LoadLevels();
         }
 
         protected override void Update(GameTime gameTime)

@@ -35,7 +35,7 @@ namespace ChosenUndead
 
         #endregion
 
-        public virtual void Initialise()
+        public virtual void Initialize()
         {
             
         }

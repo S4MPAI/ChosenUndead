@@ -22,26 +22,28 @@ namespace ChosenUndead
 
     public abstract class Entity : Component
     {
-        public Vector2 TextureCenter { get; }
+        public Vector2 TextureSize { get; }
 
-        protected Vector2 velocity;
+        public Vector2 Center { get => Position + TextureSize / 2; }
+
+        public Vector2 Velocity;
 
         public Rectangle HitBox
         {
             get => new Rectangle(
-            (int)(Position.X + TextureCenter.X - hitBoxWidth / 2),
+            (int)(Center.X - hitBoxWidth / 2),
             (int)Position.Y,
             hitBoxWidth,
-            (int)(TextureCenter.Y * 2));
+            (int)(TextureSize.Y));
         }
 
         public Rectangle AttackBox
         {
             get => new Rectangle(
-            (int)(Position.X + TextureCenter.X - (int)orientation * attackWidth),
+            (int)(Center.X - (int)orientation * attackWidth),
             (int)Position.Y,
             attackWidth,
-            (int)(TextureCenter.Y * 2));
+            (int)(TextureSize.Y));
         }
 
         public bool IsAttacking { get => weapon.IsAttacking(); }
@@ -78,7 +80,7 @@ namespace ChosenUndead
             this.weapon = weapon;
             this.animationManager = animationManager;
             Hp = MaxHp;
-            TextureCenter = new Vector2(this.animationManager.CurrentAnimation.FrameWidth / 2, this.animationManager.CurrentAnimation.FrameHeight / 2);
+            TextureSize = new Vector2(this.animationManager.CurrentAnimation.FrameWidth, this.animationManager.CurrentAnimation.FrameHeight);
 
             foreach (var attack in weapon.WeaponAttacks)
                 animationManager.ChangeFrameTime(attack, weapon.attackCooldown);
@@ -108,7 +110,7 @@ namespace ChosenUndead
 
         protected virtual void CollisionWithMap()
         {
-            var velocity = this.velocity * elapsedTime;
+            var velocity = this.Velocity * elapsedTime;
             isOnGround = false;
             var leftTile = (int)Math.Floor((float)HitBox.Left / map.TileSize);
             var rightTile = (int)Math.Ceiling((float)HitBox.Right / map.TileSize) - 1;
@@ -124,20 +126,20 @@ namespace ChosenUndead
                         var bounds = map.GetBounds(x, y);
 
                         if ((velocity.X > 0 && IsTouchingLeft(bounds, velocity.X)) || (velocity.X < 0 && IsTouchingRight(bounds, velocity.X)))
-                            this.velocity.X = 0;
+                            this.Velocity.X = 0;
 
                         if (velocity.Y > 0 && IsTouchingTop(bounds, velocity.Y))
                         {
                             //if (HitBox.Bottom > bounds.Top + bounds.Height / 5)
                             //    Position.Y -= velocity.Y;
 
-                            this.velocity.Y = 0;
+                            this.Velocity.Y = 0;
                             isOnGround = true;
                         }
 
                         if (velocity.Y < 0 && IsTouchingBottom(bounds, velocity.Y))
                         {
-                            this.velocity.Y = 0;
+                            this.Velocity.Y = 0;
                         }
 
                     }
