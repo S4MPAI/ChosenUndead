@@ -1,5 +1,4 @@
-﻿using ChosenUndead.GameCore;
-using ChosenUndead.GameCore.States;
+﻿using ChosenUndead.GameCore.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -65,7 +64,7 @@ namespace ChosenUndead
             IsMouseVisible = true;
             Art.Initialize(Content);
             Component.Content = Content;
-            camera = new Camera(WindowSize, 8);
+            camera = new Camera(WindowSize, 4.8f);
             Map.SetLevelChanged(ChangeLevel);
             Map.SetSaveCompleted(SaveCompleted);
             graphics.IsFullScreen = false;

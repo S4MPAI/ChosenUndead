@@ -11,7 +11,7 @@ namespace ChosenUndead
     {
         private Point windowSize;
 
-        public Point VisionWindowSize { get => new Point((int)(windowSize.X / Scale), (int)(windowSize.Y / Scale)); }
+        public Point VisionWindowSize { get => new Point((int)(windowSize.X / Scale)-1, (int)(windowSize.Y / Scale)); }
 
         public Vector2 WindowPos { get; private set; }
 
@@ -28,7 +28,7 @@ namespace ChosenUndead
         public void Follow(Entity target, Map map)
         {
             var dx = MathHelper.Clamp(target.Center.X, VisionWindowSize.X / 2, map.MapSize.X - VisionWindowSize.X / 2);
-            var dy = target.Center.Y;
+            var dy = MathHelper.Clamp(target.Center.Y, VisionWindowSize.Y / 2, map.MapSize.Y - VisionWindowSize.Y / 2);
 
             WindowPos = new(dx - VisionWindowSize.X / 2, dy - VisionWindowSize.Y / 2);
 

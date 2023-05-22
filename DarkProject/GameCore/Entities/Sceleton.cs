@@ -10,26 +10,20 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead
 {
-    public class Sceleton : Entity
+    public class Sceleton : Enemy
     {
-        private SoundEffectInstance damageSound;
-
-        private SoundEffectInstance deathSound;
-
         public Sceleton(Map map, int hitBoxWidth, int attackWidth = 30) : base(
             map,
-            new Weapon(1, 1, 20, new[] { WeaponAttack.FirstAttack, WeaponAttack.SecondAttack }),
             Art.GetSceletonAnimations(),
             hitBoxWidth,
+            new Weapon(1, 1, 20, new[] { WeaponAttack.FirstAttack, WeaponAttack.SecondAttack }),
             attackWidth)
         {
-            damageSound = Content.Load<SoundEffect>("Entities/Sceleton/damageSound").CreateInstance();
-            deathSound = Content.Load<SoundEffect>("Entities/Sceleton/deathSound").CreateInstance();
         }
 
         protected override float walkSpeed { get; } = 100f;
 
-        protected override float MaxHp => 30;
+        protected override float maxHp => 30;
 
         public override void Update(GameTime gameTime)
         {
@@ -44,27 +38,5 @@ namespace ChosenUndead
             base.Update(gameTime);
             animationManager.Update(gameTime);
         }
-
-        public override void GiveDamage(float damage)
-        {
-            if (state == EntityAction.Death) return;
-
-            Hp -= damage;
-
-            if (Hp <= 0)
-            {
-                deathSound.Play();
-                state = EntityAction.Death;
-                animationManager.SetAnimation(state);
-            }
-            else
-            {
-                damageSound.Stop(false);
-                damageSound.Play();
-            }
-                
-        }
-
-        public override bool IsDead() => state == EntityAction.Death && animationManager.IsCurrentAnimationEnded();
     }
 }

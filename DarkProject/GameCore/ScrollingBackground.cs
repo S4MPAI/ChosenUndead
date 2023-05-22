@@ -39,7 +39,7 @@ namespace ChosenUndead
             {
                 sprites.Add(new Sprite(texture, scale)
                 {
-                    Position = new Vector2((i * texture.Width * scale) - 1, (ChosenUndeadGame.WindowSize.Y - texture.Height) * scale)
+                    Position = new Vector2((i * texture.Width * scale) - 1, windowSize.Y - texture.Height * scale)
                 }); 
             }
         }

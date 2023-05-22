@@ -14,7 +14,7 @@ namespace ChosenUndead
 
         public bool isTargetIntersect;
 
-        public Player Target;
+        private Player target;
 
         private Board board = Art.GetBoardForLevelTransition();
 
@@ -22,7 +22,7 @@ namespace ChosenUndead
 
         public LevelTransition(Rectangle tilePosition, int levelIndex) : base(texture: null, tilePosition)
         {
-            Target = Player.GetInstance();
+            target = Player.GetInstance();
             LevelIndex = levelIndex;
         }
 
@@ -31,11 +31,11 @@ namespace ChosenUndead
             isTargetIntersect = false;
             base.Update(gameTime);
 
-            if (Target.HitBox.Intersects(Rectangle))
+            if (target.HitBox.Intersects(Rectangle))
             {
                 isTargetIntersect = true;
 
-                if (Target.IsInteract)
+                if (target.IsInteract)
                     LevelChanged(this);
             }
         }
@@ -44,7 +44,7 @@ namespace ChosenUndead
         {
             if (isTargetIntersect)
             {
-                board.Position = new Vector2(Target.HitBox.Center.X - board.Rectangle.Width / 2, Target.HitBox.Top - board.Rectangle.Height);
+                board.Position = new Vector2(target.HitBox.Center.X - board.Rectangle.Width / 2, target.HitBox.Top - board.Rectangle.Height);
                 board.Draw(gameTime, spriteBatch);
             }
                 

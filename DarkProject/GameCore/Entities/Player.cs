@@ -12,29 +12,29 @@ namespace ChosenUndead
     {
         protected float time;
 
-        protected override float walkSpeed { get; } = 150f;
+        protected override float walkSpeed { get; } = 160f;
 
-        private const float MaxJumpTime = 0.4f;
+        private const float MaxJumpTime = 0.5f;
 
-        private const float JumpLaunchVelocity = -400.0f;
-        
-        private const float GravityAcceleration = 2000.0f;
-        
-        private const float MaxFallSpeed = 400.0f;
-        
+        private const float JumpLaunchVelocity = -450.0f;
+
+        private const float GravityAcceleration = 1800.0f;
+
+        private const float MaxFallSpeed = 350.0f;
+
         private const float JumpControlPower = 1.5f;
 
-        private bool isJumping;
         private bool wasJumping;
         private float jumpTime;
+        private bool isJumping;
 
-        protected override float MaxHp => 50;
+        protected override float maxHp => 50;
 
         public bool IsInteract { get; private set; }
 
         private static Player instance;
 
-        private Player(Map map) : base(map, new Sword(), Art.GetPlayerAnimations(), 32, 32)
+        private Player(Map map) : base(map, Art.GetPlayerAnimations(), 32, new Sword(), 32)
         {
         }
 
@@ -55,10 +55,11 @@ namespace ChosenUndead
             elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             IsInteract = InputManager.InteractionPressed;
-            isJumping = InputManager.JumpPressed;
+
 
             Move();
             base.Update(gameTime);
+            isJumping = InputManager.JumpPressed;
 
             weapon.Update(gameTime, isOnGround ? InputManager.AttackPressed : false);
             SetAnimation();
@@ -68,7 +69,7 @@ namespace ChosenUndead
 
             //Position += weapon.CurrentAttack != WeaponAttack.None ? Vector2.Zero : Velocity;
             Position += Velocity * elapsedTime;
-            orientation = Velocity.X != 0 ? (Velocity.X > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally) : orientation;
+            orientation = Velocity.X != 0 ? Velocity.X > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally : orientation;
         }
 
         private void Move()
@@ -84,9 +85,9 @@ namespace ChosenUndead
 
         private float DoJump(float velocityY)
         {
-            if (isJumping)
+            if (isJumping && !isUnderTop)
             {
-                if ((isOnGround && !wasJumping) || jumpTime > 0.0f)
+                if (isOnGround && !wasJumping || jumpTime > 0.0f)
                 {
                     jumpTime += elapsedTime;
                 }

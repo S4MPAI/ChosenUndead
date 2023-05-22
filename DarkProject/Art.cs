@@ -1,5 +1,4 @@
-﻿using ChosenUndead.GameCore;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -38,10 +37,10 @@ namespace ChosenUndead
             playerAnimations.AddAnimation(EntityAction.Idle, new Animation(content.Load<Texture2D>($"{playerPath}Idle"), 8, 0.125f));
             playerAnimations.AddAnimation(EntityAction.Run, new Animation(content.Load<Texture2D>($"{playerPath}Run"), 8, 0.125f));
             playerAnimations.AddAnimation(EntityAction.Jump, new Animation(content.Load<Texture2D>($"{playerPath}Jump"), 8, 0.125f));
-            playerAnimations.AddAnimation(WeaponAttack.FirstAttack, new Animation(content.Load<Texture2D>($"{playerPath}FirstAttack"), 7, 0.125f));
-            playerAnimations.AddAnimation(WeaponAttack.SecondAttack, new Animation(content.Load<Texture2D>($"{playerPath}SecondAttack"), 3, 0.125f));
-            playerAnimations.AddAnimation(WeaponAttack.ThirdAttack, new Animation(content.Load<Texture2D>($"{playerPath}ThirdAttack"), 4, 0.125f));
-            playerAnimations.AddAnimation(WeaponAttack.FourthAttack, new Animation(content.Load<Texture2D>($"{playerPath}FourthAttack"), 6, 0.125f));
+            playerAnimations.AddAnimation(WeaponAttack.FirstAttack, new Animation(content.Load<Texture2D>($"{playerPath}FirstAttack"), 7, 0.125f, false));
+            playerAnimations.AddAnimation(WeaponAttack.SecondAttack, new Animation(content.Load<Texture2D>($"{playerPath}SecondAttack"), 3, 0.125f, false));
+            playerAnimations.AddAnimation(WeaponAttack.ThirdAttack, new Animation(content.Load<Texture2D>($"{playerPath}ThirdAttack"), 4, 0.125f, false));
+            playerAnimations.AddAnimation(WeaponAttack.FourthAttack, new Animation(content.Load<Texture2D>($"{playerPath}FourthAttack"), 6, 0.125f, false));
 
             return playerAnimations;
         }
@@ -51,7 +50,7 @@ namespace ChosenUndead
             var sceletonAnimations = new AnimationManager<object>();
 
             sceletonAnimations.AddAnimation(EntityAction.Idle, new Animation(content.Load<Texture2D>($"{sceletonPath}Idle"), 4, 0.2f));
-            sceletonAnimations.AddAnimation(EntityAction.Death, new Animation(content.Load<Texture2D>($"{sceletonPath}Death"), 4, 0.8f));
+            sceletonAnimations.AddAnimation(EntityAction.Death, new Animation(content.Load<Texture2D>($"{sceletonPath}Death"), 4, 0.8f, false));
             //playerAnimations.AddAnimation(EntityAction.Run, new Animation(content.Load<Texture2D>($"{playerPath}Run"), 128, 64, 8, 0.125f));
             //playerAnimations.AddAnimation(EntityAction.Jump, new Animation(content.Load<Texture2D>($"{playerPath}Jump"), 128, 64, 8, 0.125f));
             //playerAnimations.AddAnimation(WeaponAttack.FirstAttack, new Animation(content.Load<Texture2D>($"{playerPath}FirstAttack"), 128, 64, 7, 0.125f));
@@ -65,9 +64,9 @@ namespace ChosenUndead
         public static List<ScrollingBackground> GetForestBackgrounds(Point windowSize) => 
             new()
             {
-                new(content.Load<Texture2D>(forestBackgroundsPath + 1), 0.02f, windowSize),
-                new(content.Load<Texture2D>(forestBackgroundsPath + 2), 0.05f, windowSize),
-                new(content.Load<Texture2D>(forestBackgroundsPath + 3), 0.10f, windowSize)
+                new(content.Load<Texture2D>(forestBackgroundsPath + 1), 0.0325f, windowSize),
+                new(content.Load<Texture2D>(forestBackgroundsPath + 2), 0.065f, windowSize),
+                new(content.Load<Texture2D>(forestBackgroundsPath + 3), 0.13f, windowSize)
             };
 
         public static Animation GetBonfireSaveAnimation() => new Animation(content.Load<Texture2D>(bonfirePath), 8, 0.1f);

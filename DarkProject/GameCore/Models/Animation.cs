@@ -28,9 +28,9 @@ namespace ChosenUndead
 
         private double frameTimeLeft;
 
-        //private bool _active = true;
+        private bool isLooping;
 
-        public Animation(Texture2D texture, int framesX, float frameTime)
+        public Animation(Texture2D texture, int framesX, float frameTime, bool isLooping = true)
         {
             this.texture = texture;
             this.frameTime = frameTime;
@@ -40,20 +40,10 @@ namespace ChosenUndead
             FrameHeight = this.texture.Height;
 
             for (int i = 0; i < FramesCount; i++)
-            {
                 frames.Add(new(FrameWidth * i, 0, FrameWidth, FrameHeight));
-            }
+
+            this.isLooping = isLooping;
         }
-
-        //public void Stop()
-        //{
-        //    _active = false;
-        //}
-
-        //public void Start()
-        //{
-        //    _active = true;
-        //}
 
         public void Reset()
         {
@@ -69,7 +59,7 @@ namespace ChosenUndead
 
         public void Update(GameTime gameTime)
         {
-            //if (!_active) return;
+            if (!isLooping && currentFrame == FramesCount - 1) return;
 
             frameTimeLeft -= gameTime.ElapsedGameTime.TotalSeconds;
 
