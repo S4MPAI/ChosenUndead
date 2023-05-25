@@ -14,7 +14,7 @@ namespace ChosenUndead
 
         public bool isTargetIntersect;
 
-        private Player target;
+        private readonly Player target;
 
         private Board board = Art.GetBoardForLevelTransition();
 

@@ -10,17 +10,11 @@ namespace ChosenUndead
 {
     public class Player : Entity
     {
-        protected float time;
-
         protected override float walkSpeed { get; } = 160f;
 
         private const float MaxJumpTime = 0.5f;
 
         private const float JumpLaunchVelocity = -450.0f;
-
-        private const float GravityAcceleration = 1800.0f;
-
-        private const float MaxFallSpeed = 350.0f;
 
         private const float JumpControlPower = 1.5f;
 
@@ -28,7 +22,14 @@ namespace ChosenUndead
         private float jumpTime;
         private bool isJumping;
 
-        protected override float maxHp => 50;
+        protected override float maxHp => startMaxHp + attackBuffCount * attackBuffCoef;
+        protected const float startMaxHp = 50f;
+        public int vitalityBuffCount { get; private set; }
+        private const float vitalityBuffCoef = 10f;
+
+        public override float Damage { get => weapon.Damage + vitalityBuffCount * vitalityBuffCoef; }
+        public int attackBuffCount { get; private set; }
+        private const float attackBuffCoef = 1f;
 
         public bool IsInteract { get; private set; }
 
@@ -49,6 +50,16 @@ namespace ChosenUndead
             return instance;
         }
 
+        public override bool IsDead() => state == EntityAction.Death && animationManager.IsCurrentAnimationEnded();
+
+        public void AddBuff(ChestBuff buff)
+        {
+            if (buff == ChestBuff.Attack) 
+                attackBuffCount++;
+            else if (buff == ChestBuff.Vitality) 
+                vitalityBuffCount++;
+        }
+
         public override void Update(GameTime gameTime)
         {
             Velocity.X = 0;
@@ -56,9 +67,8 @@ namespace ChosenUndead
 
             IsInteract = InputManager.InteractionPressed;
 
-
             Move();
-            base.Update(gameTime);
+            CollisionWithMap();
             isJumping = InputManager.JumpPressed;
 
             weapon.Update(gameTime, isOnGround ? InputManager.AttackPressed : false);
@@ -74,7 +84,7 @@ namespace ChosenUndead
 
         private void Move()
         {
-            Velocity.Y = MathHelper.Clamp(Velocity.Y + GravityAcceleration * elapsedTime, -MaxFallSpeed, MaxFallSpeed);
+            Velocity.Y = SetGravity();
             Velocity.Y = DoJump(Velocity.Y);
 
             if (InputManager.LeftPressed)
@@ -122,13 +132,6 @@ namespace ChosenUndead
 
                 animationManager.SetAnimation(state);
             }
-        }
-
-        public override bool IsDead() => state == EntityAction.Death && animationManager.IsCurrentAnimationEnded();
-
-        public override void GiveDamage(float damage)
-        {
-            throw new NotImplementedException();
         }
     }
 }

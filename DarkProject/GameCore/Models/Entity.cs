@@ -46,11 +46,13 @@ namespace ChosenUndead
             (int)TextureSize.Y);
         }
 
-        public bool IsAttacking { get => weapon.IsAttacking(); }
+        public bool IsAttacking { get => weapon.IsDamaged(); }
+
+        public float AttackRegTimeLeft { get => weapon.attackRegTimeLeft; }
 
         protected Weapon weapon { get; set; }
 
-        public float Damage { get => weapon.Damage; }
+        public virtual float Damage { get => weapon.Damage; }
 
         protected AnimationManager<object> animationManager;
 
@@ -71,6 +73,10 @@ namespace ChosenUndead
         protected bool isOnGround = true;
 
         protected bool isUnderTop = false;
+
+        protected const float GravityAcceleration = 1800.0f;
+
+        protected const float MaxFallSpeed = 350.0f;
 
         protected int hitBoxWidth { get; }
 
@@ -96,6 +102,7 @@ namespace ChosenUndead
 
         public override void Update(GameTime gameTime)
         {
+            Velocity.Y = SetGravity();
             CollisionWithMap();
         }
 
@@ -103,6 +110,8 @@ namespace ChosenUndead
         {
             animationManager.Draw(Position, spriteBatch, orientation);
         }
+
+        protected float SetGravity() => MathHelper.Clamp(Velocity.Y + GravityAcceleration * elapsedTime, -MaxFallSpeed, MaxFallSpeed);
 
         public virtual void GiveDamage(float damage)
         {
@@ -186,6 +195,8 @@ namespace ChosenUndead
             HitBox.Top < bounds.Top &&
             HitBox.Right > bounds.Left + bounds.Width / 5 &&
             HitBox.Left < bounds.Right - bounds.Width / 5;
+
+        protected Rectangle GetIntersectionDepthAttackWithHitBox(Entity entity) => Rectangle.Intersect(entity.HitBox, HitBox);
 
         #endregion
     }

@@ -23,6 +23,8 @@ namespace ChosenUndead
 
         public readonly float stunCooldown;
 
+        public float attackRegTimeLeft { get => MathHelper.Clamp(attackCooldownLeft - attackCooldown/2, 0, attackCooldown / 2); }
+
         protected float attackCooldownLeft { get; set; }
 
         protected float stunCooldownLeft { get; set; }
@@ -78,7 +80,7 @@ namespace ChosenUndead
                 CurrentAttack = WeaponAttack.None;
         }
 
-        public virtual bool IsAttacking()
+        public virtual bool IsDamaged()
         {
             if (attackCooldownLeft < attackCooldown / 2 && !isDamaged)
             {

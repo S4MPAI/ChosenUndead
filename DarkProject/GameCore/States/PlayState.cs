@@ -8,20 +8,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChosenUndead.GameCore.States
+namespace ChosenUndead
 {
     public class PlayState : State
     {
         protected Player player;
-        private int mapNumber;
+        private int levelNumber;
 
         protected readonly Map map = new();
 
         public int spawnpointNumber;
 
-        public PlayState(ChosenUndeadGame game, ContentManager content, int mapNumber) : base(game, content)
+        public PlayState(ChosenUndeadGame game, ContentManager content, int levelNumber) : base(game, content)
         {
-            this.mapNumber = mapNumber;
+            this.levelNumber = levelNumber;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -47,7 +47,7 @@ namespace ChosenUndead.GameCore.States
         public override void Initialize()
         {
             base.Initialize();
-            var mapPath = $"Content/Maps/{mapNumber}.txt";
+            var mapPath = $"Content/Maps/{levelNumber}.txt";
             using var fileStream = TitleContainer.OpenStream(mapPath);
             map.Generate(fileStream, 24, spawnpointNumber);
             player = Player.GetInstance(map);

@@ -12,7 +12,7 @@ namespace ChosenUndead
     {
         public bool isTargetIntersect;
 
-        public Player Target;
+        private readonly Player target;
 
         public const float textCooldown = 2f;
 
@@ -28,7 +28,7 @@ namespace ChosenUndead
 
         public BonfireSave(Animation animation, Rectangle tilePosition) : base(animation, tilePosition)
         {
-            Target = Player.GetInstance();
+            target = Player.GetInstance();
             startText = board.Text;
         }
         
@@ -40,11 +40,11 @@ namespace ChosenUndead
             if((textCooldownLeft -= (float)gameTime.ElapsedGameTime.TotalSeconds) < 0)
                 board.ChangeText(startText);
 
-            if (Target.HitBox.Intersects(Rectangle))
+            if (target.HitBox.Intersects(Rectangle))
             {
                 isTargetIntersect = true;
 
-                if (Target.IsInteract)
+                if (target.IsInteract)
                 {
                     PlayerSaved(this);
                     board.ChangeText(saveText);
@@ -60,7 +60,7 @@ namespace ChosenUndead
 
             if (isTargetIntersect)
             {
-                board.Position = new Vector2(Target.HitBox.Center.X - board.Rectangle.Width / 2, Target.HitBox.Top - board.Rectangle.Height);
+                board.Position = new Vector2(target.HitBox.Center.X - board.Rectangle.Width / 2, target.HitBox.Top - board.Rectangle.Height);
                 board.Draw(gameTime, spriteBatch);
             }
 

@@ -20,22 +20,48 @@ namespace ChosenUndead
 
         protected readonly string[] phrases;
 
-        protected override float walkSpeed => 0;
+        protected Board board = Art.GetBoardForNpc();
 
-        public NPC(Map map, AnimationManager<object> animationManager, int hitBoxWidth, string[] phrases) : base(map, animationManager, hitBoxWidth, null, 0)
+        protected int currentPhrase;
+
+        protected bool isTargetIntersect;
+
+        protected override float walkSpeed => 60;
+
+        public NPC(Map map, AnimationManager<object> animationManager, string[] phrases) : base(map, animationManager, 64, null, 0)
         {
             target = Player.GetInstance();
             this.phrases = phrases;
+            board.ChangeText(phrases[0]);
         }
 
         public override void Update(GameTime gameTime)
         {
+            var elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             base.Update(gameTime);
+
+            if (target.HitBox.Intersects(HitBox))
+            {
+                isTargetIntersect = true;
+                if ((phraseTimeLeft -= elapsedTime) <= 0 && currentPhrase < phrases.Length - 1)
+                    board.ChangeText(phrases[++currentPhrase]);
+            }
+            else
+            {
+                isTargetIntersect = false;
+                currentPhrase = 0;
+                phraseTimeLeft = phraseTime;
+            }
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             base.Draw(gameTime, spriteBatch);
+            if (isTargetIntersect)
+            {
+                board.Position = new Vector2(HitBox.Center.X - board.Rectangle.Width / 2, HitBox.Top - board.Rectangle.Height);
+                board.Draw(gameTime, spriteBatch);
+            }
         }
     }
 }

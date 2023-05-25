@@ -13,6 +13,7 @@ namespace ChosenUndead
     public class Sceleton : Enemy
     {
         public Sceleton(Map map, int hitBoxWidth, int attackWidth = 30) : base(
+            NeuralNetworkManager.GetGoblinNeuralNetwork(),
             map,
             Art.GetSceletonAnimations(),
             hitBoxWidth,

@@ -23,7 +23,7 @@ namespace ChosenUndead
 
         public new Rectangle Rectangle { get; protected set; }
 
-        public Collision Collision { get; protected set; }
+        public Collision Collision { get; protected set; } = Collision.Passable;
     }
 
     public class Tile : MapEntity

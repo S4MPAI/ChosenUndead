@@ -14,16 +14,13 @@ namespace ChosenUndead
         private static ContentManager content;
 
         private const string playerPath = "Entities/Player/";
-
         private const string sceletonPath = "Entities/Sceleton/";
-
+        private const string goblinPath = "Entities/Goblin/";
         private const string bonfirePath = "Map/Decorations/bonfire";
-
         private const string tilesPath = "Map/Tiles/tile";
-
         private const string boardsPath = "Interface/Boards/";
-
         private const string forestBackgroundsPath = "Backgrounds/forest/bg_forest_";
+        private const string chestsPath = "Map/Chests/chest";
 
         public static void Initialize(ContentManager content)
         {
@@ -61,6 +58,18 @@ namespace ChosenUndead
             return sceletonAnimations;
         }
 
+        public static AnimationManager<object> GetGoblinAnimations()
+        {
+            var goblinAnimations = new AnimationManager<object>();
+
+            goblinAnimations.AddAnimation(EntityAction.Idle, new Animation(content.Load<Texture2D>($"{goblinPath}Idle"), 4, 0.2f));
+            goblinAnimations.AddAnimation(EntityAction.Run, new Animation(content.Load<Texture2D>($"{goblinPath}Run"), 8, 0.2f));
+            goblinAnimations.AddAnimation(WeaponAttack.FirstAttack, new Animation(content.Load<Texture2D>($"{goblinPath}Attack"), 8, 0.2f));
+            goblinAnimations.AddAnimation(EntityAction.Death, new Animation(content.Load<Texture2D>($"{goblinPath}Death"), 4, 0.2f, false));
+
+            return goblinAnimations;
+        }
+
         public static List<ScrollingBackground> GetForestBackgrounds(Point windowSize) => 
             new()
             {
@@ -71,6 +80,8 @@ namespace ChosenUndead
 
         public static Animation GetBonfireSaveAnimation() => new Animation(content.Load<Texture2D>(bonfirePath), 8, 0.1f);
 
+        public static Animation GetChestAnimation(ChestBuff chestType) => new Animation(content.Load<Texture2D>($"{chestsPath}{chestType}"), 7, 0.2f, false);
+
         public static Texture2D GetTileTexture(int tileNumber) => tileNumber != 0 ? content.Load<Texture2D>(tilesPath + tileNumber) : null;
 
         public static Board GetBoardForLevelTransition() =>
@@ -78,6 +89,9 @@ namespace ChosenUndead
 
         public static Board GetBoardForBonfireSave() =>
             new Board(content.Load<Texture2D>(boardsPath +"Bonfire"), Color.White, Color.Black, "Cохраниться?");
+
+        public static Board GetBoardForNpc() =>
+            new Board(content.Load<Texture2D>(boardsPath + "NPC"), Color.White, Color.Black);
     }
 
     public class Board : Sprite

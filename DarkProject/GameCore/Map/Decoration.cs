@@ -10,7 +10,7 @@ namespace ChosenUndead
 {
     public class Decoration : MapEntity
     {
-        private Animation animation { get; }
+        protected Animation animation { get; }
 
         public Decoration(Animation animation, Rectangle tilePosition) : base(null)
         {
