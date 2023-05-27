@@ -15,7 +15,8 @@ namespace ChosenUndead
     {
         public Player Player { get; private set; }
 
-        private List<Entity> enemies;
+        private List<Enemy> enemies;
+        private List<NPC> npcs;
 
         public EntityManager()
         {
@@ -30,6 +31,14 @@ namespace ChosenUndead
             return sceleton;
         } 
 
+        public void AddEntity(Entity entity)
+        {
+            if (entity is NPC npc)
+                npcs.Add(npc);
+            else if (entity is Enemy enemy)
+                enemies.Add(enemy);
+        }
+
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             Player.Draw(gameTime, spriteBatch);
@@ -39,6 +48,10 @@ namespace ChosenUndead
 
         public void Update(GameTime gameTime)
         {
+            Player?.Update(gameTime);
+            foreach (var entity in enemies)
+                entity.Update(gameTime);
+
             for (int i = 0; i < enemies.Count; i++)
             {
                 MakeAttack(Player, enemies[i]);
@@ -48,12 +61,8 @@ namespace ChosenUndead
                     enemies.Remove(enemies[i]);
             }
 
-            if (Player.IsDead())
-                Player = null;
-
-            Player?.Update(gameTime);
-            foreach(var entity in enemies)
-                entity.Update(gameTime);
+            //if (Player.IsDead())
+            //    Player = null;
         }
 
         private void MakeAttack(Entity attackEntity, Entity entity)

@@ -74,7 +74,7 @@ namespace ChosenUndead
 
         protected bool isUnderTop = false;
 
-        protected const float GravityAcceleration = 1800.0f;
+        protected const float GravityAcceleration = 1500.0f;
 
         protected const float MaxFallSpeed = 350.0f;
 

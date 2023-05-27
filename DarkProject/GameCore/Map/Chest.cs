@@ -20,7 +20,7 @@ namespace ChosenUndead
 
         private readonly Player target;
 
-        private bool isOpen = false;
+        public bool IsOpen = false;
 
         public Chest(ChestBuff buff, Rectangle tilePosition) : base(Art.GetChestAnimation(buff), tilePosition)
         {
@@ -30,13 +30,13 @@ namespace ChosenUndead
 
         public override void Update(GameTime gameTime)
         {
-            if (target.IsInteract && !isOpen && Rectangle.Intersects(target.HitBox))
+            if (target.IsInteract && !IsOpen && Rectangle.Intersects(target.HitBox))
             {
-                isOpen = true;
+                IsOpen = true;
                 target.AddBuff(buff);
             }
                 
-            if (isOpen) animation?.Update(gameTime);
+            if (IsOpen) animation?.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

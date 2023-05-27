@@ -5,13 +5,13 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Runtime.CompilerServices;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace ChosenUndead
 {
     public class ChosenUndeadGame : Game
     {
-        private const string saveFile = "save.json"; 
+        private const string saveFile = "../../../Content/Data/PlayerSaves/save.json"; 
 
         private GraphicsDeviceManager graphics;
 
@@ -47,8 +47,10 @@ namespace ChosenUndead
 
         public void ChangeLevel(LevelTransition transition)
         {
+            var currentLevel = currentState as PlayState;
+            currentLevel.SaveChanges();
             var level = Levels[transition.LevelIndex - 1];
-            level.spawnpointNumber = Array.IndexOf(Levels, currentState) + 1;
+            level.spawnpointNumber = Array.IndexOf(Levels, currentLevel) + 1;
             
             ChangeState(level);
         }
@@ -77,11 +79,13 @@ namespace ChosenUndead
 
         private PlayState[] LoadLevels()
         {
+            var windowSize = camera.VisionWindowSize;
+
             return new PlayState[]
             {
-                new Level1(this, Content),
-                new Level2(this, Content),
-                new Level3(this, Content)
+                new PlayState(this, Content, 1, Art.GetForestBackgrounds(windowSize)),
+                new PlayState(this, Content, 2, Art.GetForestBackgrounds(windowSize)),
+                new PlayState(this, Content, 3, Art.GetForestBackgrounds(windowSize))
             };
         }
 
@@ -106,9 +110,7 @@ namespace ChosenUndead
 
                 currentState.Update(gameTime);
 
-                currentState.PostUpdate(gameTime);
-
-                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                     Exit();
             }
             
@@ -138,15 +140,15 @@ namespace ChosenUndead
                 Y = (int)player.Position.Y,
                 PlayerLevelIndex = Array.IndexOf(Levels, currentState)
             };
-            var jsonStringSave = JsonSerializer.Serialize(data);
+            var jsonStringSave = JsonConvert.SerializeObject(data, Formatting.Indented);
             File.WriteAllText(saveFile, jsonStringSave);
         }
 
-        public void LoadSave()
+        public void LoadSave(bool isNewSave = false)
         {
             var player = Player.GetInstance();
 
-            if (!File.Exists(saveFile))
+            if (isNewSave)
             {
                 var playerData = new PlayerData()
                 {
@@ -154,19 +156,14 @@ namespace ChosenUndead
                     Y = 154,
                     PlayerLevelIndex = 0
                 };
-                var jsonSave = JsonSerializer.Serialize(playerData);
+                var jsonSave = JsonConvert.SerializeObject(playerData, Formatting.Indented);
                 File.WriteAllText(saveFile, jsonSave);
             }
 
             var jsonString = File.ReadAllText(saveFile);
-            var data = JsonSerializer.Deserialize<PlayerData>(jsonString);
+            var data = JsonConvert.DeserializeObject<PlayerData>(jsonString);
             ChangeState(Levels[data.PlayerLevelIndex]);
             player.Position = new Vector2(data.X, data.Y);
-        }
-
-        public void DeleteSave()
-        {
-            File.Delete(saveFile);
         }
     }
 }

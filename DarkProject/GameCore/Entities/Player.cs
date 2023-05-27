@@ -12,11 +12,11 @@ namespace ChosenUndead
     {
         protected override float walkSpeed { get; } = 160f;
 
-        private const float MaxJumpTime = 0.5f;
+        private const float MaxJumpTime = 0.4f;
 
-        private const float JumpLaunchVelocity = -450.0f;
+        private const float JumpLaunchVelocity = -400.0f;
 
-        private const float JumpControlPower = 1.5f;
+        private const float JumpControlPower = 0.5f;
 
         private bool wasJumping;
         private float jumpTime;
@@ -132,6 +132,11 @@ namespace ChosenUndead
 
                 animationManager.SetAnimation(state);
             }
+        }
+
+        public override void GiveDamage(float damage)
+        {
+            base.GiveDamage(damage);
         }
     }
 }

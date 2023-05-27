@@ -18,7 +18,7 @@ namespace ChosenUndead
 
         protected float phraseTimeLeft = phraseTime;
 
-        protected readonly string[] phrases;
+        public readonly string[] Phrases;
 
         protected Board board = Art.GetBoardForNpc();
 
@@ -26,13 +26,16 @@ namespace ChosenUndead
 
         protected bool isTargetIntersect;
 
+        public readonly string Name;
+
         protected override float walkSpeed => 60;
 
-        public NPC(Map map, AnimationManager<object> animationManager, string[] phrases) : base(map, animationManager, 64, null, 0)
+        public NPC(Map map, string name, string[] phrases) : base(map, Art.GetNpcAnimations(name), 64, null, 0)
         {
             target = Player.GetInstance();
-            this.phrases = phrases;
+            Phrases = phrases;
             board.ChangeText(phrases[0]);
+            Name = name;
         }
 
         public override void Update(GameTime gameTime)
@@ -43,8 +46,8 @@ namespace ChosenUndead
             if (target.HitBox.Intersects(HitBox))
             {
                 isTargetIntersect = true;
-                if ((phraseTimeLeft -= elapsedTime) <= 0 && currentPhrase < phrases.Length - 1)
-                    board.ChangeText(phrases[++currentPhrase]);
+                if ((phraseTimeLeft -= elapsedTime) <= 0 && currentPhrase < Phrases.Length - 1)
+                    board.ChangeText(Phrases[++currentPhrase]);
             }
             else
             {

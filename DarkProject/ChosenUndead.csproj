@@ -23,6 +23,15 @@
     <Folder Include="Content\Maps\" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="Content\Data\LevelsData\level1.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Data\LevelsData\levelDataSample.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Data\PlayerSaves\save.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
     <None Update="Content\Maps\1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

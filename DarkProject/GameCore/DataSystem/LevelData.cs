@@ -4,48 +4,60 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
-namespace ChosenUndead.GameCore.DataSystem
+namespace ChosenUndead
 {
     public class LevelData
     {
-        private List<ScrollingBackground> Backgrounds;
+        public List<ChestData> Chests { get; set; }
 
-        private Dictionary<Point, bool> chests;
-
-        private List<NPC> entities;
-
-        private static XmlSerializer serializer = new XmlSerializer(typeof(LevelData));
+        public List<NpcData> Npcs { get; set; }
 
         public LevelData() { }
 
-        public LevelData(List<ScrollingBackground> backgrounds, Dictionary<Point, bool> chests, List<NPC> entities)
+        [JsonConstructor]
+        public LevelData(List<ChestData> chests, List<NpcData> npcDatas)
         {
-            Backgrounds = backgrounds;
-            this.chests = chests;
-            this.entities = entities;
+            Chests = chests;
+            Npcs = npcDatas;
         }
+    }
 
-        public static void Serialize(string path, LevelData levelData)
+    public class NpcData
+    {
+        public float X {get; set; }
+
+        public float Y { get; set; }
+
+        public string Name { get; set; }
+
+        public string[] Phrases { get; set; }
+
+        public NpcData(float x, float y, string name, string[] phrases)
         {
-            using (var fs = new FileStream(path, FileMode.OpenOrCreate))
-            {
-                serializer.Serialize(fs, new Point(5, 4));
-            }
+            X = x;
+            Y = y;
+            Name = name;
+            Phrases = phrases;
         }
+    }
 
-        public static LevelData Deserialize(string path)
+    public class ChestData
+    {
+        public float X { get; set; }
+        public float Y { get; set; }
+
+        public bool IsOpen;
+
+        public ChestData() { }
+
+        public ChestData(float x, float y, bool isOpen)
         {
-            Point b;
-
-            using (var fs = new FileStream("Point.xml", FileMode.OpenOrCreate))
-            {
-                b = (Point)serializer.Deserialize(fs);
-            }
-
-            return null;
+            X = x;
+            Y = y;
+            IsOpen = isOpen;
         }
     }
 }

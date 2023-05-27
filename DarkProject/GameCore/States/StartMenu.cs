@@ -24,19 +24,13 @@ namespace ChosenUndead
                 Position = new Vector2(centerX, 300),
                 Text = "Новая игра"
             };
-
-            newGameButton.Click += (sender, e) =>
-            {
-                game.DeleteSave();
-                game.LoadSave();
-            };
+            newGameButton.Click += (sender, e) => game.LoadSave(true);
 
             var continueButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(centerX, 400),
                 Text = "Продолжить"
             };
-
             continueButton.Click += (sender, e) => game.LoadSave();
 
             var optionGameButton = new Button(buttonTexture, buttonFont)
@@ -74,11 +68,6 @@ namespace ChosenUndead
                 component.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
-        }
-
-        public override void PostUpdate(GameTime gameTime)
-        {
-            //Remove sprites if they're not needed
         }
 
         public override void Update(GameTime gameTime)

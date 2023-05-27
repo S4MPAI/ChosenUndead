@@ -18,7 +18,7 @@ namespace ChosenUndead
 
         private List<Component> mapEntities;
 
-        private List<Decoration> decorations;
+        public List<Decoration> Decorations { get; private set; }
 
         private EntityManager entityManager;
 
@@ -73,7 +73,7 @@ namespace ChosenUndead
             Height = map[0].Length;
             Width = map[0][0].Length;
             tiles = new Tile[Height, Width];
-            decorations = new();
+            Decorations = new();
 
 
             return (map[0], map[1], map[2]);
@@ -158,7 +158,7 @@ namespace ChosenUndead
                         break;
                 }
             }
-            decorations.Add(decoration);
+            Decorations.Add(decoration);
             mapEntities.Add(decoration);
         }
 
@@ -168,7 +168,7 @@ namespace ChosenUndead
         {
             entityManager.Update(gameTime);
 
-            foreach (var decoration in decorations)
+            foreach (var decoration in Decorations)
                 decoration.Update(gameTime);
         }
 
@@ -196,5 +196,21 @@ namespace ChosenUndead
         public Rectangle GetBounds(int x, int y) =>
             new Rectangle(x * TileSize, y * TileSize, TileSize, TileSize);
 
+        internal void AddEntities(params Entity[] entities)
+        {
+            foreach (var entity in entities)
+                entityManager.AddEntity(entity);
+        }
+
+        public void SetChestsStates(Dictionary<(float X, float Y), bool> chestsData)
+        {
+            var chests = Decorations.OfType<Chest>();
+
+            foreach (var chest in chests)
+            {
+                if (chestsData.TryGetValue((chest.Position.X, chest.Position.Y), out var isOpen))
+                    chest.IsOpen = isOpen;
+            }
+        }
     }
 }

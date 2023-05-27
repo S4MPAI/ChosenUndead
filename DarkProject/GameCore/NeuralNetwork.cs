@@ -22,7 +22,7 @@ namespace ChosenUndead
 
         private Random random;
         private const float maxValue = 0.5f;
-        private const float minValue = 0.5f;
+        private const float minValue = -0.5f;
 
         public float fitness;
 
@@ -61,7 +61,7 @@ namespace ChosenUndead
             
         private void InitWeights()
         {
-            var weights = new float[layers.Length - 1][][];
+            weights = new float[layers.Length - 1][][];
 
             for (int i = 1; i < layers.Length; i++)
             {
@@ -92,7 +92,7 @@ namespace ChosenUndead
                 for (int j = 0; j < layers[i]; j++)
                 {
                     var value = 0f;
-                    for (int k = 0; k < layers[i - 1]; j++)
+                    for (int k = 0; k < layers[i - 1]; k++)
                         value += weights[i - 1][j][k] * neurons[i - 1][k];
 
                     neurons[i][j] = Activate(value + biases[i][j]);

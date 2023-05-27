@@ -21,6 +21,7 @@ namespace ChosenUndead
         private const string boardsPath = "Interface/Boards/";
         private const string forestBackgroundsPath = "Backgrounds/forest/bg_forest_";
         private const string chestsPath = "Map/Chests/chest";
+        private const string npcPath = "Entities/Npc/";
 
         public static void Initialize(ContentManager content)
         {
@@ -68,6 +69,15 @@ namespace ChosenUndead
             goblinAnimations.AddAnimation(EntityAction.Death, new Animation(content.Load<Texture2D>($"{goblinPath}Death"), 4, 0.2f, false));
 
             return goblinAnimations;
+        }
+
+        public static AnimationManager<object> GetNpcAnimations(string name)
+        {
+            var npcAnimations = new AnimationManager<object>();
+
+            npcAnimations.AddAnimation(EntityAction.Idle, new Animation(content.Load<Texture2D>($"{npcPath}{name}Idle"), 5, 0.2f));
+
+            return npcAnimations;
         }
 
         public static List<ScrollingBackground> GetForestBackgrounds(Point windowSize) => 

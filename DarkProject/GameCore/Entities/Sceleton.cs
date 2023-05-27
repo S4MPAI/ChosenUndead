@@ -17,7 +17,7 @@ namespace ChosenUndead
             map,
             Art.GetSceletonAnimations(),
             hitBoxWidth,
-            new Weapon(1, 1, 20, new[] { WeaponAttack.FirstAttack, WeaponAttack.SecondAttack }),
+            new Weapon(1, 1, 1000, new[] { WeaponAttack.FirstAttack, WeaponAttack.SecondAttack }),
             attackWidth)
         {
         }
