@@ -20,7 +20,7 @@ namespace ChosenUndead
 
         public List<Decoration> Decorations { get; private set; }
 
-        private EntityManager entityManager;
+        public EntityManager entityManager;
 
         private int spawnpointNumber;
 
@@ -34,7 +34,7 @@ namespace ChosenUndead
 
         public int Height { get; private set; }
 
-        public void Generate(Stream fileStream, int size, int spawnpointNumber)
+        public void Generate(StreamReader reader, int size, int spawnpointNumber)
         {
             mapEntities = new();
             TileSize = size;
@@ -42,14 +42,13 @@ namespace ChosenUndead
             
             entityManager = new();
             
-            using(var reader = new StreamReader(fileStream))
-            {
-                var mapInfo = ReadMap(reader);
-                MapSize = new(mapInfo.tiles[0].Length * size, mapInfo.tiles.Length * size);
-                ConvertSymbolsToObjects(reader, mapInfo.tiles, ConvertTiles, TileSize);
-                ConvertSymbolsToObjects(reader, mapInfo.entities, ConvertEntities, TileSize);
-                ConvertSymbolsToObjects(reader, mapInfo.decorations, ConvertDecorations, TileSize);
-            }
+
+            var mapInfo = ReadMap(reader);
+            MapSize = new(mapInfo.tiles[0].Length * size, mapInfo.tiles.Length * size);
+            ConvertSymbolsToObjects(mapInfo.tiles, ConvertTiles, TileSize);
+            ConvertSymbolsToObjects(mapInfo.entities, ConvertEntities, TileSize);
+            ConvertSymbolsToObjects(mapInfo.decorations, ConvertDecorations, TileSize);
+
         }
 
         public static void SetLevelChanged(Action<LevelTransition> levelChanged)
@@ -79,7 +78,7 @@ namespace ChosenUndead
             return (map[0], map[1], map[2]);
         }
 
-        private void ConvertSymbolsToObjects(StreamReader reader, string[][] map, Action<string, int, int, int> converter, int size)
+        private void ConvertSymbolsToObjects(string[][] map, Action<string, int, int, int> converter, int size)
         {
             for (int y = 0; y < Height; y++)
                 for (int x = 0; x < Width; x++)
@@ -124,7 +123,10 @@ namespace ChosenUndead
             switch (symbol)
             {
                 case "S":
-                    currentEntity = entityManager.AddSceleton(this);
+                    currentEntity = entityManager.AddEnemy(this, EnemyType.Sceleton);
+                    break;
+                case "G":
+                    currentEntity = entityManager.AddEnemy(this, EnemyType.Goblin);
                     break;
                 default:
                     return;
@@ -196,20 +198,21 @@ namespace ChosenUndead
         public Rectangle GetBounds(int x, int y) =>
             new Rectangle(x * TileSize, y * TileSize, TileSize, TileSize);
 
-        internal void AddEntities(params Entity[] entities)
+        public void AddNPCs(params NPC[] npcs)
         {
-            foreach (var entity in entities)
-                entityManager.AddEntity(entity);
+            foreach (var npc in npcs)
+                entityManager.AddNPC(npc);
         }
 
-        public void SetChestsStates(Dictionary<(float X, float Y), bool> chestsData)
+        public void SetChestsStates(List<ChestData> chestsData)
         {
             var chests = Decorations.OfType<Chest>();
 
-            foreach (var chest in chests)
+            foreach (var chestData in chestsData)
             {
-                if (chestsData.TryGetValue((chest.Position.X, chest.Position.Y), out var isOpen))
-                    chest.IsOpen = isOpen;
+                var chest = chests.FirstOrDefault(x => x.Position.X == chestData.X && x.Position.Y == chestData.Y);
+                if (chest != null)
+                    chest.IsOpen = chestData.IsOpen;
             }
         }
     }

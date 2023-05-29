@@ -35,7 +35,9 @@ namespace ChosenUndead
 
         public WeaponAttack CurrentAttack { get; set; }
 
-        private bool isDamaged { get; set; }
+        private bool isDamageReg { get; set; }
+
+        public bool IsDamaged { get; set; }
 
         public Weapon()
         {
@@ -65,28 +67,28 @@ namespace ChosenUndead
                 if (CurrentAttack != WeaponAttacks[^1] && isFire)
                 {
                     CurrentAttack = CurrentAttack + 1;
-                    isDamaged = false;
+                    isDamageReg = false;
                 }
                 else
                 {
                     CurrentAttack = WeaponAttack.Stun;
+                    isDamageReg = true;
                     stunCooldownLeft = stunCooldown;
                 }
 
                 attackCooldownLeft = attackCooldown;
             }
 
+            IsDamaged = IsDamageReg();
+
             if (stunCooldownLeft <= 0 && CurrentAttack == WeaponAttack.Stun)
                 CurrentAttack = WeaponAttack.None;
         }
 
-        public virtual bool IsDamaged()
+        protected virtual bool IsDamageReg()
         {
-            if (attackCooldownLeft < attackCooldown / 2 && !isDamaged)
-            {
-                isDamaged = true;
-                return true;
-            }
+            if (attackCooldownLeft < attackCooldown / 2 && !isDamageReg)
+                return isDamageReg = true;
 
             return false;
         }

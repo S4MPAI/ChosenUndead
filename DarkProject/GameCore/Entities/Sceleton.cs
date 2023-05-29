@@ -12,13 +12,13 @@ namespace ChosenUndead
 {
     public class Sceleton : Enemy
     {
-        public Sceleton(Map map, int hitBoxWidth, int attackWidth = 30) : base(
-            NeuralNetworkManager.GetGoblinNeuralNetwork(),
+        public Sceleton(Map map) : base(
+            NeuralNetworkManager.GetSceletonNeuralNetwork(),
             map,
             Art.GetSceletonAnimations(),
-            hitBoxWidth,
-            new Weapon(1, 1, 1000, new[] { WeaponAttack.FirstAttack, WeaponAttack.SecondAttack }),
-            attackWidth)
+            32,
+            new Weapon(1, 1, 10, new[] { WeaponAttack.FirstAttack, WeaponAttack.SecondAttack }),
+            32)
         {
         }
 
@@ -26,18 +26,20 @@ namespace ChosenUndead
 
         protected override float maxHp => 30;
 
-        public override void Update(GameTime gameTime)
-        {
-            if (state == EntityAction.Death)
-            {
-                if (!animationManager.IsCurrentAnimationEnded())
-                    animationManager.Update(gameTime);
-                
-                return;
-            }
+        protected override float walkSpeedAttackCoef => 0.5f;
 
-            base.Update(gameTime);
-            animationManager.Update(gameTime);
-        }
+        //public override void Update(GameTime gameTime)
+        //{
+        //    if (state == EntityAction.Death)
+        //    {
+        //        if (!animationManager.IsCurrentAnimationEnded())
+        //            animationManager.Update(gameTime);
+                
+        //        return;
+        //    }
+
+        //    base.Update(gameTime);
+        //    animationManager.Update(gameTime);
+        //}
     }
 }

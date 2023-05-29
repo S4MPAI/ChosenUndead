@@ -133,6 +133,18 @@
 /processorParam:TextureFormat=Color
 /build:Entities/NPC/DirtMan/Idle.png
 
+#begin Entities/Player/Death.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Entities/Player/Death.png
+
 #begin Entities/Player/FirstAttack.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -157,6 +169,18 @@
 /processorParam:TextureFormat=Color
 /build:Entities/Player/FourthAttack.png
 
+#begin Entities/Player/Healing.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Entities/Player/Healing.png
+
 #begin Entities/Player/Idle.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -180,6 +204,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Entities/Player/Jump.png
+
+#begin Entities/Player/Roll.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Entities/Player/Roll.png
 
 #begin Entities/Player/Run.png
 /importer:TextureImporter
@@ -217,11 +253,17 @@
 /processorParam:TextureFormat=Color
 /build:Entities/Player/ThirdAttack.png
 
-#begin Entities/Sceleton/damageSound.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Entities/Sceleton/damageSound.mp3
+#begin Entities/Sceleton/Attack.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Entities/Sceleton/Attack.png
 
 #begin Entities/Sceleton/Death.png
 /importer:TextureImporter
@@ -235,12 +277,6 @@
 /processorParam:TextureFormat=Color
 /build:Entities/Sceleton/Death.png
 
-#begin Entities/Sceleton/deathSound.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Entities/Sceleton/deathSound.mp3
-
 #begin Entities/Sceleton/Idle.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -252,6 +288,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Entities/Sceleton/Idle.png
+
+#begin Entities/Sceleton/Walk.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Entities/Sceleton/Walk.png
 
 #begin Fonts/BoardFont.spritefont
 /importer:FontDescriptionImporter

@@ -10,10 +10,10 @@ namespace ChosenUndead
 {
     public class PlayerData
     {
-        [JsonInclude]
         public int X, Y;
 
-        [JsonInclude]
         public int PlayerLevelIndex;
+
+        public int AttackBuffCount, VitalityBuffCount, MaxHealingQuartz, Keys;
     }
 }

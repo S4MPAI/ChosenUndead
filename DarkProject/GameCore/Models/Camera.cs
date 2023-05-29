@@ -11,7 +11,7 @@ namespace ChosenUndead
     {
         private Point windowSize;
 
-        public Point VisionWindowSize { get => new Point((int)(windowSize.X / Scale)-1, (int)(windowSize.Y / Scale)); }
+        public Point VisionWindowSize { get => new Point((int)(windowSize.X / Scale) - 1, (int)(windowSize.Y / Scale)); }
 
         public Vector2 WindowPos { get; private set; }
 

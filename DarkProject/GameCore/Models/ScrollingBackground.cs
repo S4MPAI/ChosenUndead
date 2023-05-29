@@ -39,8 +39,8 @@ namespace ChosenUndead
             {
                 sprites.Add(new Sprite(texture, scale)
                 {
-                    Position = new Vector2((i * texture.Width * scale) - 1, windowSize.Y - texture.Height * scale)
-                }); 
+                    Position = new Vector2(i * texture.Width * scale - 1, windowSize.Y - texture.Height * scale)
+                });
             }
         }
 
@@ -52,7 +52,7 @@ namespace ChosenUndead
                 sprite.Draw(gameTime, spriteBatch);
                 sprite.Position -= windowPos;
             }
-                
+
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -84,7 +84,7 @@ namespace ChosenUndead
             for (int i = 0; i < sprites.Count; i++)
             {
                 var sprite = sprites[i];
-                
+
                 if (sprite.Rectangle.Right <= 0)
                 {
                     var index = i - 1;

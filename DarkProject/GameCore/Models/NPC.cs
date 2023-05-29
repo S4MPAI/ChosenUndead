@@ -30,6 +30,8 @@ namespace ChosenUndead
 
         protected override float walkSpeed => 60;
 
+        protected override float walkSpeedAttackCoef => 1f;
+
         public NPC(Map map, string name, string[] phrases) : base(map, Art.GetNpcAnimations(name), 64, null, 0)
         {
             target = Player.GetInstance();

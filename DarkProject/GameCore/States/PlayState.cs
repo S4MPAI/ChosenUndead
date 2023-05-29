@@ -57,14 +57,16 @@ namespace ChosenUndead
         {
             base.Initialize();
             
-            using var fileStream = TitleContainer.OpenStream(mapPath);
-            map.Generate(fileStream, 24, spawnpointNumber);
+
+            using var fileStream = new StreamReader(mapPath);
+            map.Generate(fileStream, 32, spawnpointNumber);
 
             if (File.Exists(savePath))
             {
                 levelData = LoadLevelData();
                 var npcS = levelData.Npcs.Select(x => new NPC(map, x.Name, x.Phrases));
-                map.AddEntities(npcS.ToArray());
+                map.AddNPCs(npcS.ToArray());
+                map.SetChestsStates(levelData.Chests);
             }
             
             player = Player.GetInstance(map);

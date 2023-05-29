@@ -10,25 +10,33 @@ namespace ChosenUndead
 {
     public class Player : Entity
     {
-        protected override float walkSpeed { get; } = 160f;
+        protected override float walkSpeed { get; } = 170f;
+        protected override float walkSpeedAttackCoef => 0.25f;
+        protected float rollSpeedCoef => 1.3f;
 
-        private const float MaxJumpTime = 0.4f;
+        private const float MaxJumpTime = 0.62f;
 
         private const float JumpLaunchVelocity = -400.0f;
 
-        private const float JumpControlPower = 0.5f;
+        private const float JumpControlPower = 0.4f;
 
         private bool wasJumping;
         private float jumpTime;
         private bool isJumping;
 
-        protected override float maxHp => startMaxHp + attackBuffCount * attackBuffCoef;
+        public int Keys { get; private set; }
+
+        public int MaxHealingQuartz { get; private set; }
+
+        public int HealingQuartzLeft { get; private set; }
+
+        protected override float maxHp => startMaxHp + VitalityBuffCount * vitalityBuffCoef;
         protected const float startMaxHp = 50f;
-        public int vitalityBuffCount { get; private set; }
+        public int VitalityBuffCount { get; private set; }
         private const float vitalityBuffCoef = 10f;
 
-        public override float Damage { get => weapon.Damage + vitalityBuffCount * vitalityBuffCoef; }
-        public int attackBuffCount { get; private set; }
+        public override float Damage { get => weapon.Damage + AttackBuffCount * attackBuffCoef; }
+        public int AttackBuffCount { get; private set; }
         private const float attackBuffCoef = 1f;
 
         public bool IsInteract { get; private set; }
@@ -37,6 +45,7 @@ namespace ChosenUndead
 
         private Player(Map map) : base(map, Art.GetPlayerAnimations(), 32, new Sword(), 32)
         {
+            HealingQuartzLeft = MaxHealingQuartz;
         }
 
         public static Player GetInstance(Map map = null)
@@ -50,15 +59,31 @@ namespace ChosenUndead
             return instance;
         }
 
-        public override bool IsDead() => state == EntityAction.Death && animationManager.IsCurrentAnimationEnded();
+        public override bool IsDeadFull() => state == EntityAction.Death && animationManager.IsCurrentAnimationEnded();
 
-        public void AddBuff(ChestBuff buff)
+        public void AddItem(ChestItem buff)
         {
-            if (buff == ChestBuff.Attack) 
-                attackBuffCount++;
-            else if (buff == ChestBuff.Vitality) 
-                vitalityBuffCount++;
+            switch (buff)
+            {
+                case ChestItem.Attack:
+                    AttackBuffCount++;
+                    break;
+                case ChestItem.Vitality:
+                    VitalityBuffCount++;
+                    break;
+                case ChestItem.HealingQuartz:
+                    MaxHealingQuartz++;
+                    break;
+                case ChestItem.Key:
+                    Keys++;
+                    break;
+                default:
+                    break;
+            }
         }
+
+        public void SetInventory(int attackBuffCount, int vitalityBuffCount, int maxHealingQuartz, int keys) => 
+            (AttackBuffCount, VitalityBuffCount, MaxHealingQuartz, Keys) = (attackBuffCount, vitalityBuffCount, maxHealingQuartz, keys);
 
         public override void Update(GameTime gameTime)
         {
@@ -75,11 +100,10 @@ namespace ChosenUndead
             SetAnimation();
 
             animationManager.Update(gameTime);
-            Velocity = weapon.IsAttack() ? Vector2.Zero : Velocity;
+            Velocity *= weapon.IsAttack() ? walkSpeedAttackCoef : 1;
 
-            //Position += weapon.CurrentAttack != WeaponAttack.None ? Vector2.Zero : Velocity;
             Position += Velocity * elapsedTime;
-            orientation = Velocity.X != 0 ? Velocity.X > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally : orientation;
+            orientation = Velocity.X != 0 ? (Velocity.X > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally) : orientation;
         }
 
         private void Move()

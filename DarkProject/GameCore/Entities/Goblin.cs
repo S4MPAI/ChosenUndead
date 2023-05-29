@@ -8,12 +8,14 @@ namespace ChosenUndead
 {
     public class Goblin : Enemy
     {
-        protected override float maxHp => 50f;
+        protected override float maxHp => 45f;
 
-        protected override float walkSpeed => 170f;
+        protected override float walkSpeed => 150f;
+
+        protected override float walkSpeedAttackCoef => 0.5f;
 
         public Goblin(Map map, Entity target = null) : 
-            base(NeuralNetworkManager.GetGoblinNeuralNetwork(), map, Art.GetGoblinAnimations(), 30, new Weapon(1, 0.2f, 15, new[]{WeaponAttack.FirstAttack}), 60, target)
+            base(NeuralNetworkManager.GetGoblinNeuralNetwork(), map, Art.GetGoblinAnimations(), 30, new Weapon(1, 1f, 15, new[]{WeaponAttack.FirstAttack}), 60, target)
         {
         }
     }

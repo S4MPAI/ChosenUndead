@@ -2,9 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
 namespace ChosenUndead
@@ -65,7 +63,7 @@ namespace ChosenUndead
             IsMouseVisible = true;
             Art.Initialize(Content);
             Component.Content = Content;
-            camera = new Camera(WindowSize, 4.8f);
+            camera = new Camera(WindowSize, 1f);
             Map.SetLevelChanged(ChangeLevel);
             Map.SetSaveCompleted(SaveCompleted);
             graphics.IsFullScreen = false;
@@ -138,7 +136,9 @@ namespace ChosenUndead
             {
                 X = (int)player.Position.X,
                 Y = (int)player.Position.Y,
-                PlayerLevelIndex = Array.IndexOf(Levels, currentState)
+                PlayerLevelIndex = Array.IndexOf(Levels, currentState),
+                AttackBuffCount = player.AttackBuffCount,
+                VitalityBuffCount = player.VitalityBuffCount
             };
             var jsonStringSave = JsonConvert.SerializeObject(data, Formatting.Indented);
             File.WriteAllText(saveFile, jsonStringSave);
@@ -152,9 +152,10 @@ namespace ChosenUndead
             {
                 var playerData = new PlayerData()
                 {
-                    X = -24,
+                    X = -32,
                     Y = 154,
-                    PlayerLevelIndex = 0
+                    PlayerLevelIndex = 0,
+                    MaxHealingQuartz = 1
                 };
                 var jsonSave = JsonConvert.SerializeObject(playerData, Formatting.Indented);
                 File.WriteAllText(saveFile, jsonSave);
@@ -164,6 +165,7 @@ namespace ChosenUndead
             var data = JsonConvert.DeserializeObject<PlayerData>(jsonString);
             ChangeState(Levels[data.PlayerLevelIndex]);
             player.Position = new Vector2(data.X, data.Y);
+            player.SetInventory(data.AttackBuffCount, data.VitalityBuffCount, data.MaxHealingQuartz, data.Keys);
         }
     }
 }

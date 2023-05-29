@@ -17,7 +17,9 @@ namespace ChosenUndead
         Idle,
         Run,
         Jump,
-        Death
+        Death,
+        Roll,
+        Healing
     }
 
     public abstract class Entity : Component
@@ -46,13 +48,15 @@ namespace ChosenUndead
             (int)TextureSize.Y);
         }
 
-        public bool IsAttacking { get => weapon.IsDamaged(); }
+        public bool IsDead => state == EntityAction.Death;
 
         public float AttackRegTimeLeft { get => weapon.attackRegTimeLeft; }
 
         protected Weapon weapon { get; set; }
 
         public virtual float Damage { get => weapon.Damage; }
+
+        public bool IsAttacking => weapon.IsDamaged;
 
         protected AnimationManager<object> animationManager;
 
@@ -67,6 +71,8 @@ namespace ChosenUndead
         protected float Hp { get; set; }
 
         protected abstract float walkSpeed { get; }
+
+        protected abstract float walkSpeedAttackCoef { get; }
 
         protected float elapsedTime;
 
@@ -129,9 +135,9 @@ namespace ChosenUndead
             }
         }
 
-        public virtual bool IsDead() => state == EntityAction.Death && animationManager.IsCurrentAnimationEnded();
-
         #region Collision
+
+        public virtual bool IsDeadFull() => state == EntityAction.Death && animationManager.IsCurrentAnimationEnded();
 
         protected virtual void CollisionWithMap()
         {

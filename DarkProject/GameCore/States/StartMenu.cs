@@ -49,12 +49,21 @@ namespace ChosenUndead
 
             exitGameButton.Click += (sender, e) => game.Exit();
 
+            var testGameButton = new Button(buttonTexture, buttonFont)
+            {
+                Position = new Vector2(centerX, 700),
+                Text = "Тест Нейронки"
+            };
+
+            testGameButton.Click += (sender, e) => game.ChangeState(new NNState(game, content)); 
+
             sprites = new List<Component>()
             {
                 newGameButton,
                 continueButton,
                 optionGameButton,
                 exitGameButton,
+                testGameButton
             };
         }
 

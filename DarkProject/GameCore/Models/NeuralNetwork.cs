@@ -23,8 +23,9 @@ namespace ChosenUndead
         private Random random;
         private const float maxValue = 0.5f;
         private const float minValue = -0.5f;
+        private string savePath => $"../../../Content/Data/NeuralNetworks/{name}.txt";
 
-        public float fitness;
+        public float Fitness;
 
         public NeuralNetwork(int[] layers, string name)
         {
@@ -43,9 +44,9 @@ namespace ChosenUndead
             Load();
         }
 
-        private float GetRandomWeight() => (float)random.NextDouble() * (maxValue - minValue) - minValue;
+        private float GetRandomWeight() => GetRandomFloat(minValue, maxValue);
 
-        private float GetRandomFloat(float min, float max) => (float)random.NextDouble() * (max - min) - min;
+        private float GetRandomFloat(float min, float max) => (float)random.NextDouble() * (max - min) + min;
 
         private void InitNeurons() =>
             neurons = layers.Select(layer => new float[layer]).ToArray();
@@ -58,7 +59,7 @@ namespace ChosenUndead
                 .Select(layer => new float[layer].Select(bias => GetRandomWeight()).ToArray())
                 .ToArray();
         }
-            
+
         private void InitWeights()
         {
             weights = new float[layers.Length - 1][][];
@@ -66,7 +67,7 @@ namespace ChosenUndead
             for (int i = 1; i < layers.Length; i++)
             {
                 var layerWeights = new float[neurons[i].Length][];
-                var previousLayerNeurons = layers[i - 1]; 
+                var previousLayerNeurons = layers[i - 1];
 
                 for (int j = 0; j < layers[i]; j++)
                 {
@@ -104,16 +105,16 @@ namespace ChosenUndead
 
         public float Activate(float value) => (float)Math.Tanh(value);
 
-        public void Mutate(int chance, float val)
+        public void Mutate(float chance, float val)
         {
             for (int i = 0; i < biases.Length; i++)
                 for (int j = 0; j < biases[i].Length; j++)
-                    biases[i][j] += (GetRandomFloat(0f, chance) <= 5) ? GetRandomFloat(-val, val) : 0;
+                    biases[i][j] += GetRandomFloat(0f, 1) <= chance ? GetRandomFloat(-val, val) : 0;
 
             for (int i = 0; i < weights.Length; i++)
                 for (int j = 0; j < weights[i].Length; j++)
                     for (int k = 0; k < weights[i][j].Length; k++)
-                        weights[i][j][k] += (GetRandomFloat(0f, chance) <= 5) ? GetRandomFloat(-val, val) : 0;
+                        weights[i][j][k] += GetRandomFloat(0f, 1) <= chance ? GetRandomFloat(-val, val) : 0;
         }
 
         public NeuralNetwork Copy()
@@ -133,13 +134,14 @@ namespace ChosenUndead
         }
         public void Load()
         {
-            var path = name + ".txt";
-            if (!File.Exists(path)) return;
+            if (!File.Exists(savePath)) return;
 
-            var listLines = File.ReadAllLines(path);
-            var index = 1;
+            var listLines = File.ReadAllLines(savePath);
 
-            if (new FileInfo(path).Length > 0)
+            var index = 0;
+
+            if (new FileInfo(savePath).Length > 0)
+            {
                 for (int i = 0; i < biases.Length; i++)
                     for (int j = 0; j < biases[i].Length; j++)
                     {
@@ -151,15 +153,16 @@ namespace ChosenUndead
                     for (int j = 0; j < weights[i].Length; j++)
                         for (int k = 0; k < weights[i][j].Length; k++)
                         {
-                            weights[i][j][k] = float.Parse(listLines[index]); ;
+                            weights[i][j][k] = float.Parse(listLines[index]);
                             index++;
                         }
+            }
+
         }
         public void Save()
         {
-            var path = name + ".txt";
-            File.Create(path).Close();
-            StreamWriter writer = new StreamWriter(path, true);
+            File.Create(savePath).Close();
+            StreamWriter writer = new StreamWriter(savePath, true);
 
             for (int i = 0; i < biases.Length; i++)
                 for (int j = 0; j < biases[i].Length; j++)
@@ -169,15 +172,15 @@ namespace ChosenUndead
                 for (int j = 0; j < weights[i].Length; j++)
                     for (int k = 0; k < weights[i][j].Length; k++)
                         writer.WriteLine(weights[i][j][k]);
-            
+
             writer.Close();
         }
 
         public int CompareTo(NeuralNetwork other)
         {
-            if (other == null || fitness > other.fitness) return 1;
+            if (other == null || Fitness > other.Fitness) return 1;
 
-            if (fitness < other.fitness)
+            if (Fitness < other.Fitness)
                 return -1;
 
             return 0;

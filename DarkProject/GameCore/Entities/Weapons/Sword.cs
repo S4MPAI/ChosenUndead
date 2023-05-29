@@ -10,8 +10,8 @@ namespace ChosenUndead
     {
         public Sword() : base(
             0.5f, 
-            0.1f, 
-            10, 
+            2f, 
+            25, 
             new WeaponAttack[] {WeaponAttack.FirstAttack, WeaponAttack.SecondAttack, WeaponAttack.ThirdAttack, WeaponAttack.FourthAttack})
         {
 

@@ -19,6 +19,7 @@
   <ItemGroup>
     <Folder Include="Content\Backgrounds\forest\" />
     <Folder Include="Content\Controls\" />
+    <Folder Include="Content\Data\NeuralNetworks\" />
     <Folder Include="Content\Fonts\" />
     <Folder Include="Content\Maps\" />
   </ItemGroup>
@@ -40,6 +41,9 @@
     </None>
     <None Update="Content\Maps\3.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Maps\99.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
