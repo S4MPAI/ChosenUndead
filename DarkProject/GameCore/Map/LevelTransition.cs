@@ -26,10 +26,10 @@ namespace ChosenUndead
             LevelIndex = levelIndex;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
             isTargetIntersect = false;
-            base.Update(gameTime);
+            base.Update();
 
             if (target.HitBox.Intersects(Rectangle))
             {
@@ -40,12 +40,12 @@ namespace ChosenUndead
             }
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             if (isTargetIntersect)
             {
                 board.Position = new Vector2(target.HitBox.Center.X - board.Rectangle.Width / 2, target.HitBox.Top - board.Rectangle.Height);
-                board.Draw(gameTime, spriteBatch);
+                board.Draw(spriteBatch);
             }
                 
         }

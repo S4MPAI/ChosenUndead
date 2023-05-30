@@ -39,7 +39,7 @@ namespace ChosenUndead
             PenColour = Color.Silver;
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             var colour = Color.White;
 
@@ -56,7 +56,7 @@ namespace ChosenUndead
             }
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
             previousMouse = currentMouse;
             currentMouse = Mouse.GetState();

@@ -32,12 +32,12 @@ namespace ChosenUndead
             startText = board.Text;
         }
         
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
-            base.Update(gameTime);
+            base.Update();
             isTargetIntersect = false;
 
-            if((textCooldownLeft -= (float)gameTime.ElapsedGameTime.TotalSeconds) < 0)
+            if((textCooldownLeft -= Time.ElapsedSeconds) < 0)
                 board.ChangeText(startText);
 
             if (target.HitBox.Intersects(Rectangle))
@@ -54,14 +54,14 @@ namespace ChosenUndead
             }
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(gameTime, spriteBatch);
+            base.Draw(spriteBatch);
 
             if (isTargetIntersect)
             {
                 board.Position = new Vector2(target.HitBox.Center.X - board.Rectangle.Width / 2, target.HitBox.Top - board.Rectangle.Height);
-                board.Draw(gameTime, spriteBatch);
+                board.Draw(spriteBatch);
             }
 
         }

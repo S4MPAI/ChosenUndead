@@ -85,10 +85,10 @@ namespace ChosenUndead
         public void SetInventory(int attackBuffCount, int vitalityBuffCount, int maxHealingQuartz, int keys) => 
             (AttackBuffCount, VitalityBuffCount, MaxHealingQuartz, Keys) = (attackBuffCount, vitalityBuffCount, maxHealingQuartz, keys);
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
             Velocity.X = 0;
-            elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            elapsedTime = Time.ElapsedSeconds;
 
             IsInteract = InputManager.InteractionPressed;
 
@@ -96,10 +96,10 @@ namespace ChosenUndead
             CollisionWithMap();
             isJumping = InputManager.JumpPressed;
 
-            weapon.Update(gameTime, isOnGround ? InputManager.AttackPressed : false);
+            weapon.Update(isOnGround ? InputManager.AttackPressed : false);
             SetAnimation();
 
-            animationManager.Update(gameTime);
+            animationManager.Update();
             Velocity *= weapon.IsAttack() ? walkSpeedAttackCoef : 1;
 
             Position += Velocity * elapsedTime;

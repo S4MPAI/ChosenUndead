@@ -45,9 +45,9 @@ namespace ChosenUndead
 
         public bool IsCurrentAnimationEnded() => CurrentAnimation.IsEnded();
  
-        public void Update(GameTime gameTime)
+        public void Update()
         {
-            CurrentAnimation.Update(gameTime);
+            CurrentAnimation.Update();
         }
 
         public void Draw(Vector2 position, SpriteBatch spriteBatch, SpriteEffects spriteEffect = SpriteEffects.None)

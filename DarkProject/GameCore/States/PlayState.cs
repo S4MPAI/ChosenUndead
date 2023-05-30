@@ -30,27 +30,27 @@ namespace ChosenUndead
             
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(sortMode: SpriteSortMode.Immediate, transformMatrix: game.camera.Transform);
 
             if (backgrounds != null )
                 foreach (var bg in backgrounds)
-                    bg.Draw(gameTime, spriteBatch, game.camera.WindowPos);
+                    bg.Draw(spriteBatch, game.camera.WindowPos);
 
-            map.Draw(gameTime, spriteBatch);
+            map.Draw(spriteBatch);
 
             spriteBatch.End();
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
-            map.Update(gameTime);
+            map.Update();
             game.camera.Follow(player, map);
 
             if (backgrounds != null)
                 foreach (var bg in backgrounds)
-                    bg.Update(gameTime);
+                    bg.Update();
         }
 
         public override void Initialize()

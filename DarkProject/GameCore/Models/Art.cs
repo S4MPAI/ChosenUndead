@@ -121,7 +121,7 @@ namespace ChosenUndead
             this.textColor = textColor;
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, Rectangle, boardColor);
 
@@ -133,7 +133,7 @@ namespace ChosenUndead
             }
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
         }
 

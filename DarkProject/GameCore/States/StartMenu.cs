@@ -49,40 +49,31 @@ namespace ChosenUndead
 
             exitGameButton.Click += (sender, e) => game.Exit();
 
-            var testGameButton = new Button(buttonTexture, buttonFont)
-            {
-                Position = new Vector2(centerX, 700),
-                Text = "Тест Нейронки"
-            };
-
-            testGameButton.Click += (sender, e) => game.ChangeState(new NNState(game, content)); 
-
             sprites = new List<Component>()
             {
                 newGameButton,
                 continueButton,
                 optionGameButton,
-                exitGameButton,
-                testGameButton
+                exitGameButton
             };
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
 
             spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
 
             foreach (var component in sprites)
-                component.Draw(gameTime, spriteBatch);
+                component.Draw(spriteBatch);
 
             spriteBatch.End();
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
             foreach (var component in sprites)
-                component.Update(gameTime);
+                component.Update();
         }
     }
 }

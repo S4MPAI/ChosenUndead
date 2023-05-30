@@ -44,33 +44,33 @@ namespace ChosenUndead
             }
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 windowPos)
+        public void Draw(SpriteBatch spriteBatch, Vector2 windowPos)
         {
             foreach (var sprite in sprites)
             {
                 sprite.Position += windowPos;
-                sprite.Draw(gameTime, spriteBatch);
+                sprite.Draw(spriteBatch);
                 sprite.Position -= windowPos;
             }
-
+                
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             foreach (var sprite in sprites)
-                sprite.Draw(gameTime, spriteBatch);
+                sprite.Draw(spriteBatch);
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
-            ApplySpeed(gameTime);
+            ApplySpeed();
 
             CheckPosition();
         }
 
-        private void ApplySpeed(GameTime gameTime)
+        private void ApplySpeed()
         {
-            speed = (float)(scrollingSpeed * gameTime.ElapsedGameTime.TotalSeconds);
+            speed = scrollingSpeed * Time.ElapsedSeconds;
 
             if (player.Velocity.X > 0 || !constantSpeed)
                 speed *= player.Velocity.X;

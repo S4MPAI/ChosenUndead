@@ -53,9 +53,9 @@ namespace ChosenUndead
             this.WeaponAttacks = weaponAttacks;
         }
 
-        public virtual void Update(GameTime gameTime, bool isFire)
+        public virtual void Update(bool isFire)
         {
-            var elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            var elapsedTime = Time.ElapsedSeconds;
 
             if (CurrentAttack == WeaponAttack.Stun)
                 stunCooldownLeft -= elapsedTime;

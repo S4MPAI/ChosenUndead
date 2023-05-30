@@ -30,7 +30,7 @@ namespace ChosenUndead
             target = Player.GetInstance();
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
             if (target.IsInteract && !IsOpen && Rectangle.Intersects(target.HitBox))
             {
@@ -38,12 +38,12 @@ namespace ChosenUndead
                 target.AddItem(item);
             }
                 
-            if (IsOpen) animation?.Update(gameTime);
+            if (IsOpen) animation?.Update();
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(gameTime, spriteBatch);
+            base.Draw(spriteBatch);
         }
     }
 }

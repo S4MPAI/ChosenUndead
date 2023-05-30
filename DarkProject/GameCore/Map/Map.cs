@@ -166,20 +166,20 @@ namespace ChosenUndead
 
         #endregion
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
-            entityManager.Update(gameTime);
+            entityManager.Update();
 
             foreach (var decoration in Decorations)
-                decoration.Update(gameTime);
+                decoration.Update();
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             foreach (var component in mapEntities)
-                component.Draw(gameTime, spriteBatch);
+                component.Draw(spriteBatch);
 
-            entityManager.Draw(gameTime, spriteBatch);
+            entityManager.Draw(spriteBatch);
         }
 
         private void SetEntityPosition(Entity entity, int x, int y)

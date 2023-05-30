@@ -57,11 +57,11 @@ namespace ChosenUndead
             this.frameTime = frameTime;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
             if (!isLooping && currentFrame == FramesCount - 1) return;
 
-            frameTimeLeft -= gameTime.ElapsedGameTime.TotalSeconds;
+            frameTimeLeft -= Time.ElapsedSeconds;
 
             if (!(frameTimeLeft <= 0)) return;
             

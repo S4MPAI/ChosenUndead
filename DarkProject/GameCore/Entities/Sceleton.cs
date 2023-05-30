@@ -13,7 +13,6 @@ namespace ChosenUndead
     public class Sceleton : Enemy
     {
         public Sceleton(Map map) : base(
-            NeuralNetworkManager.GetSceletonNeuralNetwork(),
             map,
             Art.GetSceletonAnimations(),
             32,

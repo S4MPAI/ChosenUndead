@@ -54,26 +54,26 @@ namespace ChosenUndead
 
         public void AddNPC(NPC npc) => npcs.Add(npc);
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            Player.Draw(gameTime, spriteBatch);
+            Player.Draw(spriteBatch);
             foreach (var enemy in enemies)
-                enemy.Draw(gameTime, spriteBatch);
+                enemy.Draw(spriteBatch);
             foreach (var npc in npcs)
-                npc.Draw(gameTime, spriteBatch);
+                npc.Draw(spriteBatch);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
-            Player?.Update(gameTime);
+            Player?.Update();
 
             for (int i = 0; i < enemies.Count; i++)
-                enemies[i].Update(gameTime);
+                enemies[i].Update();
 
 
 
             foreach (var npc in npcs)
-                npc.Update(gameTime);
+                npc.Update();
 
             //foreach (var enemy in enemies)
             //    CheckEntityCollision(Player, enemy);
@@ -107,14 +107,7 @@ namespace ChosenUndead
         private void MakeAttack(Entity attackEntity, Entity entity)
         {
             if (attackEntity.IsAttacking && attackEntity.AttackBox.Intersects(entity.HitBox))
-            {
                 entity.GiveDamage(attackEntity.Damage);
-
-                if (attackEntity is Enemy enemy && enemy.Target == entity && !entity.IsDead) 
-                    enemy.AddAttackPerformance();
-                if (entity is Enemy enemy1 && enemy1.Target == attackEntity && !attackEntity.IsDead) 
-                    enemy1.AddGetDamagedPerformance();
-            }
         }
     }
 }

@@ -36,13 +36,13 @@ namespace ChosenUndead
                     texture.Height);
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
             if (animation != null)
-                animation.Update(gameTime);
+                animation.Update();
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             if (texture != null)
                 spriteBatch.Draw(texture, Rectangle, Color.White);

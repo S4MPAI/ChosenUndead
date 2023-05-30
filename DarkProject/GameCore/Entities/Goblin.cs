@@ -15,7 +15,7 @@ namespace ChosenUndead
         protected override float walkSpeedAttackCoef => 0.5f;
 
         public Goblin(Map map, Entity target = null) : 
-            base(NeuralNetworkManager.GetGoblinNeuralNetwork(), map, Art.GetGoblinAnimations(), 30, new Weapon(1, 1f, 15, new[]{WeaponAttack.FirstAttack}), 60, target)
+            base(map, Art.GetGoblinAnimations(), 30, new Weapon(1, 1f, 15, new[]{WeaponAttack.FirstAttack}), 60, target)
         {
         }
     }

@@ -34,11 +34,11 @@ namespace ChosenUndead
             Rectangle = rectangle;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             if (texture != null)
                 spriteBatch.Draw(texture, Rectangle, Color.White);

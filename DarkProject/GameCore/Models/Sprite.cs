@@ -28,11 +28,11 @@ namespace ChosenUndead
             this.scale = scale;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, Position, null, Color.White, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
         }

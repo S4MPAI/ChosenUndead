@@ -40,10 +40,10 @@ namespace ChosenUndead
             Name = name;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
-            var elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            base.Update(gameTime);
+            var elapsedTime = Time.ElapsedSeconds;
+            base.Update();
 
             if (target.HitBox.Intersects(HitBox))
             {
@@ -59,13 +59,13 @@ namespace ChosenUndead
             }
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(gameTime, spriteBatch);
+            base.Draw(spriteBatch);
             if (isTargetIntersect)
             {
                 board.Position = new Vector2(HitBox.Center.X - board.Rectangle.Width / 2, HitBox.Top - board.Rectangle.Height);
-                board.Draw(gameTime, spriteBatch);
+                board.Draw(spriteBatch);
             }
         }
     }

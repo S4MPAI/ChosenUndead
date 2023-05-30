@@ -22,7 +22,7 @@ namespace ChosenUndead
 
         public static bool AttackPressed { get; private set; }
 
-        public static void Update(GameTime gameTime)
+        public static void Update()
         {
             var keyboardState = Keyboard.GetState();
             var mouseState = Mouse.GetState();

@@ -106,13 +106,13 @@ namespace ChosenUndead
             this.attackWidth = attackWidth;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
             Velocity.Y = SetGravity();
             CollisionWithMap();
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             animationManager.Draw(Position, spriteBatch, orientation);
         }

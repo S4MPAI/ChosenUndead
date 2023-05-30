@@ -97,16 +97,17 @@ namespace ChosenUndead
 
         protected override void Update(GameTime gameTime)
         {
-            ChangeStateCooldownLeft -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Time.Update(gameTime);
+            ChangeStateCooldownLeft -= Time.ElapsedSeconds;
 
             if (nextState != null)
                 (currentState, nextState) = (nextState, null);
 
             if (ChangeStateCooldownLeft <= 0)
             {
-                InputManager.Update(gameTime);
+                InputManager.Update();
 
-                currentState.Update(gameTime);
+                currentState.Update();
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                     Exit();
@@ -123,7 +124,7 @@ namespace ChosenUndead
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             if (ChangeStateCooldownLeft <= 0)
-                currentState.Draw(gameTime, spriteBatch);
+                currentState.Draw(spriteBatch);
 
             base.Draw(gameTime);
         }

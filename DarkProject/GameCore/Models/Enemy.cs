@@ -14,40 +14,25 @@ namespace ChosenUndead
 
         protected const float targetDistance = 450f;
 
-        private float performance;
-
-        public NeuralNetwork brain { get; set; }
-
-        public float[] input;
-
-        public float[] output;
-
-        public Enemy(NeuralNetwork neuralNetwork, Map map, AnimationManager<object> animationManager, int hitBoxWidth, Weapon weapon, int attackWidth = 0, Entity target = null) : base(map, animationManager, hitBoxWidth, weapon, attackWidth)
+        public Enemy(Map map, AnimationManager<object> animationManager, int hitBoxWidth, Weapon weapon, int attackWidth = 0, Entity target = null) : base(map, animationManager, hitBoxWidth, weapon, attackWidth)
         {
             Target = target ?? Player.GetInstance();
-            brain = neuralNetwork;
-            input = new float[brain.layers[0]];
-            output = new float[brain.layers[^1]];
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
             if (Target.IsDead || Math.Abs(GetDistance()) > targetDistance)
                 animationManager.SetAnimation(EntityAction.Idle);
             else if (state != EntityAction.Death)
             {
-                elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                elapsedTime = Time.ElapsedSeconds;
+
                 Velocity = Vector2.Zero;
-                LoadInputs();
-                output = brain.FeedForward(input);
-                bool isFire = output[1] > 0;
+                
 
-                weapon.Update(gameTime, isFire);
+                weapon.Update(false);
 
-
-                Move(output[0], weapon.IsAttack());
-
-                base.Update(gameTime);
+                base.Update();
                 LimitOnTerritory();
                 Position += Velocity * elapsedTime;
                 orientation = Velocity.X != 0 ? Velocity.X > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally : orientation;
@@ -55,12 +40,7 @@ namespace ChosenUndead
                 SetAnimation();
             }
 
-            var distance = Math.Abs(GetDistance());
-            if (weapon.IsDamaged && distance > attackWidth * 3 && distance < targetDistance) performance -= 150;
-
-            brain.Fitness = targetDistance - distance + performance + (performance == 0?-targetDistance:0);
-
-            animationManager.Update(gameTime);
+            animationManager.Update();
         }
 
         private float GetDistance()
@@ -78,16 +58,6 @@ namespace ChosenUndead
             Target = target;
         }
 
-        public virtual void AddAttackPerformance()
-        {
-            performance += 150;
-        }
-
-        public virtual void AddGetDamagedPerformance()
-        {
-            performance -= 50;
-        }
-
         protected virtual void SetAnimation()
         {
             if (weapon.IsAttack())
@@ -100,19 +70,6 @@ namespace ChosenUndead
 
                 animationManager.SetAnimation(state);
             }
-        }
-
-        protected virtual void LoadInputs()
-        {
-            input[0] = GetDistance();
-            input[1] = Target.AttackRegTimeLeft;
-            input[2] = Rectangle.Intersect(AttackBox, Target.HitBox).Width;
-            input[3] = Rectangle.Intersect(HitBox, Target.AttackBox).Width;
-        }
-
-        protected virtual void Move(float velocityCoef, bool isAttacked)
-        {
-            Velocity.X = walkSpeed * (velocityCoef != 0 ? (velocityCoef > 0 ? 1 : -1) : 0) * (isAttacked ? walkSpeedAttackCoef : 1);
         }
 
         protected void LimitOnTerritory()
