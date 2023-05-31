@@ -63,7 +63,7 @@ namespace ChosenUndead
             IsMouseVisible = true;
             Art.Initialize(Content);
             Component.Content = Content;
-            camera = new Camera(WindowSize, 1f);
+            camera = new Camera(WindowSize, 4f);
             Map.SetLevelChanged(ChangeLevel);
             Map.SetSaveCompleted(SaveCompleted);
             graphics.IsFullScreen = false;
@@ -105,7 +105,7 @@ namespace ChosenUndead
 
             if (ChangeStateCooldownLeft <= 0)
             {
-                InputManager.Update();
+                Input.Update();
 
                 currentState.Update();
 

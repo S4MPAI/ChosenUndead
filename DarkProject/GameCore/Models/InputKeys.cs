@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead
 {
-    public struct Input
+    public struct InputKeys
     {
         public Keys LeftKey = Keys.A;
 
@@ -17,7 +17,7 @@ namespace ChosenUndead
 
         public Keys InteractionKey = Keys.E;
 
-        public Input()
+        public InputKeys()
         {
         }
     }

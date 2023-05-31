@@ -21,11 +21,11 @@ namespace ChosenUndead
         {
         }
 
-        protected override float walkSpeed { get; } = 100f;
+        public override float walkSpeed { get; } = 100f;
 
-        protected override float maxHp => 30;
+        public override float maxHp => 30;
 
-        protected override float walkSpeedAttackCoef => 0.5f;
+        public override float walkSpeedAttackCoef => 0.5f;
 
         //public override void Update(GameTime gameTime)
         //{

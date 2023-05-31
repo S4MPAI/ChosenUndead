@@ -12,15 +12,7 @@ using System.Windows.Forms;
 
 namespace ChosenUndead
 {
-    public enum EntityAction
-    {
-        Idle,
-        Run,
-        Jump,
-        Death,
-        Roll,
-        Healing
-    }
+    
 
     public abstract class Entity : Component
     {
@@ -42,7 +34,7 @@ namespace ChosenUndead
         public Rectangle AttackBox
         {
             get => new Rectangle(
-            (int)(Center.X - (int)orientation * attackWidth),
+            (int)(Center.X - (int)Orientation * attackWidth),
             (int)Position.Y,
             attackWidth,
             (int)TextureSize.Y);
@@ -58,66 +50,61 @@ namespace ChosenUndead
 
         public bool IsAttacking => weapon.IsDamaged;
 
-        protected AnimationManager<object> animationManager;
+        public AnimationManager<object> AnimationManager { get; private set; }
 
-        protected SpriteEffects orientation;
+        public SpriteEffects Orientation;
 
         protected EntityAction state;
 
         protected Map map;
 
-        protected abstract float maxHp { get; }
+        public abstract float maxHp { get; }
 
-        protected float Hp { get; set; }
+        public float Hp { get; private set; }
 
-        protected abstract float walkSpeed { get; }
+        public abstract float walkSpeed { get; }
 
-        protected abstract float walkSpeedAttackCoef { get; }
+        public abstract float walkSpeedAttackCoef { get; }
 
-        protected float elapsedTime;
+        public bool IsOnGround { get; private set; } = true;
 
-        protected bool isOnGround = true;
-
-        protected bool isUnderTop = false;
+        public bool IsUnderTop { get; private set; } = false;
 
         protected const float GravityAcceleration = 1500.0f;
 
-        protected const float MaxFallSpeed = 350.0f;
+        protected const float MaxFallSpeed = 275.0f;
 
         protected int hitBoxWidth { get; }
 
         protected int attackWidth { get; }
 
-        public Entity(Map map, AnimationManager<object> animationManager, int hitBoxWidth, Weapon weapon = null, int attackWidth = 0) : this(hitBoxWidth, attackWidth)
+        public Entity(Map map, AnimationManager<object> animationManager, int hitBoxWidth, Weapon weapon = null, int attackWidth = 0)
         {
+            this.hitBoxWidth = hitBoxWidth;
+            this.attackWidth = attackWidth;
+
             this.map = map;
             this.weapon = weapon ?? new Weapon(0, 0, 0, new WeaponAttack[] {});
-            this.animationManager = animationManager;
+            this.AnimationManager = animationManager;
             Hp = maxHp;
-            TextureSize = new Vector2(this.animationManager.CurrentAnimation.FrameWidth, this.animationManager.CurrentAnimation.FrameHeight);
+            TextureSize = new Vector2(this.AnimationManager.CurrentAnimation.FrameWidth, this.AnimationManager.CurrentAnimation.FrameHeight);
 
             foreach (var attack in weapon.WeaponAttacks)
                 animationManager.ChangeFrameTime(attack, weapon.attackCooldown);
         }
 
-        private Entity(int hitBoxWidth, int attackWidth)
-        {
-            this.hitBoxWidth = hitBoxWidth;
-            this.attackWidth = attackWidth;
-        }
-
         public override void Update()
         {
-            Velocity.Y = SetGravity();
-            CollisionWithMap();
+            //Velocity.Y = SetGravity();
+            //CollisionWithMap();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            animationManager.Draw(Position, spriteBatch, orientation);
+            AnimationManager.Draw(Position, spriteBatch, Orientation);
         }
 
-        protected float SetGravity() => MathHelper.Clamp(Velocity.Y + GravityAcceleration * elapsedTime, -MaxFallSpeed, MaxFallSpeed);
+        public float SetGravity(float velocityY) => MathHelper.Clamp(velocityY + GravityAcceleration * Time.ElapsedSeconds, -MaxFallSpeed, MaxFallSpeed);
 
         public virtual void GiveDamage(float damage)
         {
@@ -128,7 +115,7 @@ namespace ChosenUndead
             if (Hp <= 0)
             {
                 state = EntityAction.Death;
-                animationManager.SetAnimation(state);
+                AnimationManager.SetAnimation(state);
             }
             else
             {
@@ -137,18 +124,18 @@ namespace ChosenUndead
 
         #region Collision
 
-        public virtual bool IsDeadFull() => state == EntityAction.Death && animationManager.IsCurrentAnimationEnded();
+        public virtual bool IsDeadFull() => state == EntityAction.Death && AnimationManager.IsCurrentAnimationEnded();
 
-        protected virtual void CollisionWithMap()
+        public virtual Vector2 CollisionWithMap(Vector2 velocity)
         {
-            var velocity = Velocity * elapsedTime;
+            velocity *= Time.ElapsedSeconds;
             var leftTile = (int)Math.Floor((float)HitBox.Left / map.TileSize) - 1;
             var rightTile = (int)Math.Ceiling((float)HitBox.Right / map.TileSize);
             var topTile = (int)Math.Floor((float)HitBox.Top / map.TileSize);
             var bottomTile = (int)Math.Ceiling((float)HitBox.Bottom / map.TileSize);
 
-            isOnGround = false;
-            isUnderTop = false;
+            IsOnGround = false;
+            IsUnderTop = false;
 
             for (int y = topTile; y <= bottomTile; y++)
             {
@@ -159,23 +146,25 @@ namespace ChosenUndead
                         var bounds = map.GetBounds(x, y);
 
                         if (velocity.X > 0 && IsTouchingLeft(bounds, velocity.X) || velocity.X < 0 && IsTouchingRight(bounds, velocity.X))
-                            Velocity.X = 0;
+                            velocity.X = 0;
 
                         if (velocity.Y > 0 && IsTouchingTop(bounds, velocity.Y))
                         {
-                            Velocity.Y = 0;
-                            isOnGround = true;
+                            velocity.Y = 0;
+                            IsOnGround = true;
                         }
 
                         if (velocity.Y < 0 && IsTouchingBottom(bounds, velocity.Y))
                         {
-                            Velocity.Y = 0;
-                            isUnderTop = true;
+                            velocity.Y = 0;
+                            IsUnderTop = true;
                         }
 
                     }
                 }
             }
+
+            return velocity / Time.ElapsedSeconds;
         }
 
         protected bool IsTouchingLeft(Rectangle bounds, float velocityX) =>

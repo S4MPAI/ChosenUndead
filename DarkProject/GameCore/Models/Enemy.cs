@@ -22,10 +22,10 @@ namespace ChosenUndead
         public override void Update()
         {
             if (Target.IsDead || Math.Abs(GetDistance()) > targetDistance)
-                animationManager.SetAnimation(EntityAction.Idle);
+                AnimationManager.SetAnimation(EntityAction.Idle);
             else if (state != EntityAction.Death)
             {
-                elapsedTime = Time.ElapsedSeconds;
+                //elapsedTime = Time.ElapsedSeconds;
 
                 Velocity = Vector2.Zero;
                 
@@ -34,13 +34,13 @@ namespace ChosenUndead
 
                 base.Update();
                 LimitOnTerritory();
-                Position += Velocity * elapsedTime;
-                orientation = Velocity.X != 0 ? Velocity.X > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally : orientation;
+                //Position += Velocity * elapsedTime;
+                Orientation = Velocity.X != 0 ? Velocity.X > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally : Orientation;
 
                 SetAnimation();
             }
 
-            animationManager.Update();
+            AnimationManager.Update();
         }
 
         private float GetDistance()
@@ -61,14 +61,14 @@ namespace ChosenUndead
         protected virtual void SetAnimation()
         {
             if (weapon.IsAttack())
-                animationManager.SetAnimation(weapon.CurrentAttack);
+                AnimationManager.SetAnimation(weapon.CurrentAttack);
             else
             {
-                if (!isOnGround) state = EntityAction.Jump;
-                else if (Velocity.X != 0 && isOnGround) state = EntityAction.Run;
+                if (!IsOnGround) state = EntityAction.Jump;
+                else if (Velocity.X != 0 && IsOnGround) state = EntityAction.Run;
                 else state = EntityAction.Idle;
 
-                animationManager.SetAnimation(state);
+                AnimationManager.SetAnimation(state);
             }
         }
 

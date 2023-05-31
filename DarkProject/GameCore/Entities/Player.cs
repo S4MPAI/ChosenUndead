@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ChosenUndead.GameCore.Models.StateMachine;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -10,19 +11,16 @@ namespace ChosenUndead
 {
     public class Player : Entity
     {
-        protected override float walkSpeed { get; } = 170f;
-        protected override float walkSpeedAttackCoef => 0.25f;
-        protected float rollSpeedCoef => 1.3f;
+        public override float walkSpeed => 170f;
+        public override float walkSpeedAttackCoef => 0.3f;
 
-        private const float MaxJumpTime = 0.62f;
+        public const float rollSpeedCoef = 1.3f;
 
-        private const float JumpLaunchVelocity = -400.0f;
+        public const float MaxJumpTime = 0.62f;
 
-        private const float JumpControlPower = 0.4f;
+        public const float JumpLaunchVelocity = -400.0f;
 
-        private bool wasJumping;
-        private float jumpTime;
-        private bool isJumping;
+        public const float JumpControlPower = 0.4f;
 
         public int Keys { get; private set; }
 
@@ -30,7 +28,13 @@ namespace ChosenUndead
 
         public int HealingQuartzLeft { get; private set; }
 
-        protected override float maxHp => startMaxHp + VitalityBuffCount * vitalityBuffCoef;
+        public StateMachine stateMachine { get; private set; }
+        public WalkingStatus WalkingStatus { get; private set; }
+        public JumpingStatus JumpingStatus { get; private set; }
+        public RollingStatus RollingStatus { get; private set; }
+        public DeathStatus DeathStatus { get; private set; }
+
+        public override float maxHp => startMaxHp + VitalityBuffCount * vitalityBuffCoef;
         protected const float startMaxHp = 50f;
         public int VitalityBuffCount { get; private set; }
         private const float vitalityBuffCoef = 10f;
@@ -46,6 +50,13 @@ namespace ChosenUndead
         private Player(Map map) : base(map, Art.GetPlayerAnimations(), 32, new Sword(), 32)
         {
             HealingQuartzLeft = MaxHealingQuartz;
+            stateMachine = new StateMachine();
+            WalkingStatus = new WalkingStatus(this, stateMachine);
+            JumpingStatus = new JumpingStatus(this, stateMachine);
+            RollingStatus = new RollingStatus(this, stateMachine);
+            DeathStatus = new DeathStatus(this, stateMachine);
+            stateMachine.Initialize(WalkingStatus);
+            
         }
 
         public static Player GetInstance(Map map = null)
@@ -59,7 +70,7 @@ namespace ChosenUndead
             return instance;
         }
 
-        public override bool IsDeadFull() => state == EntityAction.Death && animationManager.IsCurrentAnimationEnded();
+        public override bool IsDeadFull() => state == EntityAction.Death && AnimationManager.IsCurrentAnimationEnded();
 
         public void AddItem(ChestItem buff)
         {
@@ -87,75 +98,12 @@ namespace ChosenUndead
 
         public override void Update()
         {
-            Velocity.X = 0;
-            elapsedTime = Time.ElapsedSeconds;
-
-            IsInteract = InputManager.InteractionPressed;
-
-            Move();
-            CollisionWithMap();
-            isJumping = InputManager.JumpPressed;
-
-            weapon.Update(isOnGround ? InputManager.AttackPressed : false);
-            SetAnimation();
-
-            animationManager.Update();
-            Velocity *= weapon.IsAttack() ? walkSpeedAttackCoef : 1;
-
-            Position += Velocity * elapsedTime;
-            orientation = Velocity.X != 0 ? (Velocity.X > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally) : orientation;
+            stateMachine.Update();
         }
 
-        private void Move()
+        public override void Draw(SpriteBatch spriteBatch)
         {
-            Velocity.Y = SetGravity();
-            Velocity.Y = DoJump(Velocity.Y);
-
-            if (InputManager.LeftPressed)
-                Velocity.X = -walkSpeed;
-            if (InputManager.RightPressed)
-                Velocity.X = walkSpeed;
-        }
-
-        private float DoJump(float velocityY)
-        {
-            if (isJumping && !isUnderTop)
-            {
-                if (isOnGround && !wasJumping || jumpTime > 0.0f)
-                {
-                    jumpTime += elapsedTime;
-                }
-
-                if (0.0f < jumpTime && jumpTime <= MaxJumpTime)
-                {
-                    velocityY = JumpLaunchVelocity * (1.0f - (float)Math.Pow(jumpTime / MaxJumpTime, JumpControlPower));
-                }
-                else
-                {
-                    jumpTime = 0.0f;
-                }
-            }
-            else
-            {
-                jumpTime = 0.0f;
-            }
-            wasJumping = isJumping;
-
-            return velocityY;
-        }
-
-        private void SetAnimation()
-        {
-            if (weapon.IsAttack())
-                animationManager.SetAnimation(weapon.CurrentAttack);
-            else
-            {
-                if (!isOnGround) state = EntityAction.Jump;
-                else if (Velocity.X != 0 && isOnGround) state = EntityAction.Run;
-                else state = EntityAction.Idle;
-
-                animationManager.SetAnimation(state);
-            }
+            stateMachine.Draw(spriteBatch);
         }
 
         public override void GiveDamage(float damage)

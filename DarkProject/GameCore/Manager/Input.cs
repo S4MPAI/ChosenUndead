@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead
 {
-    public static class InputManager
+    public static class Input
     {
-        public static Input KeyboardInput { get; set; } = new();
+        public static InputKeys KeyboardInput { get; set; } = new();
 
         public static bool LeftPressed { get; private set; }
 
