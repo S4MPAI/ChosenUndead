@@ -40,15 +40,17 @@ namespace ChosenUndead
             (int)TextureSize.Y);
         }
 
+        public bool IsImmune;
+
         public bool IsDead => state == EntityAction.Death;
 
-        public float AttackRegTimeLeft { get => weapon.attackRegTimeLeft; }
+        public float AttackRegTimeLeft { get => Weapon.attackRegTimeLeft; }
 
-        protected Weapon weapon { get; set; }
+        public Weapon Weapon { get;protected set; }
 
-        public virtual float Damage { get => weapon.Damage; }
+        public virtual float Damage { get => Weapon.Damage; }
 
-        public bool IsAttacking => weapon.IsDamaged;
+        public bool IsAttacking => Weapon.IsDamaged;
 
         public AnimationManager<object> AnimationManager { get; private set; }
 
@@ -58,11 +60,11 @@ namespace ChosenUndead
 
         protected Map map;
 
-        public abstract float maxHp { get; }
+        public abstract float MaxHp { get; }
 
         public float Hp { get; private set; }
 
-        public abstract float walkSpeed { get; }
+        public abstract float WalkSpeed { get; }
 
         public abstract float walkSpeedAttackCoef { get; }
 
@@ -84,9 +86,9 @@ namespace ChosenUndead
             this.attackWidth = attackWidth;
 
             this.map = map;
-            this.weapon = weapon ?? new Weapon(0, 0, 0, new WeaponAttack[] {});
+            this.Weapon = weapon ?? new Weapon(0, 0, 0, new WeaponAttack[] {});
             this.AnimationManager = animationManager;
-            Hp = maxHp;
+            Hp = MaxHp;
             TextureSize = new Vector2(this.AnimationManager.CurrentAnimation.FrameWidth, this.AnimationManager.CurrentAnimation.FrameHeight);
 
             foreach (var attack in weapon.WeaponAttacks)
@@ -106,20 +108,19 @@ namespace ChosenUndead
 
         public float SetGravity(float velocityY) => MathHelper.Clamp(velocityY + GravityAcceleration * Time.ElapsedSeconds, -MaxFallSpeed, MaxFallSpeed);
 
-        public virtual void GiveDamage(float damage)
+        public virtual void AddHp(float hpSize)
         {
-            if (state == EntityAction.Death) return;
-
-            Hp -= damage;
+            Hp += hpSize;
 
             if (Hp <= 0)
             {
+                Hp = 0;
                 state = EntityAction.Death;
                 AnimationManager.SetAnimation(state);
             }
-            else
-            {
-            }
+                
+            else if (Hp > MaxHp)
+                Hp = MaxHp;
         }
 
         #region Collision
@@ -191,7 +192,7 @@ namespace ChosenUndead
             HitBox.Right > bounds.Left + bounds.Width / 5 &&
             HitBox.Left < bounds.Right - bounds.Width / 5;
 
-        protected Rectangle GetIntersectionDepthAttackWithHitBox(Entity entity) => Rectangle.Intersect(entity.HitBox, HitBox);
+        //protected Rectangle GetIntersectionDepthAttackWithHitBox(Entity entity) => Rectangle.Intersect(entity.HitBox, HitBox);
 
         #endregion
     }

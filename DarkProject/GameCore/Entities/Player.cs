@@ -11,10 +11,14 @@ namespace ChosenUndead
 {
     public class Player : Entity
     {
-        public override float walkSpeed => 170f;
+        public override float WalkSpeed => 170f;
         public override float walkSpeedAttackCoef => 0.3f;
 
-        public const float rollSpeedCoef = 1.3f;
+        public const float RollSpeedCoef = 1.1f;
+
+        public const float MaxRollingTime = 0.5f;
+
+        public const float RollingCooldown = 2f;
 
         public const float MaxJumpTime = 0.62f;
 
@@ -25,25 +29,28 @@ namespace ChosenUndead
         public int Keys { get; private set; }
 
         public int MaxHealingQuartz { get; private set; }
-
         public int HealingQuartzLeft { get; private set; }
 
-        public StateMachine stateMachine { get; private set; }
-        public WalkingStatus WalkingStatus { get; private set; }
-        public JumpingStatus JumpingStatus { get; private set; }
-        public RollingStatus RollingStatus { get; private set; }
-        public DeathStatus DeathStatus { get; private set; }
+        public const float HealingSize = 40f;
 
-        public override float maxHp => startMaxHp + VitalityBuffCount * vitalityBuffCoef;
-        protected const float startMaxHp = 50f;
+        public StateMachine stateMachine { get; }
+        public WalkingStatus WalkingStatus { get; }
+        public JumpingStatus JumpingStatus { get; }
+        public RollingStatus RollingStatus { get; }
+        public DeathStatus DeathStatus { get; }
+        public AttackStatus AttackStatus { get; }
+        public HealingStatus HealingStatus { get; }
+
+        public override float MaxHp => startMaxHp + VitalityBuffCount * vitalityBuffCoef;
+        protected const float startMaxHp = 100f;
         public int VitalityBuffCount { get; private set; }
         private const float vitalityBuffCoef = 10f;
 
-        public override float Damage { get => weapon.Damage + AttackBuffCount * attackBuffCoef; }
+        public override float Damage { get => Weapon.Damage + AttackBuffCount * attackBuffCoef; }
         public int AttackBuffCount { get; private set; }
         private const float attackBuffCoef = 1f;
 
-        public bool IsInteract { get; private set; }
+        public bool IsInteract;
 
         private static Player instance;
 
@@ -54,7 +61,9 @@ namespace ChosenUndead
             WalkingStatus = new WalkingStatus(this, stateMachine);
             JumpingStatus = new JumpingStatus(this, stateMachine);
             RollingStatus = new RollingStatus(this, stateMachine);
+            AttackStatus = new AttackStatus(this, stateMachine);
             DeathStatus = new DeathStatus(this, stateMachine);
+            HealingStatus = new HealingStatus(this, stateMachine);
             stateMachine.Initialize(WalkingStatus);
             
         }
@@ -68,6 +77,11 @@ namespace ChosenUndead
                 instance.map = map;
 
             return instance;
+        }
+
+        public void RevivePlayer()
+        {
+            stateMachine.ChangeState(WalkingStatus);
         }
 
         public override bool IsDeadFull() => state == EntityAction.Death && AnimationManager.IsCurrentAnimationEnded();
@@ -106,9 +120,9 @@ namespace ChosenUndead
             stateMachine.Draw(spriteBatch);
         }
 
-        public override void GiveDamage(float damage)
+        public override void AddHp(float hpSize)
         {
-            base.GiveDamage(damage);
+            base.AddHp(hpSize);
         }
     }
 }

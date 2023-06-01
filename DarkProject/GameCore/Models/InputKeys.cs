@@ -17,6 +17,10 @@ namespace ChosenUndead
 
         public Keys InteractionKey = Keys.E;
 
+        public Keys RollKey = Keys.LeftShift;
+
+        public Keys HealKey = Keys.H;
+
         public InputKeys()
         {
         }

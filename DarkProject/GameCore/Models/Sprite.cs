@@ -36,5 +36,10 @@ namespace ChosenUndead
         {
             spriteBatch.Draw(texture, Position, null, Color.White, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
         }
+
+        public void Draw(SpriteBatch spriteBatch, Rectangle part)
+        {
+            spriteBatch.Draw(texture, Position, part, Color.White, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+        }
     }
 }

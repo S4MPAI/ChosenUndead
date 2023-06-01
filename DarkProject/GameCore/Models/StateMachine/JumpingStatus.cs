@@ -29,13 +29,12 @@ namespace ChosenUndead
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            player.AnimationManager.Draw(player.Position, spriteBatch, player.Orientation);
         }
 
         public override void Enter()
         {
             base.Enter();
-            speed = player.walkSpeed;
+            speed = player.WalkSpeed;
             player.AnimationManager.SetAnimation(EntityAction.Jump);
             isJumping = true;
         }
@@ -57,16 +56,18 @@ namespace ChosenUndead
 
         public override void LogicUpdate()
         {
-            base.LogicUpdate();
             if (player.IsOnGround && velocity.Y >= 0)
                 stateMachine.ChangeState(player.WalkingStatus);
+            base.LogicUpdate();
         }
 
         public override void PhysicsUpdate()
         {
+            base.PhysicsUpdate();
             velocity.Y = player.SetGravity(velocity.Y);
             velocity.Y = DoJump(velocity.Y);
             velocity = player.CollisionWithMap(velocity);
+            player.Velocity = velocity;
             player.Position += velocity * Time.ElapsedSeconds;
         }
 

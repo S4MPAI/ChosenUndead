@@ -41,8 +41,14 @@ namespace ChosenUndead
             map.Draw(spriteBatch);
 
             spriteBatch.End();
-        }
 
+            spriteBatch.Begin(sortMode: SpriteSortMode.Immediate);
+
+            PlayerInterface.Draw(spriteBatch);
+
+            spriteBatch.End();
+        }
+        
         public override void Update()
         {
             map.Update();
@@ -51,6 +57,8 @@ namespace ChosenUndead
             if (backgrounds != null)
                 foreach (var bg in backgrounds)
                     bg.Update();
+
+            PlayerInterface.Update();
         }
 
         public override void Initialize()

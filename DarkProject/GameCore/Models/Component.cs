@@ -8,8 +8,6 @@ namespace ChosenUndead
     {
         public Vector2 Position;
 
-        public static ContentManager Content;
-
         public abstract void Update();
 
         public abstract void Draw(SpriteBatch spriteBatch);

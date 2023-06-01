@@ -12,7 +12,7 @@ namespace ChosenUndead
     {
         protected Player target;
 
-        public override float maxHp => float.MaxValue;
+        public override float MaxHp => float.MaxValue;
 
         protected const float phraseTime = 3f;
 
@@ -28,7 +28,7 @@ namespace ChosenUndead
 
         public readonly string Name;
 
-        public override float walkSpeed => 60;
+        public override float WalkSpeed => 60;
 
         public override float walkSpeedAttackCoef => 1f;
 

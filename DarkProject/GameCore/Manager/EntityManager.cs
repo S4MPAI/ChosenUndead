@@ -75,14 +75,12 @@ namespace ChosenUndead
             foreach (var npc in npcs)
                 npc.Update();
 
-            //foreach (var enemy in enemies)
-            //    CheckEntityCollision(Player, enemy);
+            foreach (var enemy in enemies)
+                CheckEntityCollision(Player, enemy);
 
             for (int i = 0; i < enemies.Count - 1; i++)
                 for (int j = i + 1; j < enemies.Count; j++)
-                {
                     CheckEntityCollision(enemies[i], enemies[j]);
-                }
                     
 
             foreach (var enemy in removedEnemy)
@@ -107,7 +105,7 @@ namespace ChosenUndead
         private void MakeAttack(Entity attackEntity, Entity entity)
         {
             if (attackEntity.IsAttacking && attackEntity.AttackBox.Intersects(entity.HitBox))
-                entity.GiveDamage(attackEntity.Damage);
+                entity.AddHp(-attackEntity.Damage);
         }
     }
 }

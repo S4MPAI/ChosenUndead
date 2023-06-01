@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChosenUndead
+namespace ChosenUndead.GameCore.Models.StateMachine
 {
-    public class DeathStatus : Status
+    public class HealingStatus : Status
     {
-        public DeathStatus(Player player, StateMachine stateMachine) : base(player, stateMachine)
+        public HealingStatus(Player player, ChosenUndead.StateMachine stateMachine) : base(player, stateMachine)
         {
         }
 
@@ -27,12 +27,15 @@ namespace ChosenUndead
         public override void Enter()
         {
             base.Enter();
-            player.AnimationManager.SetAnimation(EntityAction.Death);
+            player.AnimationManager.SetAnimation(EntityAction.Healing);
+            player.Velocity.X = 0;
+            speed = 1;
         }
 
         public override void Exit()
         {
             base.Exit();
+            player.AddHp(Player.HealingSize);
         }
 
         public override void HandleInput()
@@ -42,6 +45,8 @@ namespace ChosenUndead
 
         public override void LogicUpdate()
         {
+            if (player.AnimationManager.IsCurrentAnimationEnded())
+                stateMachine.ChangeState(player.WalkingStatus);
             base.LogicUpdate();
         }
 

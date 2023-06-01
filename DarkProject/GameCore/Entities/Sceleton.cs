@@ -21,9 +21,9 @@ namespace ChosenUndead
         {
         }
 
-        public override float walkSpeed { get; } = 100f;
+        public override float WalkSpeed { get; } = 100f;
 
-        public override float maxHp => 30;
+        public override float MaxHp => 30;
 
         public override float walkSpeedAttackCoef => 0.5f;
 

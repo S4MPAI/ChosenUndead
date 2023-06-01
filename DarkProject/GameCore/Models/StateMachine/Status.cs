@@ -19,6 +19,8 @@ namespace ChosenUndead
 
         protected Vector2 velocity;
 
+        public static float rollingCoolDownLeft;
+
         protected Status(Player player, StateMachine stateMachine)
         {
             this.player = player;
@@ -40,7 +42,7 @@ namespace ChosenUndead
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-
+            player.AnimationManager.Draw(player.Position, spriteBatch, player.Orientation);
         }
 
         public virtual void HandleInput()
@@ -54,7 +56,7 @@ namespace ChosenUndead
 
         public virtual void PhysicsUpdate()
         {
-
+            rollingCoolDownLeft -= Time.ElapsedSeconds;
         }
 
         public virtual void LogicUpdate()

@@ -30,7 +30,7 @@ namespace ChosenUndead
                 Velocity = Vector2.Zero;
                 
 
-                weapon.Update(false);
+                Weapon.Update(true);
 
                 base.Update();
                 LimitOnTerritory();
@@ -60,8 +60,8 @@ namespace ChosenUndead
 
         protected virtual void SetAnimation()
         {
-            if (weapon.IsAttack())
-                AnimationManager.SetAnimation(weapon.CurrentAttack);
+            if (Weapon.IsAttack())
+                AnimationManager.SetAnimation(Weapon.CurrentAttack);
             else
             {
                 if (!IsOnGround) state = EntityAction.Jump;

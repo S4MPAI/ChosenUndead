@@ -10,6 +10,9 @@ namespace ChosenUndead
     public class WalkingStatus : Status
     {
         private bool isJumping;
+        private bool isAttack;
+        private bool isRolling;
+        private bool isHealing;
 
         public WalkingStatus(Player player, StateMachine stateMachine) : base(player, stateMachine)
         {
@@ -17,13 +20,13 @@ namespace ChosenUndead
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            player.AnimationManager.Draw(player.Position, spriteBatch, player.Orientation);
+            base.Draw(spriteBatch);
         }
 
         public override void Enter()
         {
             base.Enter();
-            speed = player.walkSpeed;
+            speed = player.WalkSpeed;
             player.AnimationManager.SetAnimation(EntityAction.Idle);
         }
 
@@ -36,18 +39,32 @@ namespace ChosenUndead
         {
             base.HandleInput();
             isJumping = Input.JumpPressed;
+            isAttack = Input.AttackPressed;
+            isRolling = Input.RollingPressed;
+            player.IsInteract = Input.InteractionPressed;
+            isHealing = Input.HealingPressed;
         }
 
         public override void LogicUpdate()
         {
             if (!player.IsOnGround || isJumping)
                 stateMachine.ChangeState(player.JumpingStatus);
+            if (isAttack && player.Weapon.CurrentAttack != WeaponAttack.Stun)
+                stateMachine.ChangeState(player.AttackStatus);
+            if (isRolling && velocity.X != 0 && rollingCoolDownLeft <= 0)
+                stateMachine.ChangeState(player.RollingStatus);
+            if (isHealing)
+                stateMachine.ChangeState(player.HealingStatus);
+            base.LogicUpdate();
         }
 
         public override void PhysicsUpdate()
         {
+            base.PhysicsUpdate();
             velocity = SetGravityAndCollision(velocity);
+            player.Velocity = velocity;
             player.Position += velocity * Time.ElapsedSeconds;
+            player.Weapon.Update(isAttack);
         }
 
         public override void DisplayUpdate()

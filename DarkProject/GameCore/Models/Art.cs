@@ -22,6 +22,7 @@ namespace ChosenUndead
         private const string forestBackgroundsPath = "Backgrounds/forest/bg_forest_";
         private const string chestsPath = "Map/Chests/chest";
         private const string npcPath = "Entities/Npc/";
+        private const string healthBarPath = "Interface/HealthBar/";
 
         public static void Initialize(ContentManager content)
         {
@@ -40,7 +41,7 @@ namespace ChosenUndead
             playerAnimations.AddAnimation(WeaponAttack.ThirdAttack, new Animation(content.Load<Texture2D>($"{playerPath}ThirdAttack"), 4, 0.125f, false));
             playerAnimations.AddAnimation(WeaponAttack.FourthAttack, new Animation(content.Load<Texture2D>($"{playerPath}FourthAttack"), 6, 0.125f, false));
             playerAnimations.AddAnimation(EntityAction.Healing, new Animation(content.Load<Texture2D>($"{playerPath}Healing"), 8, 0.2f, false));
-            playerAnimations.AddAnimation(EntityAction.Roll, new Animation(content.Load<Texture2D>($"{playerPath}Roll"), 4, 0.15f, false));
+            playerAnimations.AddAnimation(EntityAction.Roll, new Animation(content.Load<Texture2D>($"{playerPath}Roll"), 4, 0.15f));
             playerAnimations.AddAnimation(EntityAction.Death, new Animation(content.Load<Texture2D>($"{playerPath}Death"), 4, 0.2f, false));
 
             return playerAnimations;
@@ -69,6 +70,13 @@ namespace ChosenUndead
 
             return goblinAnimations;
         }
+
+        public static (Texture2D bar, Texture2D progressBar, Texture2D progressBarBorder) GetHealthBars() =>
+            (
+                content.Load<Texture2D>($"{healthBarPath}Bar"),
+                content.Load<Texture2D>($"{healthBarPath}ProgressBar"),
+                content.Load<Texture2D>($"{healthBarPath}ProgressBarBorder")
+            );
 
         public static AnimationManager<object> GetNpcAnimations(string name)
         {
@@ -101,6 +109,9 @@ namespace ChosenUndead
 
         public static Board GetBoardForNpc() =>
             new Board(content.Load<Texture2D>(boardsPath + "NPC"), Color.White, Color.Black);
+
+        public static SpriteFont GetFont(string name) =>
+            content.Load<SpriteFont>($"Fonts/{name}");
     }
 
     public class Board : Sprite
@@ -116,7 +127,7 @@ namespace ChosenUndead
         public Board(Texture2D texture, Color boardColor, Color textColor, string text = "", SpriteFont spriteFont = null) : base(texture)
         {
             Text = text;
-            font = spriteFont ?? Content.Load<SpriteFont>("Fonts/BoardFont");
+            font = spriteFont ?? Art.GetFont("BoardFont");
             this.boardColor = boardColor;
             this.textColor = textColor;
         }

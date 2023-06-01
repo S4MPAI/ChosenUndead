@@ -8,9 +8,9 @@ namespace ChosenUndead
 {
     public class Goblin : Enemy
     {
-        public override float maxHp => 45f;
+        public override float MaxHp => 45f;
 
-        public override float walkSpeed => 150f;
+        public override float WalkSpeed => 150f;
 
         public override float walkSpeedAttackCoef => 0.5f;
 
