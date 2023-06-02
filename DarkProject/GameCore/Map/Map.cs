@@ -184,7 +184,11 @@ namespace ChosenUndead
 
         private void SetEntityPosition(Entity entity, int x, int y)
         {
-            entity.Position = new Vector2(x * TileSize + TileSize / 2 - entity.TextureSize.X / 2, (y + 1) * TileSize - entity.TextureSize.Y);
+            var pos = new Vector2(x * TileSize + TileSize / 2 - entity.TextureSize.X / 2, (y + 1) * TileSize - entity.TextureSize.Y);
+            if (entity is Enemy enemy)
+                enemy.SetStartPosition(pos);
+
+            entity.Position = pos;
         }
 
         public bool IsHaveCollision(int x, int y) 

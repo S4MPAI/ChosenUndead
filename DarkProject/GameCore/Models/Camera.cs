@@ -27,8 +27,8 @@ namespace ChosenUndead
 
         public void Follow(Entity target, Map map)
         {
-            var dx = MathHelper.Clamp(target.Center.X, VisionWindowSize.X / 2, map.MapSize.X - VisionWindowSize.X / 2);
-            var dy = MathHelper.Clamp(target.Center.Y, VisionWindowSize.Y / 2, map.MapSize.Y - VisionWindowSize.Y / 2);
+            var dx = MathHelper.Clamp(target.CenterPos.X, VisionWindowSize.X / 2, map.MapSize.X - VisionWindowSize.X / 2);
+            var dy = MathHelper.Clamp(target.CenterPos.Y, VisionWindowSize.Y / 2, map.MapSize.Y - VisionWindowSize.Y / 2);
 
             WindowPos = new(dx - VisionWindowSize.X / 2, dy - VisionWindowSize.Y / 2);
 

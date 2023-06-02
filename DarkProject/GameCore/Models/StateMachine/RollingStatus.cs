@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead.GameCore.Models.StateMachine
 {
-    public class RollingStatus : Status
+    public class RollingStatus : PlayerState
     {
         private float rollingTimeLeft;
 
@@ -25,12 +25,13 @@ namespace ChosenUndead.GameCore.Models.StateMachine
             rollingTimeLeft = Player.MaxRollingTime;
             player.AnimationManager.SetAnimation(EntityAction.Roll);
             player.IsImmune = true;
+            player.Stamina -= Player.RollStaminaCost;
         }
 
         public override void Exit()
         {
             base.Exit();
-            rollingCoolDownLeft = Player.RollingCooldown;
+            player.IsImmune = false;
         }
 
         public override void HandleInput()

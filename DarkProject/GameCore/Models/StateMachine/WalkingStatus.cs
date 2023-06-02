@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead
 {
-    public class WalkingStatus : Status
+    public class WalkingStatus : PlayerState
     {
         private bool isJumping;
         private bool isAttack;
@@ -47,11 +47,11 @@ namespace ChosenUndead
 
         public override void LogicUpdate()
         {
-            if (!player.IsOnGround || isJumping)
+            if (!player.IsOnGround || (isJumping && player.Stamina >= Player.JumpStaminaCost))
                 stateMachine.ChangeState(player.JumpingStatus);
-            if (isAttack && player.Weapon.CurrentAttack != WeaponAttack.Stun)
+            if (isAttack && player.Weapon.CurrentAttack != WeaponAttacks.Stun && player.Stamina >= Player.AttackStaminaCost)
                 stateMachine.ChangeState(player.AttackStatus);
-            if (isRolling && velocity.X != 0 && rollingCoolDownLeft <= 0)
+            if (isRolling && velocity.X != 0 && player.Stamina >= Player.RollStaminaCost)
                 stateMachine.ChangeState(player.RollingStatus);
             if (isHealing)
                 stateMachine.ChangeState(player.HealingStatus);

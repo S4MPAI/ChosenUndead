@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead
 {
-    public class DeathStatus : Status
+    public class DeathStatus : PlayerState
     {
         public DeathStatus(Player player, StateMachine stateMachine) : base(player, stateMachine)
         {
@@ -28,6 +28,7 @@ namespace ChosenUndead
         {
             base.Enter();
             player.AnimationManager.SetAnimation(EntityAction.Death);
+            player.Velocity.X = 0;
         }
 
         public override void Exit()

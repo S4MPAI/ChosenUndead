@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SharpDX.Direct2D1.Effects;
 using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
@@ -18,14 +19,14 @@ namespace ChosenUndead
     {
         public Vector2 TextureSize { get; }
 
-        public Vector2 Center { get => Position + TextureSize / 2; }
+        public Vector2 CenterPos { get => Position + TextureSize / 2; }
 
         public Vector2 Velocity;
 
         public Rectangle HitBox
         {
             get => new Rectangle(
-            (int)(Center.X - hitBoxWidth / 2),
+            (int)(CenterPos.X - hitBoxWidth / 2),
             (int)Position.Y,
             hitBoxWidth,
             (int)TextureSize.Y);
@@ -34,7 +35,7 @@ namespace ChosenUndead
         public Rectangle AttackBox
         {
             get => new Rectangle(
-            (int)(Center.X - (int)Orientation * attackWidth),
+            (int)(CenterPos.X - (int)Orientation * attackWidth),
             (int)Position.Y,
             attackWidth,
             (int)TextureSize.Y);
@@ -42,7 +43,7 @@ namespace ChosenUndead
 
         public bool IsImmune;
 
-        public bool IsDead => state == EntityAction.Death;
+        public bool IsDead => Hp == 0;
 
         public float AttackRegTimeLeft { get => Weapon.attackRegTimeLeft; }
 
@@ -55,8 +56,6 @@ namespace ChosenUndead
         public AnimationManager<object> AnimationManager { get; private set; }
 
         public SpriteEffects Orientation;
-
-        protected EntityAction state;
 
         protected Map map;
 
@@ -86,19 +85,13 @@ namespace ChosenUndead
             this.attackWidth = attackWidth;
 
             this.map = map;
-            this.Weapon = weapon ?? new Weapon(0, 0, 0, new WeaponAttack[] {});
+            this.Weapon = weapon ?? new Weapon(0, 0, 0, new WeaponAttacks[] {});
             this.AnimationManager = animationManager;
             Hp = MaxHp;
             TextureSize = new Vector2(this.AnimationManager.CurrentAnimation.FrameWidth, this.AnimationManager.CurrentAnimation.FrameHeight);
 
             foreach (var attack in weapon.WeaponAttacks)
                 animationManager.ChangeFrameTime(attack, weapon.attackCooldown);
-        }
-
-        public override void Update()
-        {
-            //Velocity.Y = SetGravity();
-            //CollisionWithMap();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -114,9 +107,7 @@ namespace ChosenUndead
 
             if (Hp <= 0)
             {
-                Hp = 0;
-                state = EntityAction.Death;
-                AnimationManager.SetAnimation(state);
+                AnimationManager.SetAnimation(EntityAction.Death);
             }
                 
             else if (Hp > MaxHp)
@@ -125,7 +116,7 @@ namespace ChosenUndead
 
         #region Collision
 
-        public virtual bool IsDeadFull() => state == EntityAction.Death && AnimationManager.IsCurrentAnimationEnded();
+        public virtual bool IsDeadFull() => Hp == 0 && AnimationManager.IsCurrentAnimationEnded();
 
         public virtual Vector2 CollisionWithMap(Vector2 velocity)
         {

@@ -43,7 +43,6 @@ namespace ChosenUndead
         public override void Update()
         {
             var elapsedTime = Time.ElapsedSeconds;
-            base.Update();
 
             if (target.HitBox.Intersects(HitBox))
             {

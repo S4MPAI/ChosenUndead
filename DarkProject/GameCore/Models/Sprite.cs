@@ -13,6 +13,7 @@ namespace ChosenUndead
         protected Texture2D texture;
 
         private float scale;
+        private Color color = Color.White;
 
         public Rectangle Rectangle
         {
@@ -20,6 +21,13 @@ namespace ChosenUndead
             {
                 return new Rectangle((int)Position.X, (int)Position.Y, (int)(texture.Width * scale), (int)(texture.Height * scale));
             }
+        }
+
+        public Sprite(Texture2D texture, Color color, float scale = 1)
+        {
+            this.texture = texture;
+            this.scale = scale;
+            this.color = color;
         }
 
         public Sprite(Texture2D texture, float scale = 1)
@@ -34,12 +42,12 @@ namespace ChosenUndead
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, Position, null, Color.White, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, Position, null, color, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
         }
 
         public void Draw(SpriteBatch spriteBatch, Rectangle part)
         {
-            spriteBatch.Draw(texture, Position, part, Color.White, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, Position, part, color, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
         }
     }
 }

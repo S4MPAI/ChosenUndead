@@ -13,22 +13,26 @@ namespace ChosenUndead
     {
         private static Player player;
         private static ProgressBar healthBar;
+        private static ProgressBar staminaBar;
 
         static PlayerInterface()
         {
             player = Player.GetInstance();
-            var healthBarTextures = Art.GetHealthBars(); 
-            healthBar = new ProgressBar(healthBarTextures.bar, healthBarTextures.progressBar, healthBarTextures.progressBarBorder, player.MaxHp, new Vector2(), 1.5f);
+            var barTextures = Art.GetBars(); 
+            healthBar = new ProgressBar(barTextures.bar, barTextures.progressBar, barTextures.progressBarBorder, Color.Red, player.MaxHp, new Vector2(), 30f, 1.5f);
+            staminaBar = new ProgressBar(barTextures.bar, barTextures.progressBar, barTextures.progressBarBorder, Color.Aqua, Player.MaxStamina, new Vector2(0, 75),Player.StaminaRecovery, 1.5f);
         }
 
         public static void Draw(SpriteBatch spriteBatch)
         {
             healthBar.Draw(spriteBatch);
+            staminaBar.Draw(spriteBatch);
         }
 
         public static void Update()
         {
             healthBar.Update(player.Hp, player.MaxHp);
+            staminaBar.Update(player.Stamina, Player.MaxStamina);
         }
     }
 }

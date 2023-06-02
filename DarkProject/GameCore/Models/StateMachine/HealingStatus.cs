@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead.GameCore.Models.StateMachine
 {
-    public class HealingStatus : Status
+    public class HealingStatus : PlayerState
     {
         public HealingStatus(Player player, ChosenUndead.StateMachine stateMachine) : base(player, stateMachine)
         {

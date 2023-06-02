@@ -14,17 +14,39 @@ namespace ChosenUndead
         public override float WalkSpeed => 170f;
         public override float walkSpeedAttackCoef => 0.3f;
 
-        public const float RollSpeedCoef = 1.1f;
+        public const float RollSpeedCoef = 0.9f;
 
-        public const float MaxRollingTime = 0.5f;
-
-        public const float RollingCooldown = 2f;
+        public const float MaxRollingTime = 0.7f;
 
         public const float MaxJumpTime = 0.62f;
 
         public const float JumpLaunchVelocity = -400.0f;
 
         public const float JumpControlPower = 0.4f;
+
+        public const float MaxStamina = 100f;
+
+        private float stamina = 100f;
+        public float Stamina { get
+            {
+                return stamina;
+            }
+            set
+            {
+                if (value > MaxStamina)
+                    stamina = MaxStamina;
+                else
+                    stamina = value;
+            }
+        }
+
+        public const float StaminaRecovery = 25f;
+
+        public const float RollStaminaCost = 20f;
+
+        public const float AttackStaminaCost = 8f;
+
+        public const float JumpStaminaCost = 20f;
 
         public int Keys { get; private set; }
 
@@ -84,7 +106,7 @@ namespace ChosenUndead
             stateMachine.ChangeState(WalkingStatus);
         }
 
-        public override bool IsDeadFull() => state == EntityAction.Death && AnimationManager.IsCurrentAnimationEnded();
+        public override bool IsDeadFull() => Hp == 0 && AnimationManager.IsCurrentAnimationEnded();
 
         public void AddItem(ChestItem buff)
         {
@@ -122,7 +144,8 @@ namespace ChosenUndead
 
         public override void AddHp(float hpSize)
         {
-            base.AddHp(hpSize);
+            if (!IsImmune || hpSize >= 0)
+                base.AddHp(hpSize);
         }
     }
 }

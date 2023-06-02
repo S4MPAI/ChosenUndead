@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead
 {
-    public class Sceleton : Enemy
+    public class Sceleton : EnemyBTree
     {
         public Sceleton(Map map) : base(
             map,
             Art.GetSceletonAnimations(),
             32,
-            new Weapon(1, 1, 10, new[] { WeaponAttack.FirstAttack, WeaponAttack.SecondAttack }),
+            new Weapon(1, 1, 10, new[] { WeaponAttacks.FirstAttack, WeaponAttacks.SecondAttack }),
             32)
         {
         }
@@ -27,13 +27,18 @@ namespace ChosenUndead
 
         public override float walkSpeedAttackCoef => 0.5f;
 
+        protected override Node SetupTree()
+        {
+            throw new NotImplementedException();
+        }
+
         //public override void Update(GameTime gameTime)
         //{
         //    if (state == EntityAction.Death)
         //    {
         //        if (!animationManager.IsCurrentAnimationEnded())
         //            animationManager.Update(gameTime);
-                
+
         //        return;
         //    }
 

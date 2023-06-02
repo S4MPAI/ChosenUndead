@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead
 {
-    public abstract class Status
+    public abstract class PlayerState
     {
         protected Player player;
 
@@ -19,9 +19,7 @@ namespace ChosenUndead
 
         protected Vector2 velocity;
 
-        public static float rollingCoolDownLeft;
-
-        protected Status(Player player, StateMachine stateMachine)
+        protected PlayerState(Player player, StateMachine stateMachine)
         {
             this.player = player;
             this.stateMachine = stateMachine;
@@ -56,7 +54,7 @@ namespace ChosenUndead
 
         public virtual void PhysicsUpdate()
         {
-            rollingCoolDownLeft -= Time.ElapsedSeconds;
+            player.Stamina += Player.StaminaRecovery * Time.ElapsedSeconds;
         }
 
         public virtual void LogicUpdate()

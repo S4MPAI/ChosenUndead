@@ -24,15 +24,19 @@ namespace ChosenUndead
 
         private float size;
 
-        private readonly float animationSpeed = 20;
+        private readonly float animationSpeed = 20f;
+
+        private Color color;
 
         private Rectangle part;
 
-        public ProgressBar(Texture2D bPB, Texture2D pB, Texture2D fPB, float max, Vector2 pos, float size = 1f) 
+        public ProgressBar(Texture2D bPB, Texture2D pB, Texture2D fPB, Color barColor, float max, Vector2 pos, float animSpeed = 20f, float size = 1f) 
         {
+            animationSpeed = animSpeed;
+            color = barColor;
             maxValue = max;
             backProgressBar = new Sprite(bPB, size);
-            progressBar = new Sprite(pB, size);
+            progressBar = new Sprite(pB, color, size);
             frontProgressBar = new Sprite(fPB, size);
             part.Height = pB.Height;
             this.size = size;

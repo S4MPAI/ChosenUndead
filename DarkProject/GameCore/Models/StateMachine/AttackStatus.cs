@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead
 {
-    public class AttackStatus : Status
+    public class AttackStatus : PlayerState
     {
-        private bool isAttack; 
+        private bool isAttack;
+
+        private WeaponAttacks lastAttack;
 
         public AttackStatus(Player player, StateMachine stateMachine) : base(player, stateMachine)
         {
@@ -29,7 +31,8 @@ namespace ChosenUndead
         public override void Enter()
         {
             base.Enter();
-            speed = player.WalkSpeed * player.walkSpeedAttackCoef; 
+            speed = player.WalkSpeed * player.walkSpeedAttackCoef;
+            player.Stamina -= Player.AttackStaminaCost;
         }
 
         public override void Exit()
@@ -39,14 +42,19 @@ namespace ChosenUndead
 
         public override void HandleInput()
         {
-            base.HandleInput();
+            if (player.Weapon.CurrentAttack != lastAttack)
+                base.HandleInput();
             isAttack = Input.AttackPressed;
         }
 
         public override void LogicUpdate()
         {
-            if (!player.Weapon.IsAttack())
+            if (!player.Weapon.IsAttack() || 
+                (lastAttack != player.Weapon.CurrentAttack && player.Stamina - Player.AttackStaminaCost < Player.AttackStaminaCost))
                 stateMachine.ChangeState(player.WalkingStatus);
+
+            if (lastAttack != player.Weapon.CurrentAttack && player.Stamina - Player.AttackStaminaCost > Player.AttackStaminaCost)
+                player.Stamina -= Player.AttackStaminaCost;
             base.LogicUpdate();
         }
 
@@ -54,9 +62,14 @@ namespace ChosenUndead
         {
             base.PhysicsUpdate();
             velocity = SetGravityAndCollision(velocity);
+            lastAttack = player.Weapon.CurrentAttack;
+            player.Weapon.Update(isAttack);
+
             player.Velocity = velocity;
             player.Position += velocity * Time.ElapsedSeconds;
-            player.Weapon.Update(isAttack);
+
+            
+            
             player.AnimationManager.SetAnimation(player.Weapon.CurrentAttack);
         }
     }

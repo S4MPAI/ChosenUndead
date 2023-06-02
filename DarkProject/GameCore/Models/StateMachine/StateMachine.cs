@@ -9,15 +9,15 @@ namespace ChosenUndead
 {
     public class StateMachine
     {
-        private Status CurrentState;
+        private PlayerState CurrentState;
 
-        public void Initialize(Status startingState)
+        public void Initialize(PlayerState startingState)
         {
             CurrentState = startingState;
             startingState.Enter();
         }
 
-        public void ChangeState(Status newState)
+        public void ChangeState(PlayerState newState)
         {
             CurrentState.Exit();
 

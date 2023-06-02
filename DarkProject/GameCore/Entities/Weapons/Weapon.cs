@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead
 {
-    public enum WeaponAttack
+    public enum WeaponAttacks
     {
         None, 
         FirstAttack,
@@ -31,9 +31,9 @@ namespace ChosenUndead
 
         public float Damage { get; private set; }
 
-        public WeaponAttack[] WeaponAttacks { get; private set; }
+        public WeaponAttacks[] WeaponAttacks { get; private set; }
 
-        public WeaponAttack CurrentAttack { get; set; }
+        public WeaponAttacks CurrentAttack { get; set; }
 
         private bool isDamageReg { get; set; }
 
@@ -44,7 +44,7 @@ namespace ChosenUndead
 
         }
 
-        public Weapon(float attackCooldown, float stunCooldown, float damage, WeaponAttack[] weaponAttacks)
+        public Weapon(float attackCooldown, float stunCooldown, float damage, WeaponAttacks[] weaponAttacks)
         {
             this.attackCooldown = attackCooldown;
             attackCooldownLeft = attackCooldown;
@@ -57,12 +57,12 @@ namespace ChosenUndead
         {
             var elapsedTime = Time.ElapsedSeconds;
 
-            if (CurrentAttack == WeaponAttack.Stun)
+            if (CurrentAttack == ChosenUndead.WeaponAttacks.Stun)
                 stunCooldownLeft -= elapsedTime;
             else if (WeaponAttacks.Contains(CurrentAttack))
                 attackCooldownLeft -= elapsedTime;
 
-            if (attackCooldownLeft <= 0 || (CurrentAttack == WeaponAttack.None && isFire))
+            if (attackCooldownLeft <= 0 || (CurrentAttack == ChosenUndead.WeaponAttacks.None && isFire))
             {
                 if (CurrentAttack != WeaponAttacks[^1] && isFire)
                 {
@@ -71,7 +71,7 @@ namespace ChosenUndead
                 }
                 else
                 {
-                    CurrentAttack = WeaponAttack.Stun;
+                    CurrentAttack = ChosenUndead.WeaponAttacks.Stun;
                     isDamageReg = true;
                     stunCooldownLeft = stunCooldown;
                 }
@@ -81,8 +81,8 @@ namespace ChosenUndead
 
             IsDamaged = IsDamageReg();
 
-            if (stunCooldownLeft <= 0 && CurrentAttack == WeaponAttack.Stun)
-                CurrentAttack = WeaponAttack.None;
+            if (stunCooldownLeft <= 0 && CurrentAttack == ChosenUndead.WeaponAttacks.Stun)
+                CurrentAttack = ChosenUndead.WeaponAttacks.None;
         }
 
         protected virtual bool IsDamageReg()
@@ -93,6 +93,6 @@ namespace ChosenUndead
             return false;
         }
 
-        public virtual bool IsAttack() => CurrentAttack != WeaponAttack.None && CurrentAttack != WeaponAttack.Stun;
+        public virtual bool IsAttack() => CurrentAttack != ChosenUndead.WeaponAttacks.None && CurrentAttack != ChosenUndead.WeaponAttacks.Stun;
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead
 {
-    public class JumpingStatus : Status
+    public class JumpingStatus : PlayerState
     {
         private bool isJumping;
 
@@ -37,6 +37,8 @@ namespace ChosenUndead
             speed = player.WalkSpeed;
             player.AnimationManager.SetAnimation(EntityAction.Jump);
             isJumping = true;
+            if (Input.JumpPressed && player.Stamina >= Player.JumpStaminaCost)
+                player.Stamina -= Player.RollStaminaCost;
         }
 
         public override void Exit()
