@@ -69,7 +69,7 @@ namespace ChosenUndead
 
         public override float Damage { get => Weapon.Damage + AttackBuffCount * attackBuffCoef; }
         public int AttackBuffCount { get; private set; }
-        private const float attackBuffCoef = 1f;
+        private const float attackBuffCoef = 5f;
 
         public bool IsInteract;
 

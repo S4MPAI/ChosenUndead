@@ -71,7 +71,7 @@ namespace ChosenUndead
         {
             if (videoPlayer.State == MediaState.Stopped)
                 videoPlayer.Play(deathVideo);
-
+            
             foreach (var component in components)
                 component.Update();
         }
