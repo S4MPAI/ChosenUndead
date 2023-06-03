@@ -38,12 +38,10 @@ namespace ChosenUndead
 
         public override void HandleInput()
         {
-            base.HandleInput();
         }
 
         public override void LogicUpdate()
         {
-            base.LogicUpdate();
         }
 
         public override void PhysicsUpdate()

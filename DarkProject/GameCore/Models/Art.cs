@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,10 @@ namespace ChosenUndead
         private const string tilesPath = "Map/Tiles/tile";
         private const string boardsPath = "Interface/Boards/";
         private const string forestBackgroundsPath = "Backgrounds/forest/bg_forest_";
-        private const string chestsPath = "Map/Chests/chest";
+        private const string chestsPath = "Map/Decorations/Chests/chest";
         private const string npcPath = "Entities/Npc/";
         private const string healthBarPath = "Interface/HealthBar/";
+        private const string videoPath = "Videos/";
 
         public static void Initialize(ContentManager content)
         {
@@ -82,7 +84,7 @@ namespace ChosenUndead
         {
             var npcAnimations = new AnimationManager<object>();
 
-            npcAnimations.AddAnimation(EntityAction.Idle, new Animation(content.Load<Texture2D>($"{npcPath}{name}Idle"), 5, 0.2f));
+            npcAnimations.AddAnimation(EntityAction.Idle, new Animation(content.Load<Texture2D>($"{npcPath}{name}/Idle"), 5, 0.2f));
 
             return npcAnimations;
         }
@@ -97,7 +99,7 @@ namespace ChosenUndead
 
         public static Animation GetBonfireSaveAnimation() => new Animation(content.Load<Texture2D>(bonfirePath), 8, 0.1f);
 
-        public static Animation GetChestAnimation(ChestItem chestType) => new Animation(content.Load<Texture2D>($"{chestsPath}{chestType}"), 7, 0.2f, false);
+        public static Animation GetChestAnimation(ChestItem chestType) => new Animation(content.Load<Texture2D>($"{chestsPath}Attack"), 7, 0.2f, false);
 
         public static Texture2D GetTileTexture(int tileNumber) => tileNumber != 0 ? content.Load<Texture2D>(tilesPath + tileNumber) : null;
 
@@ -109,9 +111,36 @@ namespace ChosenUndead
 
         public static Board GetBoardForNpc() =>
             new Board(content.Load<Texture2D>(boardsPath + "NPC"), Color.White, Color.Black);
+        public static Board GetBoardForChest(ChestItem item)
+        {
+            var text = "Вы получили ";
+
+            switch (item)
+            {
+                case ChestItem.Attack:
+                    text += "силу";
+                    break;
+                case ChestItem.Vitality:
+                    text += "здоровье";
+                    break;
+                case ChestItem.HealingQuartz:
+                    text += "камень";
+                    break;
+                case ChestItem.Key:
+                    text += "ключ";
+                    break;
+            }
+
+            return new Board(content.Load<Texture2D>(boardsPath + "Chest"), Color.White, Color.Black, text);
+        }
+            
+
+
 
         public static SpriteFont GetFont(string name) =>
             content.Load<SpriteFont>($"Fonts/{name}");
+
+        public static Video GetVideo(string name) => content.Load<Video>($"{videoPath}{name}");
     }
 
     public class Board : Sprite

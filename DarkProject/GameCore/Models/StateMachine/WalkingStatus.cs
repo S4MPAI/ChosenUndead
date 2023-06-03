@@ -53,7 +53,7 @@ namespace ChosenUndead
                 stateMachine.ChangeState(player.AttackStatus);
             if (isRolling && velocity.X != 0 && player.Stamina >= Player.RollStaminaCost)
                 stateMachine.ChangeState(player.RollingStatus);
-            if (isHealing)
+            if (isHealing && player.HealingQuartzLeft != 0)
                 stateMachine.ChangeState(player.HealingStatus);
             base.LogicUpdate();
         }

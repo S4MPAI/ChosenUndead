@@ -21,6 +21,8 @@ namespace ChosenUndead
 
         private State nextState;
 
+        public bool isNewSave;
+
         public PlayState[] Levels { get; private set; }
 
         public Camera camera { get; private set; }
@@ -56,6 +58,8 @@ namespace ChosenUndead
         public void SaveCompleted(BonfireSave bonfire)
         {
             Save();
+            if (currentState is PlayState play)
+                play.SaveChanges();
         }
 
         protected override void Initialize()
@@ -138,7 +142,8 @@ namespace ChosenUndead
                 Y = (int)player.Position.Y,
                 PlayerLevelIndex = Array.IndexOf(Levels, currentState),
                 AttackBuffCount = player.AttackBuffCount,
-                VitalityBuffCount = player.VitalityBuffCount
+                VitalityBuffCount = player.VitalityBuffCount,
+                MaxHealingQuartz = player.MaxHealingQuartz
             };
             var jsonStringSave = JsonConvert.SerializeObject(data, Formatting.Indented);
             File.WriteAllText(saveFile, jsonStringSave);
@@ -146,6 +151,8 @@ namespace ChosenUndead
 
         public void LoadSave(bool isNewSave = false)
         {
+            this.isNewSave = isNewSave;
+
             var player = Player.GetInstance();
 
             if (isNewSave)
@@ -153,7 +160,7 @@ namespace ChosenUndead
                 var playerData = new PlayerData()
                 {
                     X = -32,
-                    Y = 154,
+                    Y = 224,
                     PlayerLevelIndex = 0,
                     MaxHealingQuartz = 1
                 };
@@ -165,6 +172,8 @@ namespace ChosenUndead
             var data = JsonConvert.DeserializeObject<PlayerData>(jsonString);
             ChangeState(Levels[data.PlayerLevelIndex]);
             player.Position = new Vector2(data.X, data.Y);
+            player.AddHp(player.MaxHp);
+            player.Reset();
             player.SetInventory(data.AttackBuffCount, data.VitalityBuffCount, data.MaxHealingQuartz, data.Keys);
         }
     }

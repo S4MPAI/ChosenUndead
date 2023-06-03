@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ChosenUndead
 {
@@ -58,6 +59,9 @@ namespace ChosenUndead
                 foreach (var bg in backgrounds)
                     bg.Update();
 
+            if (player.IsDeadFull())
+                game.ChangeState(new DeathState(game, content));
+
             PlayerInterface.Update();
         }
 
@@ -72,6 +76,12 @@ namespace ChosenUndead
             if (File.Exists(savePath))
             {
                 levelData = LoadLevelData();
+                if (game.isNewSave)
+                {
+                    levelData.Chests.Clear();
+                    SaveChanges();
+                }
+
                 var npcS = levelData.Npcs.Select(x => new NPC(map, x.Name, x.Phrases));
                 map.AddNPCs(npcS.ToArray());
                 map.SetChestsStates(levelData.Chests);

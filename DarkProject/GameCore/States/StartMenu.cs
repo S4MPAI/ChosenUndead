@@ -16,7 +16,7 @@ namespace ChosenUndead
         {
             background = base.content.Load<Texture2D>("Backgrounds/menuBackground");
             var buttonTexture = base.content.Load<Texture2D>("Controls/menuButton");
-            var buttonFont = base.content.Load<SpriteFont>("Fonts/Font");
+            var buttonFont = Art.GetFont("Font");
             var centerX = (game.Window.ClientBounds.Width - buttonTexture.Width) / 2;
 
             var newGameButton = new Button(buttonTexture, buttonFont)

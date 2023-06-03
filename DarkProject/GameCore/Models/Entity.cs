@@ -61,7 +61,7 @@ namespace ChosenUndead
 
         public abstract float MaxHp { get; }
 
-        public float Hp { get; private set; }
+        public float Hp { get; protected set; }
 
         public abstract float WalkSpeed { get; }
 
@@ -85,13 +85,13 @@ namespace ChosenUndead
             this.attackWidth = attackWidth;
 
             this.map = map;
-            this.Weapon = weapon ?? new Weapon(0, 0, 0, new WeaponAttacks[] {});
+            Weapon = weapon ?? new Weapon(0, 0, 0, new WeaponAttacks[] {});
             this.AnimationManager = animationManager;
             Hp = MaxHp;
             TextureSize = new Vector2(this.AnimationManager.CurrentAnimation.FrameWidth, this.AnimationManager.CurrentAnimation.FrameHeight);
 
-            foreach (var attack in weapon.WeaponAttacks)
-                animationManager.ChangeFrameTime(attack, weapon.attackCooldown);
+            foreach (var attack in Weapon.WeaponAttacks)
+                animationManager.ChangeFrameTime(attack, Weapon.attackCooldown);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -107,6 +107,7 @@ namespace ChosenUndead
 
             if (Hp <= 0)
             {
+                Hp = 0;
                 AnimationManager.SetAnimation(EntityAction.Death);
             }
                 

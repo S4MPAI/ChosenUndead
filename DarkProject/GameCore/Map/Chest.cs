@@ -22,12 +22,18 @@ namespace ChosenUndead
 
         private readonly Player target;
 
+        private float boardTime = 3f;
+
         public bool IsOpen = false;
+
+        private Board board;
 
         public Chest(ChestItem item, Rectangle tilePosition) : base(Art.GetChestAnimation(item), tilePosition)
         {
             this.item = item;
             target = Player.GetInstance();
+            board = Art.GetBoardForChest(item);
+            board.Position = new Vector2(tilePosition.X - board.Rectangle.Width / 2, tilePosition.Top - board.Rectangle.Height);
         }
 
         public override void Update()
@@ -38,12 +44,20 @@ namespace ChosenUndead
                 target.AddItem(item);
             }
                 
-            if (IsOpen) animation?.Update();
+            if (IsOpen)
+            {
+                animation?.Update();
+                if ((boardTime -= Time.ElapsedSeconds) > 0 && Rectangle.Intersects(target.HitBox))
+                    board.Update();
+            } 
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
+
+            if (boardTime > 0 && IsOpen)
+                board.Draw(spriteBatch);
         }
     }
 }

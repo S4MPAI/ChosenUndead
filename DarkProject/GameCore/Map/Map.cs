@@ -130,7 +130,6 @@ namespace ChosenUndead
                     break;
                 default:
                     return;
-                    break;
             }
 
             SetEntityPosition(currentEntity, x, y);
@@ -155,9 +154,20 @@ namespace ChosenUndead
                     case "S":
                         decoration = new BonfireSave(Art.GetBonfireSaveAnimation(), rectangle);
                         break;
+                    case "H":
+                        decoration = new Chest(ChestItem.HealingQuartz, rectangle);
+                        break;
+                    case "A":
+                        decoration = new Chest(ChestItem.HealingQuartz, rectangle);
+                        break;
+                    case "V":
+                        decoration = new Chest(ChestItem.HealingQuartz, rectangle);
+                        break;
+                    case "K":
+                        decoration = new Chest(ChestItem.HealingQuartz, rectangle);
+                        break;
                     default:
                         return;
-                        break;
                 }
             }
             Decorations.Add(decoration);

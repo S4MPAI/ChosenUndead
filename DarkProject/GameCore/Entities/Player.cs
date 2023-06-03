@@ -22,7 +22,7 @@ namespace ChosenUndead
 
         public const float JumpLaunchVelocity = -400.0f;
 
-        public const float JumpControlPower = 0.4f;
+        public const float JumpControlPower = 0.7f;
 
         public const float MaxStamina = 100f;
 
@@ -40,18 +40,18 @@ namespace ChosenUndead
             }
         }
 
-        public const float StaminaRecovery = 25f;
+        public const float StaminaRecovery = 17f;
 
-        public const float RollStaminaCost = 20f;
+        public const float RollStaminaCost = 25f;
 
-        public const float AttackStaminaCost = 8f;
+        public const float AttackStaminaCost = 12f;
 
-        public const float JumpStaminaCost = 20f;
+        public const float JumpStaminaCost = 15f;
 
         public int Keys { get; private set; }
 
         public int MaxHealingQuartz { get; private set; }
-        public int HealingQuartzLeft { get; private set; }
+        public int HealingQuartzLeft { get; set; }
 
         public const float HealingSize = 40f;
 
@@ -129,8 +129,14 @@ namespace ChosenUndead
             }
         }
 
-        public void SetInventory(int attackBuffCount, int vitalityBuffCount, int maxHealingQuartz, int keys) => 
-            (AttackBuffCount, VitalityBuffCount, MaxHealingQuartz, Keys) = (attackBuffCount, vitalityBuffCount, maxHealingQuartz, keys);
+        public void SetInventory(int attackBuffCount, int vitalityBuffCount, int maxHealingQuartz, int keys) 
+        {
+            AttackBuffCount = attackBuffCount;
+            VitalityBuffCount = vitalityBuffCount;
+            MaxHealingQuartz = maxHealingQuartz;
+            HealingQuartzLeft = MaxHealingQuartz;
+            Keys = keys;
+        }
 
         public override void Update()
         {
@@ -146,6 +152,12 @@ namespace ChosenUndead
         {
             if (!IsImmune || hpSize >= 0)
                 base.AddHp(hpSize);
+        }
+
+        public void Reset()
+        {
+            Hp = MaxHp;
+            stateMachine.ChangeState(WalkingStatus);
         }
     }
 }

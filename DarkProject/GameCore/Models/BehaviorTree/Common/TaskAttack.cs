@@ -14,11 +14,6 @@ namespace ChosenUndead
 
         private float walkSpeedAttackCoef;
 
-        private float walkSpeed;
-
-        private WeaponAttacks lastAttack;
-
-        private SpriteEffects orientation;
 
         public TaskAttack(Weapon weapon, float walkSpeedAttackCoef = 1) : base()
         {
@@ -28,7 +23,6 @@ namespace ChosenUndead
 
         public override NodeState Evaluate()
         {
-            lastAttack = weapon.CurrentAttack;
             weapon.Update((bool)GetData("isAttack"));
 
             if (weapon.IsAttack())

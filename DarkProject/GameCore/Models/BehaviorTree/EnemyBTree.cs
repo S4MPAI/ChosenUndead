@@ -24,8 +24,13 @@ namespace ChosenUndead
 
         public override void Update()
         {
-            if (Root != null)
-                Root.Evaluate();
+            if (IsDead)
+            {
+                AnimationManager.SetAnimation(EntityAction.Death);
+                AnimationManager.Update();
+            }
+            else if (Root != null)
+                    Root.Evaluate();
         }
 
         protected abstract Node SetupTree();

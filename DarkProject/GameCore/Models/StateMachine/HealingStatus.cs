@@ -29,6 +29,7 @@ namespace ChosenUndead.GameCore.Models.StateMachine
             base.Enter();
             player.AnimationManager.SetAnimation(EntityAction.Healing);
             player.Velocity.X = 0;
+            player.HealingQuartzLeft--;
             speed = 1;
         }
 
