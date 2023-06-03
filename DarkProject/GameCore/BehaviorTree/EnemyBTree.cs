@@ -10,7 +10,7 @@ namespace ChosenUndead
 {
     public abstract class EnemyBTree : Enemy
     {
-        public EnemyBTree(Map map, AnimationManager<object> animationManager, int hitBoxWidth, Weapon weapon, int attackWidth = 0, Entity target = null) : 
+        public EnemyBTree(Map map, AnimationManager<object> animationManager, int hitBoxWidth, Weapon weapon, int attackWidth = 0, Entity target = null) :
             base(map, animationManager, hitBoxWidth, weapon, attackWidth, target)
         {
         }
@@ -30,7 +30,7 @@ namespace ChosenUndead
                 AnimationManager.Update();
             }
             else if (Root != null)
-                    Root.Evaluate();
+                Root.Evaluate();
         }
 
         protected abstract Node SetupTree();

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChosenUndead.GameCore.Models.BehaviorTree
+namespace ChosenUndead
 {
     public class Selector : Node
     {

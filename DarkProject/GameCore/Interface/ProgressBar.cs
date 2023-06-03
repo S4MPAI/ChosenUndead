@@ -58,8 +58,6 @@ namespace ChosenUndead
 
         public void Update(float value)
         {
-            if (value == currentValue) return;
-
             targetValue = value;
 
             if (targetValue < currentValue)

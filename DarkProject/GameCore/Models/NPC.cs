@@ -14,7 +14,7 @@ namespace ChosenUndead
 
         public override float MaxHp => float.MaxValue;
 
-        protected const float phraseTime = 3f;
+        protected const float phraseTime = 1.5f;
 
         protected float phraseTimeLeft = phraseTime;
 
@@ -48,7 +48,11 @@ namespace ChosenUndead
             {
                 isTargetIntersect = true;
                 if ((phraseTimeLeft -= elapsedTime) <= 0 && currentPhrase < Phrases.Length - 1)
+                {
                     board.ChangeText(Phrases[++currentPhrase]);
+                    phraseTimeLeft = phraseTime;
+                }
+                    
             }
             else
             {
@@ -56,6 +60,11 @@ namespace ChosenUndead
                 currentPhrase = 0;
                 phraseTimeLeft = phraseTime;
             }
+
+            Velocity.Y = SetGravity(Velocity.Y);
+            Velocity = CollisionWithMap(Velocity);
+            Position += Velocity * Time.ElapsedSeconds;
+            AnimationManager.Update();
         }
 
         public override void Draw(SpriteBatch spriteBatch)

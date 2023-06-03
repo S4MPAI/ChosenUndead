@@ -38,7 +38,7 @@ namespace ChosenUndead
             player.AnimationManager.SetAnimation(EntityAction.Jump);
             isJumping = true;
             if (Input.JumpPressed && player.Stamina >= Player.JumpStaminaCost)
-                player.Stamina -= Player.RollStaminaCost;
+                player.Stamina -= Player.JumpStaminaCost;
         }
 
         public override void Exit()

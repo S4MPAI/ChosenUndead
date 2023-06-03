@@ -27,7 +27,7 @@ namespace ChosenUndead
 
         public virtual void Enter()
         {
-            
+
         }
 
         public void Update()
@@ -65,7 +65,7 @@ namespace ChosenUndead
 
         public virtual void DisplayUpdate()
         {
-            player.Orientation = velocity.X != 0 ? (velocity.X > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally) : player.Orientation;
+            player.Orientation = velocity.X != 0 ? velocity.X > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally : player.Orientation;
         }
 
         protected Vector2 SetGravityAndCollision(Vector2 velocity)

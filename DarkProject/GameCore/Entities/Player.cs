@@ -1,5 +1,4 @@
-﻿using ChosenUndead.GameCore.Models.StateMachine;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -44,7 +43,7 @@ namespace ChosenUndead
 
         public const float RollStaminaCost = 25f;
 
-        public const float AttackStaminaCost = 12f;
+        public const float AttackStaminaCost = 10f;
 
         public const float JumpStaminaCost = 15f;
 
@@ -66,7 +65,7 @@ namespace ChosenUndead
         public override float MaxHp => startMaxHp + VitalityBuffCount * vitalityBuffCoef;
         protected const float startMaxHp = 100f;
         public int VitalityBuffCount { get; private set; }
-        private const float vitalityBuffCoef = 10f;
+        private const float vitalityBuffCoef = 25f;
 
         public override float Damage { get => Weapon.Damage + AttackBuffCount * attackBuffCoef; }
         public int AttackBuffCount { get; private set; }
@@ -120,6 +119,7 @@ namespace ChosenUndead
                     break;
                 case ChestItem.HealingQuartz:
                     MaxHealingQuartz++;
+                    HealingQuartzLeft++;
                     break;
                 case ChestItem.Key:
                     Keys++;

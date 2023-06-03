@@ -120,7 +120,7 @@ namespace ChosenUndead
         {
             var mainElement = this;
 
-            while(mainElement.parent != null)
+            while (mainElement.parent != null)
                 mainElement = mainElement.parent;
 
             mainElement.SetData(key, value);

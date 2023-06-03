@@ -84,7 +84,13 @@ namespace ChosenUndead
         {
             var npcAnimations = new AnimationManager<object>();
 
-            npcAnimations.AddAnimation(EntityAction.Idle, new Animation(content.Load<Texture2D>($"{npcPath}{name}/Idle"), 5, 0.2f));
+            var framesCount = 0;
+            if (name == "DirtMan")
+                framesCount = 5;
+            if (name == "Archer")
+                framesCount = 4;
+
+            npcAnimations.AddAnimation(EntityAction.Idle, new Animation(content.Load<Texture2D>($"{npcPath}{name}/Idle"), framesCount, 0.2f));
 
             return npcAnimations;
         }

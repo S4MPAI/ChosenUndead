@@ -47,7 +47,7 @@ namespace ChosenUndead
 
         public override void LogicUpdate()
         {
-            if (!player.IsOnGround || (isJumping && player.Stamina >= Player.JumpStaminaCost))
+            if (!player.IsOnGround || isJumping && player.Stamina >= Player.JumpStaminaCost)
                 stateMachine.ChangeState(player.JumpingStatus);
             if (isAttack && player.Weapon.CurrentAttack != WeaponAttacks.Stun && player.Stamina >= Player.AttackStaminaCost)
                 stateMachine.ChangeState(player.AttackStatus);

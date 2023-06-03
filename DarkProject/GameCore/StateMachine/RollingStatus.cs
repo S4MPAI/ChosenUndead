@@ -5,17 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChosenUndead.GameCore.Models.StateMachine
+namespace ChosenUndead
 {
     public class RollingStatus : PlayerState
     {
         private float rollingTimeLeft;
 
-        public RollingStatus(Player player, ChosenUndead.StateMachine stateMachine) : base(player, stateMachine)
+        public RollingStatus(Player player, StateMachine stateMachine) : base(player, stateMachine)
         {
         }
 
-        
+
 
         public override void Enter()
         {
@@ -36,7 +36,7 @@ namespace ChosenUndead.GameCore.Models.StateMachine
 
         public override void HandleInput()
         {
-            
+
         }
 
         public override void LogicUpdate()

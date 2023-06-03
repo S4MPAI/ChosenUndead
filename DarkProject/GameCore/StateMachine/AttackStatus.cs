@@ -49,8 +49,8 @@ namespace ChosenUndead
 
         public override void LogicUpdate()
         {
-            if (!player.Weapon.IsAttack() || 
-                (lastAttack != player.Weapon.CurrentAttack && player.Stamina - Player.AttackStaminaCost < Player.AttackStaminaCost))
+            if (!player.Weapon.IsAttack() ||
+                lastAttack != player.Weapon.CurrentAttack && player.Stamina - Player.AttackStaminaCost < Player.AttackStaminaCost)
                 stateMachine.ChangeState(player.WalkingStatus);
 
             if (lastAttack != player.Weapon.CurrentAttack && player.Stamina - Player.AttackStaminaCost > Player.AttackStaminaCost)
@@ -68,8 +68,8 @@ namespace ChosenUndead
             player.Velocity = velocity;
             player.Position += velocity * Time.ElapsedSeconds;
 
-            
-            
+
+
             player.AnimationManager.SetAnimation(player.Weapon.CurrentAttack);
         }
     }

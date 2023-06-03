@@ -124,7 +124,7 @@ namespace ChosenUndead
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             if (ChangeStateCooldownLeft <= 0)
                 currentState.Draw(spriteBatch);

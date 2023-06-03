@@ -25,7 +25,7 @@ namespace ChosenUndead
         {
             var hitBoxEnemy = enemy.HitBox;
             var hitBoxTarget = target.HitBox;
-            var orientation = (hitBoxTarget.Center.X - hitBoxEnemy.Center.X > 0) ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+            var orientation = hitBoxTarget.Center.X - hitBoxEnemy.Center.X > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             var rightDirection = hitBoxTarget.Left - hitBoxEnemy.Right;
             var leftDirection = hitBoxTarget.Right - hitBoxEnemy.Left;
 
@@ -50,7 +50,7 @@ namespace ChosenUndead
         {
             if (Math.Abs(rightDirection) > Math.Abs(leftDirection))
                 return LimitInLowerValues(leftDirection);
-            
+
             return LimitInUpperValues(rightDirection);
         }
 

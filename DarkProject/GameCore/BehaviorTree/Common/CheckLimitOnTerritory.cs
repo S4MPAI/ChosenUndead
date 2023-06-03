@@ -25,13 +25,13 @@ namespace ChosenUndead
             var velocityX = (float)(GetData("velocityX") ?? 0.0f) * Time.ElapsedSeconds;
             var tileY = (int)Math.Ceiling((float)hitBox.Bottom / map.TileSize);
 
-            if ((!map.IsHaveCollision((int)(hitBox.Left + velocityX) / map.TileSize, tileY) && velocityX < 0) ||
-                (!map.IsHaveCollision((int)(hitBox.Right + velocityX) / map.TileSize, tileY) && velocityX > 0))
+            if (!map.IsHaveCollision((int)(hitBox.Left + velocityX) / map.TileSize, tileY) && velocityX < 0 ||
+                !map.IsHaveCollision((int)(hitBox.Right + velocityX) / map.TileSize, tileY) && velocityX > 0)
             {
                 SetDataOnMainElement("velocityX", 0.0f);
                 return NodeState.FAILURE;
             }
-                
+
 
             return NodeState.SUCCESS;
 

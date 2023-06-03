@@ -104,15 +104,11 @@ namespace ChosenUndead
             var number = int.Parse(symbol);
             var rectangle = new Rectangle(x * size, y * size, size, size);
 
-            switch (number)
-            {
-                case <= 0:
-                    tiles[y, x] = new Tile(number, rectangle, Collision.Passable);
-                    break;
-                case > 0:
-                    tiles[y, x] = new Tile(number, rectangle, Collision.Impassable);
-                    break;
-            }
+            if (number % 2 == 1)
+                tiles[y, x] = new Tile(number, rectangle, Collision.Impassable);
+            else
+                tiles[y, x] = new Tile(number, rectangle, Collision.Passable);
+
             mapEntities.Add(tiles[y, x]);
         }
 
@@ -158,13 +154,13 @@ namespace ChosenUndead
                         decoration = new Chest(ChestItem.HealingQuartz, rectangle);
                         break;
                     case "A":
-                        decoration = new Chest(ChestItem.HealingQuartz, rectangle);
+                        decoration = new Chest(ChestItem.Attack, rectangle);
                         break;
                     case "V":
-                        decoration = new Chest(ChestItem.HealingQuartz, rectangle);
+                        decoration = new Chest(ChestItem.Vitality, rectangle);
                         break;
                     case "K":
-                        decoration = new Chest(ChestItem.HealingQuartz, rectangle);
+                        decoration = new Chest(ChestItem.Key, rectangle);
                         break;
                     default:
                         return;

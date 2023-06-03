@@ -82,7 +82,10 @@ namespace ChosenUndead
                     SaveChanges();
                 }
 
-                var npcS = levelData.Npcs.Select(x => new NPC(map, x.Name, x.Phrases));
+                var npcS = levelData.Npcs.Select(x => new NPC(map, x.Name, x.Phrases)).ToArray();
+                for (int i = 0; i < npcS.Length; i++)
+                    npcS[i].Position = new(levelData.Npcs[i].X, levelData.Npcs[i].Y);
+
                 map.AddNPCs(npcS.ToArray());
                 map.SetChestsStates(levelData.Chests);
             }

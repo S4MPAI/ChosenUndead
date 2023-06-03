@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChosenUndead.GameCore.Models.StateMachine
+namespace ChosenUndead
 {
     public class HealingStatus : PlayerState
     {
-        public HealingStatus(Player player, ChosenUndead.StateMachine stateMachine) : base(player, stateMachine)
+        public HealingStatus(Player player, StateMachine stateMachine) : base(player, stateMachine)
         {
         }
 
