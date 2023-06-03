@@ -130,7 +130,7 @@ namespace ChosenUndead
                     text += "здоровье";
                     break;
                 case ChestItem.HealingQuartz:
-                    text += "камень";
+                    text += "\nлечащий камень";
                     break;
                 case ChestItem.Key:
                     text += "ключ";
