@@ -1,9 +1,9 @@
 {
-  "X": -32,
-  "Y": 224,
+  "X": 511,
+  "Y": 543,
   "PlayerLevelIndex": 0,
-  "AttackBuffCount": 0,
-  "VitalityBuffCount": 0,
+  "AttackBuffCount": 1,
+  "VitalityBuffCount": 1,
   "MaxHealingQuartz": 1,
   "Keys": 0
 }

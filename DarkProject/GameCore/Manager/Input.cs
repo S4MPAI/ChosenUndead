@@ -26,6 +26,8 @@ namespace ChosenUndead
 
         public static bool HealingPressed { get; private set; }
 
+        private static bool lastInteractionPressed;
+
         public static void Update()
         {
             var keyboardState = Keyboard.GetState();
@@ -34,10 +36,12 @@ namespace ChosenUndead
             LeftPressed = keyboardState.IsKeyDown(KeyboardInput.LeftKey);
             RightPressed = keyboardState.IsKeyDown(KeyboardInput.RightKey);
             JumpPressed = keyboardState.IsKeyDown(KeyboardInput.JumpKey);
-            InteractionPressed = keyboardState.IsKeyDown(KeyboardInput.InteractionKey);
+            InteractionPressed = keyboardState.IsKeyDown(KeyboardInput.InteractionKey) && lastInteractionPressed;
             RollingPressed = keyboardState.IsKeyDown(KeyboardInput.RollKey);
             HealingPressed = keyboardState.IsKeyDown(KeyboardInput.HealKey);
             AttackPressed = mouseState.LeftButton == ButtonState.Pressed;
+
+            lastInteractionPressed = keyboardState.IsKeyUp(KeyboardInput.InteractionKey);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace ChosenUndead
     {
         private bool isAttack;
 
-        private WeaponAttacks lastAttack;
+        private Attacks lastAttack;
 
         public AttackStatus(Player player, StateMachine stateMachine) : base(player, stateMachine)
         {
@@ -38,6 +38,7 @@ namespace ChosenUndead
         public override void Exit()
         {
             base.Exit();
+            
         }
 
         public override void HandleInput()

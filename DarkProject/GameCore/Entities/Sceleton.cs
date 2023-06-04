@@ -16,7 +16,7 @@ namespace ChosenUndead
             map,
             Art.GetSceletonAnimations(),
             32,
-            new Weapon(1, 1, 10, new[] { WeaponAttacks.FirstAttack, WeaponAttacks.SecondAttack }),
+            new Weapon(1, 1, 10, new[] { Attacks.FirstAttack, Attacks.SecondAttack }),
             32)
         {
         }

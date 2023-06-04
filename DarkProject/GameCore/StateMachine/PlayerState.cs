@@ -59,6 +59,8 @@ namespace ChosenUndead
 
         public virtual void LogicUpdate()
         {
+            if (player.IsGettingDamage && this != player.GettingDamageStatus)
+                stateMachine.ChangeState(player.GettingDamageStatus);
             if (player.IsDead && this != player.DeathStatus)
                 stateMachine.ChangeState(player.DeathStatus);
         }

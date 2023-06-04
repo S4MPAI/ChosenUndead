@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead
 {
-    public class DeathStatus : PlayerState
+    public class GettingDamageStatus : PlayerState
     {
-        public DeathStatus(Player player, StateMachine stateMachine) : base(player, stateMachine)
+        public GettingDamageStatus(Player player, StateMachine stateMachine) : base(player, stateMachine)
         {
         }
 
@@ -19,16 +18,10 @@ namespace ChosenUndead
             player.AnimationManager.Update();
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-        }
-
         public override void Enter()
         {
             base.Enter();
-            player.AnimationManager.SetAnimation(EntityAction.Death);
-            player.Velocity.X = 0;
+            player.AnimationManager.SetAnimation(EntityAction.Hurt);
         }
 
         public override void Exit()
@@ -38,17 +31,20 @@ namespace ChosenUndead
 
         public override void HandleInput()
         {
+            base.HandleInput();
         }
 
         public override void LogicUpdate()
         {
+            if (player.AnimationManager.IsCurrentAnimationEnded())
+                stateMachine.ChangeState(player.WalkingStatus);
         }
 
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
             velocity = SetGravityAndCollision(velocity);
-            player.Position += velocity;
+            player.Position += velocity * Time.ElapsedSeconds;
             player.Velocity = velocity;
         }
     }

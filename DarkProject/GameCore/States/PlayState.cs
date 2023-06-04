@@ -76,11 +76,6 @@ namespace ChosenUndead
             if (File.Exists(savePath))
             {
                 levelData = LoadLevelData();
-                if (game.isNewSave)
-                {
-                    levelData.Chests.Clear();
-                    SaveChanges();
-                }
 
                 var npcS = levelData.Npcs.Select(x => new NPC(map, x.Name, x.Phrases)).ToArray();
                 for (int i = 0; i < npcS.Length; i++)
@@ -110,6 +105,16 @@ namespace ChosenUndead
             var data = JsonConvert.DeserializeObject<LevelData>(jsonString);
 
             return data;
+        }
+
+        public void ClearProgress()
+        {
+            var jsonString = File.ReadAllText(savePath);
+            var data = JsonConvert.DeserializeObject<LevelData>(jsonString);
+
+            data.Chests.Clear();
+            jsonString = JsonConvert.SerializeObject(data, Formatting.Indented);
+            File.WriteAllText(savePath, jsonString);
         }
     }
 }

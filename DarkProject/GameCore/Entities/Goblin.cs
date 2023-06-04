@@ -14,7 +14,7 @@ namespace ChosenUndead
         public override float walkSpeedAttackCoef => 0.5f;
 
         public Goblin(Map map, Entity target = null) : 
-            base(map, Art.GetGoblinAnimations(), 30, new Weapon(1f, 1.2f, 30, new[]{WeaponAttacks.FirstAttack}), 55, target)
+            base(map, Art.GetGoblinAnimations(), 30, new Weapon(1f, 1.2f, 30, new[]{Attacks.FirstAttack}), 55, target)
         {
             Start();
         }

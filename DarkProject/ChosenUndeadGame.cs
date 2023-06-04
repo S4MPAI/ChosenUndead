@@ -21,8 +21,6 @@ namespace ChosenUndead
 
         private State nextState;
 
-        public bool isNewSave;
-
         public PlayState[] Levels { get; private set; }
 
         public Camera camera { get; private set; }
@@ -49,10 +47,13 @@ namespace ChosenUndead
         {
             var currentLevel = currentState as PlayState;
             currentLevel.SaveChanges();
+            Save();
             var level = Levels[transition.LevelIndex - 1];
             level.spawnpointNumber = Array.IndexOf(Levels, currentLevel) + 1;
             
             ChangeState(level);
+            var player = Player.GetInstance();
+            player.Reset();
         }
 
         public void SaveCompleted(BonfireSave bonfire)
@@ -151,8 +152,6 @@ namespace ChosenUndead
 
         public void LoadSave(bool isNewSave = false)
         {
-            this.isNewSave = isNewSave;
-
             var player = Player.GetInstance();
 
             if (isNewSave)
@@ -166,15 +165,18 @@ namespace ChosenUndead
                 };
                 var jsonSave = JsonConvert.SerializeObject(playerData, Formatting.Indented);
                 File.WriteAllText(saveFile, jsonSave);
+
+                foreach (var level in Levels)
+                    level.ClearProgress();
             }
 
             var jsonString = File.ReadAllText(saveFile);
             var data = JsonConvert.DeserializeObject<PlayerData>(jsonString);
             ChangeState(Levels[data.PlayerLevelIndex]);
             player.Position = new Vector2(data.X, data.Y);
-            player.AddHp(player.MaxHp);
-            player.Reset();
             player.SetInventory(data.AttackBuffCount, data.VitalityBuffCount, data.MaxHealingQuartz, data.Keys);
+            player.Reset();
+            
         }
     }
 }

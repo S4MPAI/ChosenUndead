@@ -85,7 +85,7 @@ namespace ChosenUndead
             this.attackWidth = attackWidth;
 
             this.map = map;
-            Weapon = weapon ?? new Weapon(0, 0, 0, new WeaponAttacks[] {});
+            Weapon = weapon ?? new Weapon(0, 0, 0, new Attacks[] {});
             this.AnimationManager = animationManager;
             Hp = MaxHp;
             TextureSize = new Vector2(this.AnimationManager.CurrentAnimation.FrameWidth, this.AnimationManager.CurrentAnimation.FrameHeight);

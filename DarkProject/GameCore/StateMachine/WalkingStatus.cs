@@ -49,7 +49,7 @@ namespace ChosenUndead
         {
             if (!player.IsOnGround || isJumping && player.Stamina >= Player.JumpStaminaCost)
                 stateMachine.ChangeState(player.JumpingStatus);
-            if (isAttack && player.Weapon.CurrentAttack != WeaponAttacks.Stun && player.Stamina >= Player.AttackStaminaCost)
+            if (isAttack && player.Weapon.CurrentAttack != Attacks.Stun && player.Stamina >= Player.AttackStaminaCost)
                 stateMachine.ChangeState(player.AttackStatus);
             if (isRolling && velocity.X != 0 && player.Stamina >= Player.RollStaminaCost)
                 stateMachine.ChangeState(player.RollingStatus);

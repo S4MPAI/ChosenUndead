@@ -38,13 +38,14 @@ namespace ChosenUndead
             playerAnimations.AddAnimation(EntityAction.Idle, new Animation(content.Load<Texture2D>($"{playerPath}Idle"), 8, 0.125f));
             playerAnimations.AddAnimation(EntityAction.Run, new Animation(content.Load<Texture2D>($"{playerPath}Run"), 8, 0.125f));
             playerAnimations.AddAnimation(EntityAction.Jump, new Animation(content.Load<Texture2D>($"{playerPath}Jump"), 8, 0.125f));
-            playerAnimations.AddAnimation(WeaponAttacks.FirstAttack, new Animation(content.Load<Texture2D>($"{playerPath}FirstAttack"), 7, 0.125f, false));
-            playerAnimations.AddAnimation(WeaponAttacks.SecondAttack, new Animation(content.Load<Texture2D>($"{playerPath}SecondAttack"), 3, 0.125f, false));
-            playerAnimations.AddAnimation(WeaponAttacks.ThirdAttack, new Animation(content.Load<Texture2D>($"{playerPath}ThirdAttack"), 4, 0.125f, false));
-            playerAnimations.AddAnimation(WeaponAttacks.FourthAttack, new Animation(content.Load<Texture2D>($"{playerPath}FourthAttack"), 6, 0.125f, false));
+            playerAnimations.AddAnimation(Attacks.FirstAttack, new Animation(content.Load<Texture2D>($"{playerPath}FirstAttack"), 7, 0.125f, false));
+            playerAnimations.AddAnimation(Attacks.SecondAttack, new Animation(content.Load<Texture2D>($"{playerPath}SecondAttack"), 3, 0.125f, false));
+            playerAnimations.AddAnimation(Attacks.ThirdAttack, new Animation(content.Load<Texture2D>($"{playerPath}ThirdAttack"), 4, 0.125f, false));
+            playerAnimations.AddAnimation(Attacks.FourthAttack, new Animation(content.Load<Texture2D>($"{playerPath}FourthAttack"), 6, 0.125f, false));
             playerAnimations.AddAnimation(EntityAction.Healing, new Animation(content.Load<Texture2D>($"{playerPath}Healing"), 8, 0.2f, false));
             playerAnimations.AddAnimation(EntityAction.Roll, new Animation(content.Load<Texture2D>($"{playerPath}Roll"), 4, 0.15f));
             playerAnimations.AddAnimation(EntityAction.Death, new Animation(content.Load<Texture2D>($"{playerPath}Death"), 4, 0.2f, false));
+            playerAnimations.AddAnimation(EntityAction.Hurt, new Animation(content.Load<Texture2D>($"{playerPath}Hurt"), 3, 0.2f, false));
 
             return playerAnimations;
         }
@@ -56,7 +57,7 @@ namespace ChosenUndead
             sceletonAnimations.AddAnimation(EntityAction.Idle, new Animation(content.Load<Texture2D>($"{sceletonPath}Idle"), 4, 0.2f));
             sceletonAnimations.AddAnimation(EntityAction.Death, new Animation(content.Load<Texture2D>($"{sceletonPath}Death"), 4, 0.8f, false));
             sceletonAnimations.AddAnimation(EntityAction.Run, new Animation(content.Load<Texture2D>($"{sceletonPath}Walk"), 4, 0.15f));
-            sceletonAnimations.AddAnimation(WeaponAttacks.FirstAttack, new Animation(content.Load<Texture2D>($"{sceletonPath}Attack"), 8, 0.125f));
+            sceletonAnimations.AddAnimation(Attacks.FirstAttack, new Animation(content.Load<Texture2D>($"{sceletonPath}Attack"), 8, 0.125f));
 
             return sceletonAnimations;
         }
@@ -67,7 +68,7 @@ namespace ChosenUndead
 
             goblinAnimations.AddAnimation(EntityAction.Idle, new Animation(content.Load<Texture2D>($"{goblinPath}Idle"), 4, 0.2f));
             goblinAnimations.AddAnimation(EntityAction.Run, new Animation(content.Load<Texture2D>($"{goblinPath}Run"), 8, 0.2f));
-            goblinAnimations.AddAnimation(WeaponAttacks.FirstAttack, new Animation(content.Load<Texture2D>($"{goblinPath}Attack"), 8, 1f));
+            goblinAnimations.AddAnimation(Attacks.FirstAttack, new Animation(content.Load<Texture2D>($"{goblinPath}Attack"), 8, 1f));
             goblinAnimations.AddAnimation(EntityAction.Death, new Animation(content.Load<Texture2D>($"{goblinPath}Death"), 4, 0.2f, false));
 
             return goblinAnimations;
@@ -105,7 +106,7 @@ namespace ChosenUndead
 
         public static Animation GetBonfireSaveAnimation() => new Animation(content.Load<Texture2D>(bonfirePath), 8, 0.1f);
 
-        public static Animation GetChestAnimation(ChestItem chestType) => new Animation(content.Load<Texture2D>($"{chestsPath}Attack"), 7, 0.2f, false);
+        public static Animation GetChestAnimation(ChestItem chestType) => new Animation(content.Load<Texture2D>($"{chestsPath}{chestType}"), 7, 0.2f, false);
 
         public static Texture2D GetTileTexture(int tileNumber) => tileNumber != 0 ? content.Load<Texture2D>(tilesPath + tileNumber) : null;
 

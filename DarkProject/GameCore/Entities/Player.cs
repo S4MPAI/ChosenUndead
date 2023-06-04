@@ -41,9 +41,9 @@ namespace ChosenUndead
 
         public const float StaminaRecovery = 17f;
 
-        public const float RollStaminaCost = 25f;
+        public const float RollStaminaCost = 35f;
 
-        public const float AttackStaminaCost = 10f;
+        public const float AttackStaminaCost = 15f;
 
         public const float JumpStaminaCost = 15f;
 
@@ -61,7 +61,9 @@ namespace ChosenUndead
         public DeathStatus DeathStatus { get; }
         public AttackStatus AttackStatus { get; }
         public HealingStatus HealingStatus { get; }
+        public GettingDamageStatus GettingDamageStatus { get; }
 
+        public bool IsGettingDamage { get; private set; } 
         public override float MaxHp => startMaxHp + VitalityBuffCount * vitalityBuffCoef;
         protected const float startMaxHp = 100f;
         public int VitalityBuffCount { get; private set; }
@@ -85,6 +87,7 @@ namespace ChosenUndead
             AttackStatus = new AttackStatus(this, stateMachine);
             DeathStatus = new DeathStatus(this, stateMachine);
             HealingStatus = new HealingStatus(this, stateMachine);
+            GettingDamageStatus = new GettingDamageStatus(this, stateMachine);
             stateMachine.Initialize(WalkingStatus);
             
         }
@@ -141,6 +144,7 @@ namespace ChosenUndead
         public override void Update()
         {
             stateMachine.Update();
+            IsGettingDamage = false;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -150,13 +154,21 @@ namespace ChosenUndead
 
         public override void AddHp(float hpSize)
         {
+            
+
             if (!IsImmune || hpSize >= 0)
+            {
+                if (hpSize < 0)
+                    IsGettingDamage = true;
+
                 base.AddHp(hpSize);
+            }
         }
 
         public void Reset()
         {
             Hp = MaxHp;
+            HealingQuartzLeft = MaxHealingQuartz;
             stateMachine.ChangeState(WalkingStatus);
         }
     }

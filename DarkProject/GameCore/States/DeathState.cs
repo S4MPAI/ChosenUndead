@@ -16,12 +16,15 @@ namespace ChosenUndead
 
         private static VideoPlayer videoPlayer = new VideoPlayer();
 
+        private float videoTime;
+
         private List<Component> components;
 
         public DeathState(ChosenUndeadGame game, ContentManager content) : base(game, content)
         {
             deathVideo = Art.GetVideo("Death");
-            videoPlayer.IsLooped = false;
+            videoTime = 5f;
+            videoPlayer.Volume = 0.3f;
 
             var buttonTexture = content.Load<Texture2D>("Controls/menuButton");
             var buttonFont = Art.GetFont("Font");
@@ -29,14 +32,14 @@ namespace ChosenUndead
             var centerX = (ChosenUndeadGame.WindowSize.X - buttonTexture.Width) / 2;
             var newGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(centerX, 400),
+                Position = new Vector2(centerX, 600),
                 Text = "Возродиться"
             };
             newGameButton.Click += (sender, e) => game.LoadSave();
 
             var exitInMenuButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(centerX, 500),
+                Position = new Vector2(centerX, 700),
                 Text = "Выйти в меню"
             };
             exitInMenuButton.Click += (sender, e) => game.ChangeState(new StartMenu(game, content));
@@ -69,8 +72,10 @@ namespace ChosenUndead
 
         public override void Update()
         {
-            if (videoPlayer.State == MediaState.Stopped)
+            if ((videoTime -= Time.ElapsedSeconds) > 0)
                 videoPlayer.Play(deathVideo);
+            else
+                videoPlayer.Stop();
             
             foreach (var component in components)
                 component.Update();

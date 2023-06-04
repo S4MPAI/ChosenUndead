@@ -193,6 +193,18 @@
 /processorParam:TextureFormat=Color
 /build:Entities/Player/Healing.png
 
+#begin Entities/Player/Hurt.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Entities/Player/Hurt.png
+
 #begin Entities/Player/Idle.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -434,6 +446,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Map/Decorations/Chests/chestAttack.png
+
+#begin Map/Decorations/Chests/chestHealingQuartz.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Map/Decorations/Chests/chestHealingQuartz.png
+
+#begin Map/Decorations/Chests/chestKey.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Map/Decorations/Chests/chestKey.png
 
 #begin Map/Decorations/Chests/chestVitality.png
 /importer:TextureImporter

@@ -10,6 +10,7 @@ namespace ChosenUndead
     public class RollingStatus : PlayerState
     {
         private float rollingTimeLeft;
+        private bool isRolling;
 
         public RollingStatus(Player player, StateMachine stateMachine) : base(player, stateMachine)
         {
@@ -36,16 +37,22 @@ namespace ChosenUndead
 
         public override void HandleInput()
         {
-
+            isRolling = Input.RollingPressed;
         }
 
         public override void LogicUpdate()
         {
             rollingTimeLeft -= Time.ElapsedSeconds;
-            if (rollingTimeLeft <= 0)
+
+            if (isRolling && rollingTimeLeft <= 0 && player.Stamina > Player.RollStaminaCost)
             {
-                stateMachine.ChangeState(player.WalkingStatus);
+                player.Stamina -= Player.RollStaminaCost;
+                rollingTimeLeft = Player.MaxRollingTime;
             }
+
+            if (rollingTimeLeft <= 0)
+                stateMachine.ChangeState(player.WalkingStatus);
+
             base.LogicUpdate();
         }
 

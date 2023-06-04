@@ -13,6 +13,7 @@ namespace ChosenUndead
         Jump,
         Death,
         Roll,
-        Healing
+        Healing,
+        Hurt
     }
 }
