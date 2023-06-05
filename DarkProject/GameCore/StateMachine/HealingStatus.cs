@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,11 @@ namespace ChosenUndead
 {
     public class HealingStatus : PlayerState
     {
+        private SoundEffectInstance healingSound = Sound.GetPlayerSound("Healing").CreateInstance();
+
         public HealingStatus(Player player, StateMachine stateMachine) : base(player, stateMachine)
         {
+            healingSound.Volume = 0.3f;
         }
 
         public override void DisplayUpdate()
@@ -31,6 +35,7 @@ namespace ChosenUndead
             player.Velocity.X = 0;
             player.HealingQuartzLeft--;
             speed = 1;
+            healingSound.Play();
         }
 
         public override void Exit()

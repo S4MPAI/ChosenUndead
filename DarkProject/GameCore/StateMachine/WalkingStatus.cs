@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace ChosenUndead
         private bool isAttack;
         private bool isRolling;
         private bool isHealing;
-
+        private SoundEffectInstance walkSound = Sound.GetPlayerSound("Walk").CreateInstance();
         public WalkingStatus(Player player, StateMachine stateMachine) : base(player, stateMachine)
         {
         }
@@ -71,7 +72,10 @@ namespace ChosenUndead
         {
             base.DisplayUpdate();
             if (velocity.X != 0)
+            {
+                walkSound.Play();
                 player.AnimationManager.SetAnimation(EntityAction.Run);
+            }
             else
                 player.AnimationManager.SetAnimation(EntityAction.Idle);
 

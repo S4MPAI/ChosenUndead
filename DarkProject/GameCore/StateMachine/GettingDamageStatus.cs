@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Audio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace ChosenUndead
 {
     public class GettingDamageStatus : PlayerState
     {
+        private SoundEffectInstance hurtSound = Sound.GetPlayerSound("Hurt").CreateInstance();
         public GettingDamageStatus(Player player, StateMachine stateMachine) : base(player, stateMachine)
         {
         }
@@ -22,6 +24,7 @@ namespace ChosenUndead
         {
             base.Enter();
             player.AnimationManager.SetAnimation(EntityAction.Hurt);
+            hurtSound.Play();
         }
 
         public override void Exit()

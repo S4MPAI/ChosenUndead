@@ -67,6 +67,7 @@ namespace ChosenUndead
         {
             IsMouseVisible = true;
             Art.Initialize(Content);
+            Sound.Initialize(Content);
             camera = new Camera(WindowSize, 4f);
             Map.SetLevelChanged(ChangeLevel);
             Map.SetSaveCompleted(SaveCompleted);

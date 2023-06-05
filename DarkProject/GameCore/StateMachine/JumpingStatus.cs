@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Audio;
 
 namespace ChosenUndead
 {
@@ -15,6 +16,10 @@ namespace ChosenUndead
         private bool wasJumping;
 
         private float jumpTime;
+
+        private SoundEffectInstance jumpSound = Sound.GetPlayerSound("Jump").CreateInstance();
+
+        private SoundEffectInstance landingSound = Sound.GetPlayerSound("Landing").CreateInstance();
 
         public JumpingStatus(Player player, StateMachine stateMachine) : base(player, stateMachine)
         {
@@ -38,7 +43,10 @@ namespace ChosenUndead
             player.AnimationManager.SetAnimation(EntityAction.Jump);
             isJumping = true;
             if (Input.JumpPressed && player.Stamina >= Player.JumpStaminaCost)
+            {
+                jumpSound.Play();
                 player.Stamina -= Player.JumpStaminaCost;
+            }
         }
 
         public override void Exit()
@@ -48,6 +56,7 @@ namespace ChosenUndead
             isJumping = false;
             wasJumping = false;
             jumpTime = 0f;
+            landingSound.Play();
         }
 
         public override void HandleInput()

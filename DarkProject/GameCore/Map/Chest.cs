@@ -34,6 +34,7 @@ namespace ChosenUndead
             target = Player.GetInstance();
             board = Art.GetBoardForChest(item);
             board.Position = new Vector2(tilePosition.X - board.Rectangle.Width / 2, tilePosition.Top - board.Rectangle.Height);
+            Art.SetPositionInMapBounds(board);
         }
 
         public override void Update()

@@ -507,6 +507,42 @@
 /processorParam:TextureFormat=Color
 /build:Map/Tiles/tile2.png
 
+#begin Sounds/Player/Attack.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Player/Attack.wav
+
+#begin Sounds/Player/Healing.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Player/Healing.wav
+
+#begin Sounds/Player/Hurt.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Player/Hurt.wav
+
+#begin Sounds/Player/Jump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Player/Jump.wav
+
+#begin Sounds/Player/Landing.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Player/Landing.wav
+
+#begin Sounds/Player/Walk.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Player/Walk.wav
+
 #begin Videos/Death.mp4
 /importer:H264Importer
 /processor:VideoProcessor

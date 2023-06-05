@@ -70,8 +70,10 @@ namespace ChosenUndead
             base.Initialize();
             
 
-            using var fileStream = new StreamReader(mapPath);
+            using var fileStream = new StreamReader(mapPath); 
+            Art.SetMap(map);
             map.Generate(fileStream, 32, spawnpointNumber);
+            
 
             if (File.Exists(savePath))
             {

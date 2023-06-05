@@ -13,7 +13,7 @@ namespace ChosenUndead
     public static class Art
     {
         private static ContentManager content;
-
+        private static Map map;
         private const string playerPath = "Entities/Player/";
         private const string sceletonPath = "Entities/Sceleton/";
         private const string goblinPath = "Entities/Goblin/";
@@ -34,7 +34,7 @@ namespace ChosenUndead
         public static AnimationManager<object> GetPlayerAnimations()
         {
             var playerAnimations = new AnimationManager<object>();
-
+            
             playerAnimations.AddAnimation(EntityAction.Idle, new Animation(content.Load<Texture2D>($"{playerPath}Idle"), 8, 0.125f));
             playerAnimations.AddAnimation(EntityAction.Run, new Animation(content.Load<Texture2D>($"{playerPath}Run"), 8, 0.125f));
             playerAnimations.AddAnimation(EntityAction.Jump, new Animation(content.Load<Texture2D>($"{playerPath}Jump"), 8, 0.125f));
@@ -42,10 +42,10 @@ namespace ChosenUndead
             playerAnimations.AddAnimation(Attacks.SecondAttack, new Animation(content.Load<Texture2D>($"{playerPath}SecondAttack"), 3, 0.125f, false));
             playerAnimations.AddAnimation(Attacks.ThirdAttack, new Animation(content.Load<Texture2D>($"{playerPath}ThirdAttack"), 4, 0.125f, false));
             playerAnimations.AddAnimation(Attacks.FourthAttack, new Animation(content.Load<Texture2D>($"{playerPath}FourthAttack"), 6, 0.125f, false));
-            playerAnimations.AddAnimation(EntityAction.Healing, new Animation(content.Load<Texture2D>($"{playerPath}Healing"), 8, 0.2f, false));
+            playerAnimations.AddAnimation(EntityAction.Healing, new Animation(content.Load<Texture2D>($"{playerPath}Healing"), 8, 0.5f, false));
             playerAnimations.AddAnimation(EntityAction.Roll, new Animation(content.Load<Texture2D>($"{playerPath}Roll"), 4, 0.15f));
             playerAnimations.AddAnimation(EntityAction.Death, new Animation(content.Load<Texture2D>($"{playerPath}Death"), 4, 0.2f, false));
-            playerAnimations.AddAnimation(EntityAction.Hurt, new Animation(content.Load<Texture2D>($"{playerPath}Hurt"), 3, 0.2f, false));
+            playerAnimations.AddAnimation(EntityAction.Hurt, new Animation(content.Load<Texture2D>($"{playerPath}Hurt"), 3, 0.4f, false));
 
             return playerAnimations;
         }
@@ -118,6 +118,15 @@ namespace ChosenUndead
 
         public static Board GetBoardForNpc() =>
             new Board(content.Load<Texture2D>(boardsPath + "NPC"), Color.White, Color.Black);
+
+        public static void SetPositionInMapBounds(Component component)
+        {
+            component.Position.X = MathHelper.Clamp(component.Position.X, 0, map.MapSize.X);
+            component.Position.Y = MathHelper.Clamp(component.Position.Y, 0, map.MapSize.Y);
+        }
+
+        public static void SetMap(Map map) => Art.map = map;
+
         public static Board GetBoardForChest(ChestItem item)
         {
             var text = "Вы получили ";
@@ -140,7 +149,7 @@ namespace ChosenUndead
 
             return new Board(content.Load<Texture2D>(boardsPath + "Chest"), Color.White, Color.Black, text);
         }
-            
+
 
 
 
