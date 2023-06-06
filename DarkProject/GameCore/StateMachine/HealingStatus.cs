@@ -59,6 +59,7 @@ namespace ChosenUndead
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
+            player.Stamina += Player.StaminaRecovery * Time.ElapsedSeconds;
         }
     }
 }

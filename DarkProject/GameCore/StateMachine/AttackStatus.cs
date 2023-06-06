@@ -37,19 +37,20 @@ namespace ChosenUndead
             attackSound.Play();
             speed = player.WalkSpeed * player.walkSpeedAttackCoef;
             player.Stamina -= Player.AttackStaminaCost;
+            player.Weapon.Update(true);
         }
 
         public override void Exit()
         {
             base.Exit();
-            player.Weapon.SetNoneAttack();
+            player.Weapon.SetStunAttack();
         }
 
         public override void HandleInput()
         {
-            if (player.Weapon.CurrentAttack != lastAttack)
+            if (player.Weapon.CurrentAttack != lastAttack || player.Weapon.CurrentAttack == Attacks.FirstAttack)
                 base.HandleInput();
-            isAttack = Input.AttackPressed;
+            isAttack = Input.AttackPressed && player.Stamina >= Player.AttackStaminaCost;
             lastAttack = player.Weapon.CurrentAttack;
             player.Weapon.Update(isAttack);
         }
@@ -57,10 +58,9 @@ namespace ChosenUndead
         public override void LogicUpdate()
         {
             if (!player.Weapon.IsAttack() ||
-                (lastAttack != player.Weapon.CurrentAttack && player.Stamina - Player.AttackStaminaCost < Player.AttackStaminaCost))
+                (lastAttack != player.Weapon.CurrentAttack && player.Stamina < Player.AttackStaminaCost))
                 stateMachine.ChangeState(player.WalkingStatus);
-
-            if (lastAttack != player.Weapon.CurrentAttack && player.Weapon.IsAttack() && (player.Stamina - Player.AttackStaminaCost) > Player.AttackStaminaCost)
+            else if (lastAttack != player.Weapon.CurrentAttack && player.Weapon.IsAttack() && player.Stamina >= Player.AttackStaminaCost)
             {
                 player.Stamina -= Player.AttackStaminaCost;
                 attackSound.Play();
@@ -68,7 +68,7 @@ namespace ChosenUndead
                 
             base.LogicUpdate();
         }
-
+        
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();

@@ -39,13 +39,13 @@ namespace ChosenUndead
             }
         }
 
-        public const float StaminaRecovery = 17f;
+        public const float StaminaRecovery = 25f;
 
-        public const float RollStaminaCost = 35f;
+        public const float RollStaminaCost = 25f;
 
-        public const float AttackStaminaCost = 15f;
+        public const float AttackStaminaCost = 8f;
 
-        public const float JumpStaminaCost = 15f;
+        public const float JumpStaminaCost = 10f;
 
         public int Keys { get; private set; }
 

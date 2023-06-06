@@ -95,6 +95,10 @@ namespace ChosenUndead
 
         public virtual bool IsAttack() => CurrentAttack != Attacks.None && CurrentAttack != Attacks.Stun;
 
-        public void SetNoneAttack() => CurrentAttack = Attacks.None;
+        public void SetStunAttack() 
+        {
+            CurrentAttack = Attacks.Stun;
+            stunCooldownLeft = stunCooldown;
+        } 
     }
 }

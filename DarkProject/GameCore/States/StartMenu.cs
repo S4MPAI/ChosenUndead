@@ -15,45 +15,24 @@ namespace ChosenUndead
         public StartMenu(ChosenUndeadGame game, ContentManager content) : base(game, content)
         {
             background = base.content.Load<Texture2D>("Backgrounds/menuBackground");
-            var buttonTexture = base.content.Load<Texture2D>("Controls/menuButton");
-            var buttonFont = Art.GetFont("Font");
-            var centerX = (game.Window.ClientBounds.Width - buttonTexture.Width) / 2;
 
-            var newGameButton = new Button(buttonTexture, buttonFont)
-            {
-                Position = new Vector2(centerX, 300),
-                Text = "Новая игра"
-            };
+            var newGameButton = Art.GetButton("Новая игра");
             newGameButton.Click += (sender, e) => game.LoadSave(true);
-
-            var continueButton = new Button(buttonTexture, buttonFont)
-            {
-                Position = new Vector2(centerX, 400),
-                Text = "Продолжить"
-            };
+            var continueButton = Art.GetButton("Продолжить");
             continueButton.Click += (sender, e) => game.LoadSave();
-
-            var optionGameButton = new Button(buttonTexture, buttonFont)
-            {
-                Position = new Vector2(centerX, 500),
-                Text = "Настройки"
-            };
-
-            //optionGameButton.Click +=
-
-            var exitGameButton = new Button(buttonTexture, buttonFont)
-            {
-                Position = new Vector2(centerX, 600),
-                Text = "Выйти"
-            };
-
+            var exitGameButton = Art.GetButton("Выйти");
             exitGameButton.Click += (sender, e) => game.Exit();
+
+            var centerX = (game.Window.ClientBounds.Width - newGameButton.Rectangle.Width) / 2;
+
+            newGameButton.Position = new Vector2 (centerX, 300);
+            continueButton.Position = new Vector2(centerX, 400);
+            exitGameButton.Position = new Vector2(centerX, 500);
 
             sprites = new List<Component>()
             {
                 newGameButton,
                 continueButton,
-                optionGameButton,
                 exitGameButton
             };
         }

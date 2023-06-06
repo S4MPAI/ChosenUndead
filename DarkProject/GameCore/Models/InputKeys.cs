@@ -21,6 +21,8 @@ namespace ChosenUndead
 
         public Keys HealKey = Keys.H;
 
+        public Keys EscapeKey = Keys.Escape;
+
         public InputKeys()
         {
         }

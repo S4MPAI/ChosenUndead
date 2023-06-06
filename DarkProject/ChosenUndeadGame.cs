@@ -21,6 +21,8 @@ namespace ChosenUndead
 
         private State nextState;
 
+        public bool isPause = false;
+
         public PlayState[] Levels { get; private set; }
 
         public Camera camera { get; private set; }
@@ -114,8 +116,8 @@ namespace ChosenUndead
 
                 currentState.Update();
 
-                if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-                    Exit();
+                //if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                  //  Exit();
             }
             
 

@@ -49,6 +49,7 @@ namespace ChosenUndead
             velocity = SetGravityAndCollision(velocity);
             player.Position += velocity * Time.ElapsedSeconds;
             player.Velocity = velocity;
+            player.Stamina += Player.StaminaRecovery * Time.ElapsedSeconds;
         }
     }
 }

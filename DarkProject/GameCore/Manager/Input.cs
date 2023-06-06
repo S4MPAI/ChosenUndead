@@ -11,21 +11,16 @@ namespace ChosenUndead
     public static class Input
     {
         public static InputKeys KeyboardInput { get; set; } = new();
-
         public static bool LeftPressed { get; private set; }
-
         public static bool RightPressed { get; private set; }
-
         public static bool JumpPressed { get; private set; }
-
         public static bool InteractionPressed { get; private set; }
-
         public static bool AttackPressed { get; private set; }
-
         public static bool RollingPressed { get; private set; }
-
         public static bool HealingPressed { get; private set; }
+        public static bool EscapePressed { get; private set; }
 
+        private static bool lastEscapePressed;
         private static bool lastInteractionPressed;
 
         public static void Update()
@@ -37,11 +32,13 @@ namespace ChosenUndead
             RightPressed = keyboardState.IsKeyDown(KeyboardInput.RightKey);
             JumpPressed = keyboardState.IsKeyDown(KeyboardInput.JumpKey);
             InteractionPressed = keyboardState.IsKeyDown(KeyboardInput.InteractionKey) && lastInteractionPressed;
+            EscapePressed = keyboardState.IsKeyDown(KeyboardInput.EscapeKey) && lastEscapePressed;
             RollingPressed = keyboardState.IsKeyDown(KeyboardInput.RollKey);
             HealingPressed = keyboardState.IsKeyDown(KeyboardInput.HealKey);
             AttackPressed = mouseState.LeftButton == ButtonState.Pressed;
 
             lastInteractionPressed = keyboardState.IsKeyUp(KeyboardInput.InteractionKey);
+            lastEscapePressed = keyboardState.IsKeyUp(KeyboardInput.EscapeKey);
         }
     }
 }

@@ -54,7 +54,7 @@ namespace ChosenUndead
 
         public virtual void PhysicsUpdate()
         {
-            player.Stamina += Player.StaminaRecovery * Time.ElapsedSeconds;
+            
         }
 
         public virtual void LogicUpdate()

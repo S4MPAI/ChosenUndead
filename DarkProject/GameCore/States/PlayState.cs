@@ -22,13 +22,15 @@ namespace ChosenUndead
         private string mapPath => $"../../../Content/Maps/{levelNumber}.txt";
         private LevelData levelData;
 
+        private static Pause pause;
+
         public int spawnpointNumber;
 
         public PlayState(ChosenUndeadGame game, ContentManager content, int levelNumber, List<ScrollingBackground> backgrounds) : base(game, content)
         {
             this.levelNumber = levelNumber;
             this.backgrounds = backgrounds;
-            
+            pause = new Pause(game, content);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -48,10 +50,21 @@ namespace ChosenUndead
             PlayerInterface.Draw(spriteBatch);
 
             spriteBatch.End();
+
+            if (game.isPause)
+                pause.Draw(spriteBatch);
         }
         
         public override void Update()
         {
+            game.isPause = Input.EscapePressed ? !game.isPause : game.isPause;
+
+            if (game.isPause)
+            {
+                pause.Update();
+                return;
+            }
+
             map.Update();
             game.camera.Follow(player, map);
 

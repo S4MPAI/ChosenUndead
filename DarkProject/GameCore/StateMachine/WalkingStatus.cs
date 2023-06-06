@@ -62,10 +62,11 @@ namespace ChosenUndead
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
+            player.Stamina += Player.StaminaRecovery * Time.ElapsedSeconds;
             velocity = SetGravityAndCollision(velocity);
             player.Velocity = velocity;
             player.Position += velocity * Time.ElapsedSeconds;
-            player.Weapon.Update(isAttack);
+            player.Weapon.Update(false);
         }
 
         public override void DisplayUpdate()

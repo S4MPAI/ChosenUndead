@@ -156,6 +156,20 @@ namespace ChosenUndead
         public static SpriteFont GetFont(string name) =>
             content.Load<SpriteFont>($"Fonts/{name}");
 
+        public static Button GetButton(string text, Vector2 position)
+        {
+            var buttonTexture = content.Load<Texture2D>("Controls/menuButton");
+            var buttonFont = Art.GetFont("Font");
+
+            return new Button(buttonTexture, buttonFont)
+            {
+                Text = text,
+                Position = position
+            };
+        }
+
+        public static Button GetButton(string text) => GetButton(text, Vector2.Zero);
+
         public static Video GetVideo(string name) => content.Load<Video>($"{videoPath}{name}");
     }
 
