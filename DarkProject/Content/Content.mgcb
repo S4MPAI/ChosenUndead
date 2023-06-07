@@ -49,7 +49,7 @@
 /processorParam:TextureFormat=Color
 /build:Backgrounds/forest/bg_forest_3.png
 
-#begin Backgrounds/menuBackground.png
+#begin Backgrounds/menu.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -59,7 +59,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Backgrounds/menuBackground.png
+/build:Backgrounds/menu.png
 
 #begin Controls/menuButton.png
 /importer:TextureImporter
@@ -542,6 +542,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sounds/Player/Walk.wav
+
+#begin Sounds/States/mainMenu.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/States/mainMenu.wav
 
 #begin Videos/Death.mp4
 /importer:H264Importer

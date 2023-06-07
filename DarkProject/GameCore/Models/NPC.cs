@@ -59,6 +59,7 @@ namespace ChosenUndead
                 isTargetIntersect = false;
                 currentPhrase = 0;
                 phraseTimeLeft = phraseTime;
+                board.ChangeText(Phrases[currentPhrase]);
             }
 
             Velocity.Y = SetGravity(Velocity.Y);

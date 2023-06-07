@@ -42,7 +42,7 @@ namespace ChosenUndead
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(background, new Rectangle(Point.Zero, ChosenUndeadGame.WindowSize), new Color(Color.Black, 0.3f));
+            spriteBatch.Draw(background, new Rectangle(Point.Zero, ChosenUndeadGame.WindowSize), new Color(Color.Black, 0.7f));
 
             foreach (var button in buttons)
                 button.Draw(spriteBatch);

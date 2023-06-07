@@ -14,6 +14,8 @@ namespace ChosenUndead
 
         private const string playerPath = "Sounds/Player/";
 
+        private const string statePath = "Sounds/States/";
+
         public static void Initialize(ContentManager content)
         {
             Sound.content = content;
@@ -21,5 +23,8 @@ namespace ChosenUndead
 
         public static SoundEffect GetPlayerSound(string soundName) =>
             content.Load<SoundEffect>($"{playerPath}{soundName}");
+
+        public static SoundEffectInstance GetStateSound(string soundName) =>
+            content.Load<SoundEffect>($"{statePath}{soundName}").CreateInstance();
     }
 }

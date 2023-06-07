@@ -40,6 +40,7 @@ namespace ChosenUndead
 
         public void ChangeState(State state)
         {
+            currentState.Exit();
             nextState = state;
             nextState.Initialize();
             ChangeStateCooldownLeft = ChangeStateCooldown;

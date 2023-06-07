@@ -15,7 +15,7 @@ namespace ChosenUndead
 
         public const float RollSpeedCoef = 0.9f;
 
-        public const float MaxRollingTime = 0.7f;
+        public const float MaxRollingTime = 0.6f;
 
         public const float MaxJumpTime = 0.62f;
 
@@ -41,7 +41,7 @@ namespace ChosenUndead
 
         public const float StaminaRecovery = 25f;
 
-        public const float RollStaminaCost = 25f;
+        public const float RollStaminaCost = 30f;
 
         public const float AttackStaminaCost = 8f;
 

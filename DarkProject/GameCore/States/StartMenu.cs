@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -12,9 +13,11 @@ namespace ChosenUndead
 
         private Texture2D background;
 
+        private SoundEffectInstance music = Sound.GetStateSound("mainMenu");
+
         public StartMenu(ChosenUndeadGame game, ContentManager content) : base(game, content)
         {
-            background = base.content.Load<Texture2D>("Backgrounds/menuBackground");
+            background = base.content.Load<Texture2D>("Backgrounds/menu");
 
             var newGameButton = Art.GetButton("Новая игра");
             newGameButton.Click += (sender, e) => game.LoadSave(true);
@@ -25,9 +28,9 @@ namespace ChosenUndead
 
             var centerX = (game.Window.ClientBounds.Width - newGameButton.Rectangle.Width) / 2;
 
-            newGameButton.Position = new Vector2 (centerX, 300);
-            continueButton.Position = new Vector2(centerX, 400);
-            exitGameButton.Position = new Vector2(centerX, 500);
+            newGameButton.Position = new Vector2 (centerX, 400);
+            continueButton.Position = new Vector2(centerX, 500);
+            exitGameButton.Position = new Vector2(centerX, 600);
 
             sprites = new List<Component>()
             {
@@ -51,8 +54,15 @@ namespace ChosenUndead
 
         public override void Update()
         {
+            music.Play();
             foreach (var component in sprites)
                 component.Update();
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+            music.Stop();
         }
     }
 }

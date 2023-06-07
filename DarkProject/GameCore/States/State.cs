@@ -37,6 +37,11 @@ namespace ChosenUndead
         {
             
         }
+
+        public virtual void Exit()
+        {
+
+        }
     }
 }
 
