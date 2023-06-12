@@ -80,5 +80,11 @@ namespace ChosenUndead
             foreach (var component in components)
                 component.Update();
         }
+
+        public override void Exit()
+        {
+            base.Exit();
+            videoPlayer.Stop();
+        }
     }
 }

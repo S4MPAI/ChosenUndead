@@ -25,6 +25,7 @@ namespace ChosenUndead
         private const string chestsPath = "Map/Decorations/Chests/chest";
         private const string npcPath = "Entities/Npc/";
         private const string healthBarPath = "Interface/HealthBar/";
+        private const string interfacePath = "Interface/";
         private const string videoPath = "Videos/";
 
         public static void Initialize(ContentManager content)
@@ -81,6 +82,8 @@ namespace ChosenUndead
                 content.Load<Texture2D>($"{healthBarPath}ProgressBar"),
                 content.Load<Texture2D>($"{healthBarPath}ProgressBarBorder")
             );
+
+        public static Texture2D GetInterfaceTexture(string name) => content.Load<Texture2D>($"{interfacePath}{name}");
 
         public static AnimationManager<object> GetNpcAnimations(string name)
         {

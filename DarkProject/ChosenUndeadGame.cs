@@ -89,7 +89,7 @@ namespace ChosenUndead
 
             return new PlayState[]
             {
-                new PlayState(this, Content, 1, Art.GetForestBackgrounds(windowSize)),
+                new PlayState(this, Content, 1, Art.GetForestBackgrounds(windowSize), "light1"),
                 new PlayState(this, Content, 2, Art.GetForestBackgrounds(windowSize)),
                 new PlayState(this, Content, 3, Art.GetForestBackgrounds(windowSize))
             };
@@ -176,11 +176,18 @@ namespace ChosenUndead
 
             var jsonString = File.ReadAllText(saveFile);
             var data = JsonConvert.DeserializeObject<PlayerData>(jsonString);
-            ChangeState(Levels[data.PlayerLevelIndex]);
+
+            if (isNewSave)
+                ChangeState(new TrainingState(this, Content));
+            else
+                ChangeState(Levels[data.PlayerLevelIndex]);
+
             player.Position = new Vector2(data.X, data.Y);
             player.SetInventory(data.AttackBuffCount, data.VitalityBuffCount, data.MaxHealingQuartz, data.Keys);
             player.Reset();
             
         }
+
+        public void SetFirstLevel() => ChangeState(Levels[0]);
     }
 }

@@ -9,6 +9,7 @@ using System.Text;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Xna.Framework.Audio;
 
 namespace ChosenUndead
 {
@@ -26,11 +27,15 @@ namespace ChosenUndead
 
         public int spawnpointNumber;
 
-        public PlayState(ChosenUndeadGame game, ContentManager content, int levelNumber, List<ScrollingBackground> backgrounds) : base(game, content)
+        public SoundEffectInstance sound;
+
+        public PlayState(ChosenUndeadGame game, ContentManager content, int levelNumber, List<ScrollingBackground> backgrounds, string soundName = null) : base(game, content)
         {
             this.levelNumber = levelNumber;
             this.backgrounds = backgrounds;
             pause = new Pause(game, content);
+
+            if (soundName != null) sound = Sound.GetStateSound(soundName);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -57,6 +62,7 @@ namespace ChosenUndead
         
         public override void Update()
         {
+            sound?.Play();
             game.isPause = Input.EscapePressed ? !game.isPause : game.isPause;
 
             if (game.isPause)
@@ -130,6 +136,12 @@ namespace ChosenUndead
             data.Chests.Clear();
             jsonString = JsonConvert.SerializeObject(data, Formatting.Indented);
             File.WriteAllText(savePath, jsonString);
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+            sound?.Stop();
         }
     }
 }

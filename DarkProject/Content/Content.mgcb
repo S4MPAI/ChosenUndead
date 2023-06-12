@@ -61,6 +61,18 @@
 /processorParam:TextureFormat=Color
 /build:Backgrounds/menu.png
 
+#begin Backgrounds/training.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Backgrounds/training.png
+
 #begin Controls/menuButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -339,6 +351,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Font.spritefont
 
+#begin Fonts/Interface.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Interface.spritefont
+
 #begin Interface/Boards/Bonfire.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -422,6 +441,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Interface/HealthBar/ProgressBarBorder.png
+
+#begin Interface/Quartz.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Interface/Quartz.png
 
 #begin Map/Decorations/bonfire.png
 /importer:TextureImporter
@@ -542,6 +573,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sounds/Player/Walk.wav
+
+#begin Sounds/States/light1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/States/light1.wav
 
 #begin Sounds/States/mainMenu.wav
 /importer:WavImporter
