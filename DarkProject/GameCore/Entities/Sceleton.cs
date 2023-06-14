@@ -31,19 +31,5 @@ namespace ChosenUndead
         {
             throw new NotImplementedException();
         }
-
-        //public override void Update(GameTime gameTime)
-        //{
-        //    if (state == EntityAction.Death)
-        //    {
-        //        if (!animationManager.IsCurrentAnimationEnded())
-        //            animationManager.Update(gameTime);
-
-        //        return;
-        //    }
-
-        //    base.Update(gameTime);
-        //    animationManager.Update(gameTime);
-        //}
     }
 }

@@ -44,7 +44,7 @@ namespace ChosenUndead
             playerAnimations.AddAnimation(Attacks.SecondAttack, new Animation(content.Load<Texture2D>($"{playerPath}SecondAttack"), 3, 0.125f, false));
             playerAnimations.AddAnimation(Attacks.ThirdAttack, new Animation(content.Load<Texture2D>($"{playerPath}ThirdAttack"), 4, 0.125f, false));
             playerAnimations.AddAnimation(Attacks.FourthAttack, new Animation(content.Load<Texture2D>($"{playerPath}FourthAttack"), 6, 0.125f, false));
-            playerAnimations.AddAnimation(EntityAction.Healing, new Animation(content.Load<Texture2D>($"{playerPath}Healing"), 8, 0.5f, false));
+            playerAnimations.AddAnimation(EntityAction.Healing, new Animation(content.Load<Texture2D>($"{playerPath}Healing"), 8, 0.15f, false));
             playerAnimations.AddAnimation(EntityAction.Roll, new Animation(content.Load<Texture2D>($"{playerPath}Roll"), 4, 0.15f));
             playerAnimations.AddAnimation(EntityAction.Death, new Animation(content.Load<Texture2D>($"{playerPath}Death"), 4, 0.2f, false));
             playerAnimations.AddAnimation(EntityAction.Hurt, new Animation(content.Load<Texture2D>($"{playerPath}Hurt"), 3, 0.4f, false));
@@ -175,6 +175,16 @@ namespace ChosenUndead
         public static Button GetButton(string text) => GetButton(text, Vector2.Zero);
 
         public static Video GetVideo(string name) => content.Load<Video>($"{videoPath}{name}");
+
+        internal static AnimationManager<object> GetFlyingEyeAnimations()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static AnimationManager<object> GetNightBorneAnimations()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class Board : Sprite
