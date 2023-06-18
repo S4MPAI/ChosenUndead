@@ -18,11 +18,11 @@ namespace ChosenUndead
 
         public override float walkSpeedAttackCoef => 0.3f;
 
-        protected override float targetDistance => 275;
+        protected override float targetDistance => 300;
 
         protected float rangedAttackCooldown = 2f;
 
-        protected float closeAttackDistance => 175;
+        protected float closeAttackDistance => 140;
 
         public Sceleton(Map map) : base(
             map,
@@ -53,7 +53,7 @@ namespace ChosenUndead
                                 }),
                             })
                         }),
-                        new TaskEnemyShootOnTarget(Art.GetBulletAnimation("scelet", 3, 0.1f), 25, 200, rangedAttackCooldown, this, target)
+                        new TaskEnemyShootOnTarget(Art.GetBulletAnimation("scelet", 3, 0.1f), 20, 165, rangedAttackCooldown, this, target)
                     }),
 
                     new Sequence(new List<Node>

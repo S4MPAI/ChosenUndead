@@ -91,7 +91,10 @@ namespace ChosenUndead
             {
                 new PlayState(this, Content, 1, Art.GetForestBackgrounds(windowSize), "light1"),
                 new PlayState(this, Content, 2, null, "light1"),
-                new PlayState(this, Content, 3, Art.GetForestBackgrounds(windowSize), "light1")
+                new PlayState(this, Content, 3, Art.GetForestBackgrounds(windowSize), "light1"),
+                new PlayState(this, Content, 4, null, "light1"),
+                new PlayState(this, Content, 5, Art.GetForestBackgrounds(windowSize), "light1"),
+                new Final(this, Content, 6, null, "Final")
             };
         }
 
@@ -148,7 +151,8 @@ namespace ChosenUndead
                 PlayerLevelIndex = Array.IndexOf(Levels, currentState),
                 AttackBuffCount = player.AttackBuffCount,
                 VitalityBuffCount = player.VitalityBuffCount,
-                MaxHealingQuartz = player.MaxHealingQuartz
+                MaxHealingQuartz = player.MaxHealingQuartz,
+                Keys = player.Keys
             };
             var jsonStringSave = JsonConvert.SerializeObject(data, Formatting.Indented);
             File.WriteAllText(saveFile, jsonStringSave);
