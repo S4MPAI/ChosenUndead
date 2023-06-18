@@ -74,7 +74,7 @@ namespace ChosenUndead
             camera = new Camera(WindowSize, 4f);
             Map.SetLevelChanged(ChangeLevel);
             Map.SetSaveCompleted(SaveCompleted);
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
             graphics.PreferredBackBufferWidth = WindowSize.X;
             graphics.PreferredBackBufferHeight = WindowSize.Y;
 
