@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -17,23 +18,25 @@ namespace ChosenUndead
         Goblin
     }
 
-    public class EntityManager
+    public static class EntityManager
     {
-        public Player Player { get; private set; }
+        public static Player Player { get; private set; }
 
-        public List<Enemy> enemies;
-        public HashSet<Enemy> removedEnemy;
-        private List<NPC> npcs;
+        private static List<Enemy> enemies;
+        private static HashSet<Enemy> removedEnemy;
+        private static List<Bullet> bullets; 
+        private static List<NPC> npcs;
 
-        public EntityManager()
+        static EntityManager()
         {
             enemies = new();
             npcs = new();
+            bullets = new();
             removedEnemy = new();
             Player = Player.GetInstance();
         }
 
-        public Enemy AddEnemy(Map map, EnemyType type)
+        public static Enemy AddEnemy(Map map, EnemyType type)
         {
             Enemy enemy = null;
 
@@ -52,25 +55,36 @@ namespace ChosenUndead
         }
 
 
-        public void AddNPC(NPC npc) => npcs.Add(npc);
+        public static void AddNPC(NPC npc) => npcs.Add(npc);
 
-        public void Draw(SpriteBatch spriteBatch)
+        public static void Draw(SpriteBatch spriteBatch)
         {
             Player.Draw(spriteBatch);
             foreach (var enemy in enemies)
                 enemy.Draw(spriteBatch);
+            foreach (var bullet in bullets)
+                bullet.Draw(spriteBatch);
             foreach (var npc in npcs)
                 npc.Draw(spriteBatch);
         }
 
-        public void Update()
+        public static void Update()
         {
             Player?.Update();
 
             for (int i = 0; i < enemies.Count; i++)
                 enemies[i].Update();
 
+            for (int i = 0; i < bullets.Count; i++)
+            {
+                bullets[i].Update();
+                if (bullets[i].FlightTime > 20)
+                {
+                    bullets.Remove(bullets[i]);
+                    i--;
+                }
 
+            }
 
             foreach (var npc in npcs)
                 npc.Update();
@@ -78,10 +92,15 @@ namespace ChosenUndead
             foreach (var enemy in enemies)
                 CheckEntityCollision(Player, enemy);
 
-            for (int i = 0; i < enemies.Count - 1; i++)
-                for (int j = i + 1; j < enemies.Count; j++)
-                    CheckEntityCollision(enemies[i], enemies[j]);
-                    
+            for (int i = 0; i < bullets.Count; i++)
+            {
+                if (bullets[i].Rectangle.Intersects(Player.HitBox))
+                {
+                    Player.AddHp(-bullets[i].Damage, true);
+                    bullets.Remove(bullets[i]);
+                    i--;
+                }
+            }
 
             foreach (var enemy in removedEnemy)
                 enemies.Remove(enemy);
@@ -90,7 +109,7 @@ namespace ChosenUndead
             //    Player = null;
         }
 
-        private void CheckEntityCollision(Entity entity1, Entity entity2)
+        private static void CheckEntityCollision(Entity entity1, Entity entity2)
         {
             MakeAttack(entity1, entity2);
             MakeAttack(entity2, entity1);
@@ -102,10 +121,21 @@ namespace ChosenUndead
                 removedEnemy.Add(enemy1);
         }
 
-        private void MakeAttack(Entity attackEntity, Entity entity)
+        private static void MakeAttack(Entity attackEntity, Entity entity)
         {
             if (attackEntity.IsAttacking && attackEntity.AttackBox.Intersects(entity.HitBox))
                 entity.AddHp(-attackEntity.Damage);
         }
+
+        public static void Clear()
+        {
+            enemies = new();
+            npcs = new();
+            removedEnemy = new();
+            bullets = new();
+            Player = Player.GetInstance();
+        }
+
+        internal static void AddBullet(Bullet bullet) => bullets.Add(bullet);
     }
 }

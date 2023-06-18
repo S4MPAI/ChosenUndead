@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChosenUndead
 {
-    internal class CheckTargetInFovRange : Node
+    internal class CheckTargetInRange : Node
     {
         private Enemy enemy;
 
@@ -14,7 +14,7 @@ namespace ChosenUndead
 
         private float fovRange;
 
-        public CheckTargetInFovRange(Enemy enemy, Entity target, float fovRange) : base()
+        public CheckTargetInRange(Enemy enemy, Entity target, float fovRange) : base()
         {
             this.enemy = enemy;
             this.target = target;

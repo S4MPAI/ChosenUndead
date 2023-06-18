@@ -13,7 +13,7 @@ namespace ChosenUndead
         protected Texture2D texture;
 
         private float scale;
-        private Color color = Color.White;
+        protected Color color = Color.White;
 
         public Rectangle Rectangle
         {

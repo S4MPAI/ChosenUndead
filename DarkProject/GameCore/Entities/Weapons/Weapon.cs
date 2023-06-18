@@ -14,6 +14,7 @@ namespace ChosenUndead
         SecondAttack,
         ThirdAttack, 
         FourthAttack,
+        DistanceAttack,
         Stun
     }
 

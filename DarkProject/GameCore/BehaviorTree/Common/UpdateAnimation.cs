@@ -20,6 +20,8 @@ namespace ChosenUndead
             animationManager.Update();
             var currentState = GetData("currentState");
             animationManager.SetAnimation(currentState);
+
+            SetDataOnMainElement("isAnimEnded", animationManager.IsCurrentAnimationEnded());
             return NodeState.RUNNING;
         }
     }

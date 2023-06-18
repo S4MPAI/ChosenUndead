@@ -4,15 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChosenUndead.GameCore.Entities
+namespace ChosenUndead
 {
-    internal class NightBorne : EnemyBTree
+    //TODO: work with NightBorne
+    public class NightBorne : EnemyBTree
     {
         public override float MaxHp => throw new NotImplementedException();
 
         public override float WalkSpeed => throw new NotImplementedException();
 
         public override float walkSpeedAttackCoef => throw new NotImplementedException();
+
+        protected override float targetDistance => throw new NotImplementedException();
 
         public NightBorne(Map map, Entity target = null) : base(map, Art.GetNightBorneAnimations(), 30, new Weapon(), 30, target)
         {

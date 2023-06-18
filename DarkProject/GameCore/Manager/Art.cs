@@ -19,12 +19,14 @@ namespace ChosenUndead
         private const string sceletonPath = "Entities/Sceleton/";
         private const string goblinPath = "Entities/Goblin/";
         private const string bonfirePath = "Map/Decorations/bonfire";
+        private const string levelTransitionPath = "Map/Decorations/LevelTransition";
         private const string tilesPath = "Map/Tiles/tile";
         private const string boardsPath = "Interface/Boards/";
         private const string forestBackgroundsPath = "Backgrounds/forest/bg_forest_";
         private const string chestsPath = "Map/Decorations/Chests/chest";
         private const string npcPath = "Entities/Npc/";
         private const string healthBarPath = "Interface/HealthBar/";
+        private const string bulletsPath = "Entities/Bullets/";
         private const string interfacePath = "Interface/";
         private const string videoPath = "Videos/";
 
@@ -59,7 +61,9 @@ namespace ChosenUndead
             sceletonAnimations.AddAnimation(EntityAction.Idle, new Animation(content.Load<Texture2D>($"{sceletonPath}Idle"), 4, 0.2f));
             sceletonAnimations.AddAnimation(EntityAction.Death, new Animation(content.Load<Texture2D>($"{sceletonPath}Death"), 4, 0.8f, false));
             sceletonAnimations.AddAnimation(EntityAction.Run, new Animation(content.Load<Texture2D>($"{sceletonPath}Walk"), 4, 0.15f));
-            sceletonAnimations.AddAnimation(Attacks.FirstAttack, new Animation(content.Load<Texture2D>($"{sceletonPath}Attack"), 8, 0.125f));
+            sceletonAnimations.AddAnimation(Attacks.FirstAttack, new Animation(content.Load<Texture2D>($"{sceletonPath}Attack"), 8, 0.125f, false));
+            sceletonAnimations.AddAnimation(Attacks.SecondAttack, new Animation(content.Load<Texture2D>($"{sceletonPath}Attack2"), 8, 0.125f, false));
+            sceletonAnimations.AddAnimation(Attacks.DistanceAttack, new Animation(content.Load<Texture2D>($"{sceletonPath}Distance"), 6, 0.125f, false));
 
             return sceletonAnimations;
         }
@@ -108,7 +112,12 @@ namespace ChosenUndead
                 new(content.Load<Texture2D>(forestBackgroundsPath + 3), 0.13f, windowSize)
             };
 
+        public static Animation GetBulletAnimation(string name, int frameCount, float frameTime) =>
+            new Animation(content.Load<Texture2D>($"{bulletsPath}{name}"), frameCount, frameTime);
+
         public static Animation GetBonfireSaveAnimation() => new Animation(content.Load<Texture2D>(bonfirePath), 8, 0.1f);
+
+        public static Animation GetLevelTransitionAnimation() => new Animation(content.Load<Texture2D>(levelTransitionPath), 8, 0.1f);
 
         public static Animation GetChestAnimation(ChestItem chestType) => new Animation(content.Load<Texture2D>($"{chestsPath}{chestType}"), 7, 0.2f, false);
 
@@ -123,10 +132,10 @@ namespace ChosenUndead
         public static Board GetBoardForNpc() =>
             new Board(content.Load<Texture2D>(boardsPath + "NPC"), Color.White, Color.Black);
 
-        public static void SetPositionInMapBounds(Component component)
+        public static void SetPositionInMapBounds(Sprite sprite)
         {
-            component.Position.X = MathHelper.Clamp(component.Position.X, 0, map.MapSize.X);
-            component.Position.Y = MathHelper.Clamp(component.Position.Y, 0, map.MapSize.Y);
+            sprite.Position.X = MathHelper.Clamp(sprite.Position.X, 0, map.MapSize.X - sprite.Rectangle.Width);
+            sprite.Position.Y = MathHelper.Clamp(sprite.Position.Y, 0, map.MapSize.Y - sprite.Rectangle.Height);
         }
 
         public static void SetMap(Map map) => Art.map = map;

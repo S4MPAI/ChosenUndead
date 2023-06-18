@@ -74,7 +74,7 @@ namespace ChosenUndead
             camera = new Camera(WindowSize, 4f);
             Map.SetLevelChanged(ChangeLevel);
             Map.SetSaveCompleted(SaveCompleted);
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
             graphics.PreferredBackBufferWidth = WindowSize.X;
             graphics.PreferredBackBufferHeight = WindowSize.Y;
 
@@ -90,8 +90,8 @@ namespace ChosenUndead
             return new PlayState[]
             {
                 new PlayState(this, Content, 1, Art.GetForestBackgrounds(windowSize), "light1"),
-                new PlayState(this, Content, 2, Art.GetForestBackgrounds(windowSize)),
-                new PlayState(this, Content, 3, Art.GetForestBackgrounds(windowSize))
+                new PlayState(this, Content, 2, null, "light1"),
+                new PlayState(this, Content, 3, Art.GetForestBackgrounds(windowSize), "light1")
             };
         }
 
@@ -163,7 +163,7 @@ namespace ChosenUndead
                 var playerData = new PlayerData()
                 {
                     X = -32,
-                    Y = 224,
+                    Y = 380,
                     PlayerLevelIndex = 0,
                     MaxHealingQuartz = 1
                 };

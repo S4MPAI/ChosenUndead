@@ -75,5 +75,7 @@ namespace ChosenUndead
         {
             spriteBatch.Draw(texture, pos, frames[currentFrame], Color.White, 0, Vector2.Zero, Vector2.One, spriteEffect, 1);
         }
+
+        public Animation Copy() => new Animation(texture, FramesCount, frameTime, isLooping);
     }
 }

@@ -12,7 +12,7 @@ namespace ChosenUndead
     {
         protected Entity target { get; set; }
 
-        protected const float targetDistance = 200f;
+        protected abstract float targetDistance { get; }
 
         protected Vector2 startPos;
 

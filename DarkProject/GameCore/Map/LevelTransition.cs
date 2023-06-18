@@ -16,14 +16,22 @@ namespace ChosenUndead
 
         private readonly Player target;
 
+        private int keysToEnter { get; }
+
+        private string text;
         private Board board = Art.GetBoardForLevelTransition();
+
+        private bool isOpen = true;
 
         public static event Action<LevelTransition> LevelChanged;
 
-        public LevelTransition(Rectangle tilePosition, int levelIndex) : base(texture: null, tilePosition)
+        public LevelTransition(Rectangle tilePosition, int levelIndex, int keysToEnter = 0) : base(Art.GetLevelTransitionAnimation(), tilePosition)
         {
             target = Player.GetInstance();
             LevelIndex = levelIndex;
+            this.keysToEnter = keysToEnter;
+            text = board.Text;
+            
         }
 
         public override void Update()
@@ -35,16 +43,23 @@ namespace ChosenUndead
             {
                 isTargetIntersect = true;
 
-                if (target.IsInteract)
+                isOpen = target.Keys >= keysToEnter;
+
+                if (target.IsInteract && isOpen)
                     LevelChanged(this);
+                if (!isOpen) board.ChangeText($"Нужен {keysToEnter} ключ");
+                else board.ChangeText(text);
             }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            base.Draw(spriteBatch);
+
             if (isTargetIntersect)
             {
                 board.Position = new Vector2(target.HitBox.Center.X - board.Rectangle.Width / 2, target.HitBox.Top - board.Rectangle.Height);
+                Art.SetPositionInMapBounds(board);
                 board.Draw(spriteBatch);
             }
                 

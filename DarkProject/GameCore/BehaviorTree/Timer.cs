@@ -10,6 +10,7 @@ namespace ChosenUndead
     {
         private readonly float delay;
         private float time;
+        private float lastTime;
 
         public delegate void TickEnded();
         public event TickEnded onTickEnded;
@@ -19,6 +20,7 @@ namespace ChosenUndead
             this.delay = delay;
             time = this.delay;
             this.onTickEnded = onTickEnded;
+            lastTime = Time.TotalSeconds;
         }
         public Timer(float delay, List<Node> children, TickEnded onTickEnded = null)
             : base(children)
@@ -42,7 +44,7 @@ namespace ChosenUndead
             else
             {
                 time -= Time.ElapsedSeconds;
-                state = NodeState.RUNNING;
+                state = NodeState.FAILURE;
             }
             return state;
         }

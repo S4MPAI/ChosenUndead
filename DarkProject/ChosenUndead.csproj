@@ -20,6 +20,7 @@
     <Folder Include="Content\Backgrounds\forest\" />
     <Folder Include="Content\Controls\" />
     <Folder Include="Content\Maps\" />
+    <Folder Include="Content\Map\Tiles\" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Content\Data\LevelsData\level1.json">

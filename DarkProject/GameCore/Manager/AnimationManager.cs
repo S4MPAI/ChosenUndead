@@ -14,6 +14,10 @@ namespace ChosenUndead
 
         private readonly Dictionary<TAnimationKey, Animation> anims = new();
 
+        public int FrameWidth => CurrentAnimation.FrameWidth;
+
+        public int FrameHeight => CurrentAnimation.FrameHeight;
+
         public void AddAnimation(TAnimationKey animationName, Animation animation)
         {
             anims.Add(animationName, animation);

@@ -24,7 +24,12 @@ namespace ChosenUndead
         public static SoundEffect GetPlayerSound(string soundName) =>
             content.Load<SoundEffect>($"{playerPath}{soundName}");
 
-        public static SoundEffectInstance GetStateSound(string soundName) =>
-            content.Load<SoundEffect>($"{statePath}{soundName}").CreateInstance();
+        public static SoundEffectInstance GetStateSound(string soundName)
+        {
+            var sound = content.Load<SoundEffect>($"{statePath}{soundName}").CreateInstance();
+            sound.Volume = 0.15f;
+            return sound;
+        }
+            
     }
 }

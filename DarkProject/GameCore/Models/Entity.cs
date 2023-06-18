@@ -78,6 +78,7 @@ namespace ChosenUndead
         protected int hitBoxWidth { get; }
 
         protected int attackWidth { get; }
+        public bool IsGettingDamage { get; protected set; }
 
         public Entity(Map map, AnimationManager<object> animationManager, int hitBoxWidth, Weapon weapon = null, int attackWidth = 0)
         {
@@ -96,23 +97,32 @@ namespace ChosenUndead
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            AnimationManager.Draw(Position, spriteBatch, Orientation);
+            var animPos = new Vector2(Position.X, Position.Y + HitBox.Height - AnimationManager.FrameHeight);
+
+            AnimationManager.Draw(animPos, spriteBatch, Orientation);
         }
 
         public float SetGravity(float velocityY) => MathHelper.Clamp(velocityY + GravityAcceleration * Time.ElapsedSeconds, -MaxFallSpeed, MaxFallSpeed);
 
-        public virtual void AddHp(float hpSize)
+        public virtual void AddHp(float hpSize, bool isBullet = false)
         {
-            Hp += hpSize;
-
-            if (Hp <= 0)
+            if (!IsImmune || isBullet || hpSize >= 0)
             {
-                Hp = 0;
-                AnimationManager.SetAnimation(EntityAction.Death);
+                if (hpSize < 0)
+                    IsGettingDamage = true;
+
+                Hp += hpSize;
+
+                if (Hp <= 0)
+                {
+                    Hp = 0;
+                    AnimationManager.SetAnimation(EntityAction.Death);
+                }
+                else if (Hp > MaxHp)
+                    Hp = MaxHp;
             }
-                
-            else if (Hp > MaxHp)
-                Hp = MaxHp;
+
+            
         }
 
         #region Collision
@@ -183,8 +193,6 @@ namespace ChosenUndead
             HitBox.Top < bounds.Top &&
             HitBox.Right > bounds.Left + bounds.Width / 5 &&
             HitBox.Left < bounds.Right - bounds.Width / 5;
-
-        //protected Rectangle GetIntersectionDepthAttackWithHitBox(Entity entity) => Rectangle.Intersect(entity.HitBox, HitBox);
 
         #endregion
     }

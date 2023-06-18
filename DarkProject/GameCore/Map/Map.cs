@@ -20,8 +20,6 @@ namespace ChosenUndead
 
         public List<Decoration> Decorations { get; private set; }
 
-        public EntityManager entityManager;
-
         private int spawnpointNumber;
 
         public Player Player { get => Player.GetInstance(this); }
@@ -39,9 +37,7 @@ namespace ChosenUndead
             mapEntities = new();
             TileSize = size;
             this.spawnpointNumber = spawnpointNumber;
-            
-            entityManager = new();
-            
+            EntityManager.Clear();
 
             var mapInfo = ReadMap(reader);
             MapSize = new(mapInfo.tiles[0].Length * size, mapInfo.tiles.Length * size);
@@ -119,10 +115,10 @@ namespace ChosenUndead
             switch (symbol)
             {
                 case "S":
-                    currentEntity = entityManager.AddEnemy(this, EnemyType.Sceleton);
+                    currentEntity = EntityManager.AddEnemy(this, EnemyType.Sceleton);
                     break;
                 case "G":
-                    currentEntity = entityManager.AddEnemy(this, EnemyType.Goblin);
+                    currentEntity = EntityManager.AddEnemy(this, EnemyType.Goblin);
                     break;
                 default:
                     return;
@@ -136,11 +132,12 @@ namespace ChosenUndead
             Decoration decoration = null;
             var rectangle = new Rectangle(x * size, y * size, size, size);
 
-            if (int.TryParse(symbol, out var numberTransition) && numberTransition != 0)
+            if (char.IsDigit(symbol[0]) && (symbol[0] - '0') != 0)
             {
-                decoration = new LevelTransition(rectangle, numberTransition);
+                var data = symbol.Split('_').Select(x => int.Parse(x)).ToList();
+                decoration = new LevelTransition(rectangle, data[0], data[1]);
 
-                if (spawnpointNumber == numberTransition)
+                if (spawnpointNumber == data[0])
                     SetEntityPosition(Player, x, y);
             }
             else
@@ -174,7 +171,7 @@ namespace ChosenUndead
 
         public void Update()
         {
-            entityManager.Update();
+            EntityManager.Update();
 
             foreach (var decoration in Decorations)
                 decoration.Update();
@@ -185,7 +182,7 @@ namespace ChosenUndead
             foreach (var component in mapEntities)
                 component.Draw(spriteBatch);
 
-            entityManager.Draw(spriteBatch);
+            EntityManager.Draw(spriteBatch);
         }
 
         private void SetEntityPosition(Entity entity, int x, int y)
@@ -211,7 +208,7 @@ namespace ChosenUndead
         public void AddNPCs(params NPC[] npcs)
         {
             foreach (var npc in npcs)
-                entityManager.AddNPC(npc);
+                EntityManager.AddNPC(npc);
         }
 
         public void SetChestsStates(List<ChestData> chestsData)

@@ -12,6 +12,7 @@ namespace ChosenUndead
         private SoundEffectInstance hurtSound = Sound.GetPlayerSound("Hurt").CreateInstance();
         public GettingDamageStatus(Player player, StateMachine stateMachine) : base(player, stateMachine)
         {
+            hurtSound.Volume = 1;
         }
 
         public override void DisplayUpdate()

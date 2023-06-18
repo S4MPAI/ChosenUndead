@@ -13,6 +13,8 @@ namespace ChosenUndead
 
         public override float walkSpeedAttackCoef => 0.5f;
 
+        protected override float targetDistance => 180f;
+
         public Goblin(Map map, Entity target = null) : 
             base(map, Art.GetGoblinAnimations(), 30, new Weapon(1f, 1.2f, 30, new[]{Attacks.FirstAttack}), 55, target)
         {
@@ -29,7 +31,7 @@ namespace ChosenUndead
                     {
                         new Inverter(new List<Node>
                         {
-                            new CheckTargetInFovRange(this, target, targetDistance),
+                            new CheckTargetInRange(this, target, targetDistance),
                         }),
                         new TaskGoEnemyOnPos(this, startPos)
                     }),

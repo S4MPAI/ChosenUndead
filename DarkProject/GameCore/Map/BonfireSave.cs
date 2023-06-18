@@ -47,6 +47,8 @@ namespace ChosenUndead
                 if (target.IsInteract)
                 {
                     PlayerSaved(this);
+                    target.HealingQuartzLeft = target.MaxHealingQuartz;
+                    target.AddHp(target.MaxHp);
                     board.ChangeText(saveText);
                     textCooldownLeft = textCooldown;
                 }
